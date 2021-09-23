@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <style>
+    body {
+      font-family:  Arial, Helvetica, sans-serif;
+      background: linear-gradient( rgba(194, 222, 255, 0.911), white); 
+      text-align: center;
+      background-attachment: fixed;
+    }
+
+    form {
+      border: 3px solid #f1f1f1;
+      background-color: white;
+      width: 400px;
+      height: 450px;
+      display: inline-block;
+      
+    }   
+    
+    input[type=text], input[type=password] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 2px solid #ccc;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background-color: #000b6e;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+    
+    button:hover {
+      opacity: 0.8;
+    }
+      
+    .imgcontainer {
+      text-align: center;
+      margin: 24px 0 12px 0;
+    }
+    
+    img.LoginImage {
+      width: 40%;
+      border-radius: 40%;
+    }
+    
+    .container {
+      padding: 16px;
+    }
+
+    </style>
+
+<head>
+    <body>
+        <h1>My Planner</h1>
+        <form action="/action_page.php" method="post">
+          <div class="imgcontainer">
+            <img src="images/LoginImage.png" alt="LoginImage" class="LoginImage" />
+          </div>
+        
+          <div class="container">
+            <label for="username"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="uname" required>
+        
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+                
+            <button type="submit">Login</button>
+            <label>
+              <input type="checkbox" checked="checked" name="rememberme"> Remember me
+            </label>
+          </div>
+    </body>
+</head>
