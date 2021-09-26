@@ -1,206 +1,137 @@
-<!DOCTYPE html>
-<html lang="en-US">
-    <head>
-        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-        <link type="text/css" rel = "stylesheet" href="./css/styles.css"/>
-        <title> Planner </title>
-    </head>
-    <body>
-        <ul>
-            <li>
-                <span>00:00</span>
-            </li>
-            <li>
-                <span>00:15</span>
-            </li>
-            <li>
-                <span>00:30</span>
-            </li>
-            <li>
-                <span>00:45</span>
-            </li>
-            <li>
-                <span>01:00</span>
-            </li>
-            <li>
-                <span>01:15</span>
-            </li>
-            <li>
-                <span>01:30</span>
-            </li>
-            <li>
-                <span>01:45</span>
-            </li>
-            <li>
-                <span>02:00</span>
-            </li>
-            <li>
-                <span>02:15</span>
-            </li>
-            <li>
-                <span>02:30</span>
-            </li>
-            <li>
-                <span>02:45</span>
-            </li>
-            <li>
-                <span>03:00</span>
-            </li>
-            <li>
-                <span>03:15</span>
-            </li>
-            <li>
-                <span>03:30</span>
-            </li>
-            <li>
-                <span>03:45</span>
-            </li>
-            <li>
-                <span>04:00</span>
-            </li>
-            <li>
-                <span>04:15</span>
-            </li>
-            <li>
-                <span>04:30</span>
-            </li>
-            <li>
-                <span>04:45</span>
-            </li>
-            <li>
-                <span>05:00</span>
-            </li>
-            <li>
-                <span>06:15</span>
-            </li>
-            <li>
-                <span>06:30</span>
-            </li>
-            <li>
-                <span>06:45</span>
-            </li>
-            <li>
-                <span>07:00</span>
-            </li>
-            <li>
-                <span>07:15</span>
-            </li>
-            <li>
-                <span>07:30</span>
-            </li>
-            <li>
-                <span>07:45</span>
-            </li>
-            <li>
-                <span>08:00</span>
-            </li>
-            <li>
-                <span>08:15</span>
-            </li>
-            <li>
-                <span>08:30</span>
-            </li>
-            <li>
-                <span>08:45</span>
-            </li>
-            <li>
-                <span>09:00</span>
-            </li>
-            <li>
-                <span>09:15</span>
-            </li>
-            <li>
-                <span>09:30</span>
-            </li>
-            <li>
-                <span>09:45</span>
-            </li>
-            <li>
-                <span>10:00</span>
-            </li>
-            <li>
-                <span>10:15</span>
-            </li>
-            <li>
-                <span>10:30</span>
-            </li>
-            <li>
-                <span>10:45</span>
-            </li>
-            <li>
-                <span>11:00</span>
-            </li>
-            <li>
-                <span>11:15</span>
-            </li>
-            <li>
-                <span>11:30</span>
-            </li>
-            <li>
-                <span>11:45</span>
-            </li>
-            <li>
-                <span>12:00</span>
-            </li>
-            <li>
-                <span>12:15</span>
-            </li>
-            <li>
-                <span>12:30</span>
-            </li>
-            <li>
-                <span>12:45</span>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <div><span>Monday</span></div>
-                <ul>
-                    <li> 1 point </li>
-                    <li> 1 second point</li>
-                </ul>
-            </li>
-            <li>
-                <div><span>Tuesday</span></div>
-                <ul>
-                    <li> 1 point </li>
-                    <li> 1 second point</li>
-                </ul>
-            </li>
-            <li>
-                <div><span>Wednesday</span></div>
-                <ul>
-                    <li> 1 point </li>
-                    <li> 1 second point</li>
-                </ul>
-            <li>
-                <div><span>Thursday</span></div>
-                <ul>
-                    <li> 1 point </li>
-                    <li> 1 second point</li>
-                </ul>
-            </li>
-            <li>
-                <div><span>Friday</span></div>
-                <ul>
-                    <li> 1 point </li>
-                    <li> 1 second point</li>
-                </ul>
-            </li>
-            <li>
-                <div><span>Saturday day</span></div>
-                <ul>
-                    <li> 1 point </li>
-                    <li> 1 second point</li>
-                </ul>
-            </li>
-            <li>
-                <div><span>Sunday</span></div>
-                <ul>
-                    <li> 1 point </li>
-                    <li> 1 second point</li>
-                </ul>
-            </li>
-        </ul> 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>document.getElementsByTagName("html")[0].className += " js";</script>
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Schedule</title>
+  <link rel = "icon" href = "./scheduale.png" type ="image/icon type">
+</head>
+<body>
+  <header class="cd-main-header text-center flex flex-column flex-center">
+    <p class="margin-top-md margin-bottom-xl"></p>
+
+    <h1 class="text-xl">Schedule Template</h1>
+  </header>
+
+  <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
+    <div class="cd-schedule__timeline">
+      <ul>
+        <li><span style = "color:coral">00:00</span></li>
+        <li><span style = "color:darksalmon">00:15</span></li>
+        <li><span style = "color:lightsalmon">00:30</span></li>
+        <li><span>00:45</span></li>
+        <li><span>01:00</span></li>
+        <li><span>01:15</span></li>
+        <li><span>01:30</span></li>
+        <li><span>01:45</span></li>
+        <li><span>02:00</span></li>
+        <li><span>02:15</span></li>
+        <li><span>02:30</span></li>
+        <li><span>02:45</span></li>
+        <li><span>03:00</span></li>
+        <li><span>03:15</span></li>
+        <li><span>03:30</span></li>
+        <li><span>03:45</span></li>
+        <li><span>04:00</span></li>
+        <li><span>04:15</span></li>
+        <li><span>04:30</span></li>
+        <li><span>04:45</span></li>
+        <li><span>05:00</span></li>
+        <li><span>06:15</span></li>
+        <li><span>06:30</span></li>
+        <li><span>06:45</span></li>
+        <li><span>07:00</span></li>
+        <li><span>07:15</span></li>
+        <li><span>07:30</span></li>
+        <li><span>07:45</span></li>
+        <li><span>08:00</span></li>
+        <li><span>08:15</span></li>
+        <li><span>08:30</span></li>
+        <li><span>08:45</span></li>
+        <li><span>09:00</span></li>
+        <li><span>09:15</span></li>
+        <li><span>09:30</span></li>
+        <li><span>09:45</span></li>
+        <li><span>10:00</span></li>
+        <li><span>10:15</span></li>
+        <li><span>10:30</span></li>
+        <li><span>10:45</span></li>
+        <li><span>11:00</span></li>
+        <li><span>11:15</span></li>
+        <li><span>11:30</span></li>
+        <li><span>11:45</span></li>
+        <li><span>12:00</span></li>
+      </ul>
+    </div> <!-- .cd-schedule__timeline -->
+  
+    <div class="cd-schedule__events">
+      <ul>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Monday</span></div>
+          <ul>
+          </ul>
+        </li>
+  
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Tuesday</span></div>
+          <ul>
+          </ul>
+        </li>
+  
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Wednesday</span></div>
+          <ul>
+          </ul>
+        </li>
+  
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Thursday</span></div>
+          <ul>
+          </ul>
+        </li>
+  
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Friday</span></div>
+          <ul>
+          </ul>
+        </li>
+
+        <li class="cd-schedule__group">
+            <div class="cd-schedule__top-info"><span>Saturday</span></div>
+            <ul>
+            </ul>
+          </li>
+
+          <li class="cd-schedule__group">
+            <div class="cd-schedule__top-info"><span>Sunday</span></div>
+            <ul>
+            </ul>
+          </li>
+
+      </ul>
+    </div>
+  
+    <div class="cd-schedule-modal">
+      <header class="cd-schedule-modal__header">
+        <div class="cd-schedule-modal__content">
+          <span class="cd-schedule-modal__date"></span>
+          <h3 class="cd-schedule-modal__name"></h3>
+        </div>
+  
+        <div class="cd-schedule-modal__header-bg"></div>
+      </header>
+  
+      <div class="cd-schedule-modal__body">
+        <div class="cd-schedule-modal__event-info"></div>
+        <div class="cd-schedule-modal__body-bg"></div>
+      </div>
+  
+      <a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
+    </div>
+  
+    <div class="cd-schedule__cover-layer"></div>
+  </div> <!-- .cd-schedule -->
     </body> 
 </html>
