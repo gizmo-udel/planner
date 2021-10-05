@@ -18,11 +18,36 @@
     <h1 class="text-xl">
       <a href ="./login.html" class = "pic-link"> <img src="./images/home.png" alt = "Home"> 
       </a>
-      <p>
-        <a href="./eventpopup.html" onclick="basicPopup(this.href);return false">Open a popup window</a>
-      </p>
+      <a href="#" onclick="document.getElementById('id01').style.display='block'">Add Event</a>
     </h1>
   </header>
+
+  <div class="innerbody">
+    <!--Modal Start-->
+    <div id="id01" class="modal">
+      <form class="modal-content animate">
+        <div class="container">
+          <span onclick="document.getElementById('id01').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+          <label>Event Name</label>
+          <input type="text"class="form-control" placeholder="Event Name" name="ename">
+          <br>
+          <label>Event Date</label>
+          <input type="text"class="form-control" placeholder="Event Date" name="edate">
+          <br>
+          <label>Event Description</label>
+          <br>
+          <textarea class="form-control" placeholder="Event Description" name="edesc"></textarea>
+          <br>
+          <button id="contact-overlay-buttons" class="submit" name="submit" type="submit">Submit</button>
+
+          <button type="button" onclick="document.getElementById('id01').style.display='none'"
+            class="cancelbtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule" style = "background: linear-gradient( #fec3a6, rgba(194, 222, 255, 0.911)); ">
     <div class="cd-schedule__timeline">
       <ul>
