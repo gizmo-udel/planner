@@ -4299,6 +4299,10 @@ opacity:0.8
     background-color:#88c559
 }
 
+
+/* Aaron's custom css*/
+
+
 .pic-link {
     height:auto;
     margin:initial;
@@ -4306,6 +4310,7 @@ opacity:0.8
     margin: 5px 5px 5px 5px;
     padding: 5px 5px 5px 5px;
     background-color:transparent;
+    text-align: right;
 }
 
 .custom-body-color {
@@ -4316,6 +4321,7 @@ opacity:0.8
 
 
 /* Ryan's Popup */
+
 
 button {
     background: rgb(240, 240, 240);
