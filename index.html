@@ -8,116 +8,155 @@
   </script>
   <link rel="stylesheet" href="./css/style.css">
   <title>Schedule</title>
-  <link rel = "icon" href = "./scheduale.png" type ="image/icon type">
+  <link rel = "icon" href = "./images/scheduale.png" type ="image/icon type">
 </head>
-<body>
+<body class = "custom-body-color">
   <header class="cd-main-header text-center flex flex-column flex-center">
     <p class="margin-top-md margin-bottom-xl"></p>
 
-    <h1 class="text-xl">Schedule Template</h1>
-    <p>
-      <a href="./eventpopup.html" onclick="basicPopup(this.href);return false">Open a popup window</a>
-    </p>
+    <!--start of navbar with icons-->
+    <h1 class="text-xl">
+      <a href ="./login.html" class = "pic-link"> <img src="./images/home.png" alt = "Home"></a>
+      <a href="#" onclick="document.getElementById('id01').style.display='block'" class = "pic-link"><img src = "./images/add_event.png" alt = "Add Event"></a>
+    </h1>
+    <!-- End of the navbar-->
+
   </header>
 
-  <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
+  <!-- start of the model, popup to add events-->
+  <div class="innerbody">
+    <div id="id01" class="modal">
+      <form class="modal-content animate">
+        <div class="container">
+          <span onclick="document.getElementById('id01').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+          <label>Event Name</label>
+          <input type="text"class="form-control" placeholder="Event Name" name="ename">
+          <br>
+          <label>Event Date</label>
+          <input type="text"class="form-control" placeholder="Event Date" name="edate">
+          <br>
+          <label>Event Description</label>
+          <br>
+          <textarea class="form-control" placeholder="Event Description" name="edesc"></textarea>
+          <br>
+          <button id="contact-overlay-buttons" class="submit" name="submit" type="submit">Submit</button>
+
+          <button type="button" onclick="document.getElementById('id01').style.display='none'"
+            class="cancelbtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- End of the model, the popup for the adding of events-->
+
+  <!-- Start of the calendar-->
+  <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule" style = "background: linear-gradient( #fec3a6, rgba(194, 222, 255, 0.911)); ">
+
+    <!-- start of the times of the day for the calendar-->
     <div class="cd-schedule__timeline">
       <ul>
-        <li><span style = "color:coral">00:00</span></li>
-        <li><span style = "color:darksalmon">00:15</span></li>
-        <li><span style = "color:lightsalmon">00:30</span></li>
-        <li><span>00:45</span></li>
-        <li><span>01:00</span></li>
-        <li><span>01:15</span></li>
-        <li><span>01:30</span></li>
-        <li><span>01:45</span></li>
-        <li><span>02:00</span></li>
-        <li><span>02:15</span></li>
-        <li><span>02:30</span></li>
-        <li><span>02:45</span></li>
-        <li><span>03:00</span></li>
-        <li><span>03:15</span></li>
-        <li><span>03:30</span></li>
-        <li><span>03:45</span></li>
-        <li><span>04:00</span></li>
-        <li><span>04:15</span></li>
-        <li><span>04:30</span></li>
-        <li><span>04:45</span></li>
-        <li><span>05:00</span></li>
-        <li><span>06:15</span></li>
-        <li><span>06:30</span></li>
-        <li><span>06:45</span></li>
-        <li><span>07:00</span></li>
-        <li><span>07:15</span></li>
-        <li><span>07:30</span></li>
-        <li><span>07:45</span></li>
-        <li><span>08:00</span></li>
-        <li><span>08:15</span></li>
-        <li><span>08:30</span></li>
-        <li><span>08:45</span></li>
-        <li><span>09:00</span></li>
-        <li><span>09:15</span></li>
-        <li><span>09:30</span></li>
-        <li><span>09:45</span></li>
-        <li><span>10:00</span></li>
-        <li><span>10:15</span></li>
-        <li><span>10:30</span></li>
-        <li><span>10:45</span></li>
-        <li><span>11:00</span></li>
-        <li><span>11:15</span></li>
-        <li><span>11:30</span></li>
-        <li><span>11:45</span></li>
-        <li><span>12:00</span></li>
+        <li><span style = "color:#a6b1e1">00:00</span></li>
+        <li><span style = "color:#a6b1e1">00:15</span></li>
+        <li><span style = "color:#a6b1e1">00:30</span></li>
+        <li><span style = "color:#a6b1e1">00:45</span></li>
+        <li><span style = "color:#a6b1e1">01:00</span></li>
+        <li><span style = "color:#a6b1e1">01:15</span></li>
+        <li><span style = "color:#a6b1e1">01:30</span></li>
+        <li><span style = "color:#a6b1e1">01:45</span></li>
+        <li><span style = "color:#a6b1e1">02:00</span></li>
+        <li><span style = "color:#a6b1e1">02:15</span></li>
+        <li><span style = "color:#a6b1e1">02:30</span></li>
+        <li><span style = "color:#a6b1e1">02:45</span></li>
+        <li><span style = "color:#a6b1e1">03:00</span></li>
+        <li><span style = "color:#a6b1e1">03:15</span></li>
+        <li><span style = "color:#a6b1e1">03:30</span></li>
+        <li><span style = "color:#a6b1e1">03:45</span></li>
+        <li><span style = "color:#a6b1e1">04:00</span></li>
+        <li><span style = "color:#a6b1e1">04:15</span></li>
+        <li><span style = "color:#a6b1e1">04:30</span></li>
+        <li><span style = "color:#a6b1e1">04:45</span></li>
+        <li><span style = "color:#a6b1e1">05:00</span></li>
+        <li><span style = "color:#a6b1e1">05:15</span></li>
+        <li><span style = "color:#a6b1e1">05:30</span></li>
+        <li><span style = "color:#a6b1e1">05:45</span></li>
+        <li><span style = "color:#a6b1e1">06:00</span></li>
+        <li><span style = "color:#a6b1e1">06:15</span></li>
+        <li><span style = "color:#a6b1e1">06:30</span></li>
+        <li><span style = "color:#a6b1e1">06:45</span></li>
+        <li><span style = "color:#a6b1e1">07:00</span></li>
+        <li><span style = "color:#a6b1e1">07:15</span></li>
+        <li><span style = "color:#a6b1e1">07:30</span></li>
+        <li><span style = "color:#a6b1e1">07:45</span></li>
+        <li><span style = "color:#a6b1e1">08:00</span></li>
+        <li><span style = "color:#a6b1e1">08:15</span></li>
+        <li><span style = "color:#a6b1e1">08:30</span></li>
+        <li><span style = "color:#a6b1e1">08:45</span></li>
+        <li><span style = "color:#a6b1e1">09:00</span></li>
+        <li><span style = "color:#a6b1e1">09:15</span></li>
+        <li><span style = "color:#a6b1e1">09:30</span></li>
+        <li><span style = "color:#a6b1e1">09:45</span></li>
+        <li><span style = "color:#a6b1e1">10:00</span></li>
+        <li><span style = "color:#a6b1e1">10:15</span></li>
+        <li><span style = "color:#a6b1e1">10:30</span></li>
+        <li><span style = "color:#a6b1e1">10:45</span></li>
+        <li><span style = "color:#a6b1e1">11:00</span></li>
+        <li><span style = "color:#a6b1e1">11:15</span></li>
+        <li><span style = "color:#a6b1e1">11:30</span></li>
+        <li><span style = "color:#a6b1e1">11:45</span></li>
+        <li><span style = "color:#a6b1e1">12:00</span></li>
       </ul>
-    </div> <!-- .cd-schedule__timeline -->
-  
+    </div>
+    <!-- end of the table of the times for the calendar-->
+
+    <!-- Start of the list for all of the events for each day-->
     <div class="cd-schedule__events">
       <ul>
         <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Monday</span></div>
+          <div class="cd-schedule__top-info" id = "custom-color-monday"><span>Monday</span></div>
           <ul>
           </ul>
         </li>
   
         <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Tuesday</span></div>
+          <div class="cd-schedule__top-info" id = "custom-color-tuesday"><span>Tuesday</span></div>
           <ul>
           </ul>
         </li>
   
         <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Wednesday</span></div>
+          <div class="cd-schedule__top-info" id = "custom-color-wednesday"><span>Wednesday</span></div>
           <ul>
           </ul>
         </li>
   
         <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Thursday</span></div>
+          <div class="cd-schedule__top-info" id = "custom-color-thursday"><span>Thursday</span></div>
           <ul>
           </ul>
         </li>
   
         <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Friday</span></div>
+          <div class="cd-schedule__top-info" id = "custom-color-friday"><span>Friday</span></div>
           <ul>
           </ul>
         </li>
 
         <li class="cd-schedule__group">
-            <div class="cd-schedule__top-info"><span>Saturday</span></div>
+            <div class="cd-schedule__top-info" id = "custom-color-saturday"><span>Saturday</span></div>
             <ul>
             </ul>
           </li>
 
           <li class="cd-schedule__group">
-            <div class="cd-schedule__top-info"><span>Sunday</span></div>
+            <div class="cd-schedule__top-info" id = "custom-color-sunday"><span>Sunday</span></div>
             <ul>
             </ul>
           </li>
-
       </ul>
     </div>
-  
+    <!--end of the list for each day-->
+
     <div class="cd-schedule-modal">
       <header class="cd-schedule-modal__header">
         <div class="cd-schedule-modal__content">
@@ -138,5 +177,5 @@
   
     <div class="cd-schedule__cover-layer"></div>
   </div> <!-- .cd-schedule -->
-    </body> 
+</body> 
 </html>
