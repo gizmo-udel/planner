@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>document.getElementsByTagName("html")[0].className += " js";</script>
-  <script src="./JavaScript/popup.js">
-  </script>
-   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script>document.getElementsByTagName("html")[0].className += " js";</script> 
+  <script src="./JavaScript/popup.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/style.css">
   <title>Schedule</title>
   <link rel = "icon" href = "./images/scheduale.png" type ="image/icon type">
@@ -36,9 +35,10 @@
 
     <h1 class="text-xl">
     <!--  <a href ="./login.html" class = "pic-link"> <img src="./images/home.png" alt = "Home"></a> --> 
+      <a href="#" onclick="document.getElementById('myModal').style.display='block'" class = "notepad pic"><img src = "./images/notepad.png" alt = "Add Notes"></a>
+
       <a href="#" onclick="document.getElementById('id01').style.display='block'" class = "pic-link"><img src = "./images/add_event.png" alt = "Add Event"></a>
     </h1>
-
     <!-- End of the navbar-->
 
   </header>
@@ -69,6 +69,24 @@
     </div>
   </div>
   <!-- End of the model, the popup for the adding of events-->
+
+  <!-- start of notepad-->
+  <div class="notepad" > 
+    <div class="modal" id="myModal" >
+        <div class="modal-content2 animate">
+          <div class="modal-header">
+            <text class= "notepadtitle"> Note Area </text>
+            <span onclick="document.getElementById('myModal').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+          </div>
+          <div class="modal-body">
+            <textarea class = "notearea" placeholder = "Write Notes Here.." ></textarea>
+          </div>           
+      </div>
+    </div> 
+  </div>
+
+  <!-- end of notepad-->
 
   <!-- Start of the calendar-->
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule" >
