@@ -4203,6 +4203,7 @@ button:hover {
 
 .navbar-nav .nav-link {
   position: relative;
+  text-decoration: none;
 }
 
 .navbar-expand-lg .navbar-nav .nav-link {
