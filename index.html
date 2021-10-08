@@ -1,219 +1,256 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>document.getElementsByTagName("html")[0].className += " js";</script> 
-  <script src="./JavaScript/popup.js"></script>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/style.css">
-  <title>Schedule</title>
-  <link rel = "icon" href = "./images/scheduale.png" type ="image/icon type">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link href="css/landing.css" rel="stylesheet">
+    <script src="JavaScript/jquery-3.2.1.min.js"></script>
+    <script src="JavaScript/bootstrap.bundle.min.js"></script>
+    <script src="JavaScript/landing.js"></script>
 </head>
-<body class = "custom-body-color">
-  <header class="cd-main-header text-center flex flex-column flex-center">
-    <p class="margin-top-md margin-bottom-xl"></p>
 
-    <!--start of navbar with icons-->
+<body data-spy="scroll" data-target="#navbar" data-offset="30">
+    <!--navbar beguins-->
     <div class="nav-menu fixed-top">
-      <div class="container">
-          <div class="row">
-              <div class="col-md-12">
-                  <nav class="navbar navbar-dark navbar-expand-lg">
-                      <div class="collapse navbar-collapse" id="navbar">
-                          <ul class="navbar-nav ml-auto">
-                              <li class="nav-item"> <a class="nav-link" href="landing.html">HOME</a> </li>
-                              <li class="nav-item"> <a class="nav-link" href="login.html">LOG IN</a> </li>
-                              <li class="nav-item"> <a class="nav-link active" href="index.html">CALENDAR</a> </li>
-                          </ul>
-                      </div>
-                  </nav>
-              </div>
-          </div>
-      </div>
-  </div>
-
-    <h1 class="text-xl">
-    <!--  <a href ="./login.html" class = "pic-link"> <img src="./images/home.png" alt = "Home"></a> --> 
-      <a href="#" onclick="document.getElementById('myModal').style.display='block'" class = "notepad pic"><img src = "./images/notepad.png" alt = "Add Notes"></a>
-
-      <a href="#" onclick="document.getElementById('id01').style.display='block'" class = "pic-link"><img src = "./images/add_event.png" alt = "Add Event"></a>
-    </h1>
-    <!-- End of the navbar-->
-
-  </header>
-
-  <!-- start of the model, popup to add events-->
-  <div class="innerbody">
-    <div id="id01" class="modal">
-      <form class="modal-content animate">
         <div class="container">
-          <span onclick="document.getElementById('id01').style.display='none'" class="close"
-            title="Close Modal">&times;</span>
-          <label>Event Name</label>
-          <input type="text"class="form-control" placeholder="Event Name" name="ename">
-          <br>
-          <label>Event Date</label>
-          <input type="text"class="form-control" placeholder="Event Date" name="edate">
-          <br>
-          <label>Event Description</label>
-          <br>
-          <textarea class="form-control" placeholder="Event Description" name="edesc"></textarea>
-          <br>
-          <button id="contact-overlay-buttons" class="submit" name="submit" type="submit">Submit</button>
-
-          <button type="button" onclick="document.getElementById('id01').style.display='none'"
-            class="cancelbtn">Cancel</button>
+            <div class="row">
+                <div class="col-md-12">
+                    <nav class="navbar navbar-dark navbar-expand-lg">
+                        <div class="collapse navbar-collapse" id="navbar">
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item"> <a class="nav-link active" href="#home">HOME </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="#features">FEATURES</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="#gallery">GALLERY</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="#contact">CONTACT US</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="login.html">LOG IN</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="week.html">CALENDAR</a> </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
         </div>
-      </form>
     </div>
-  </div>
-  <!-- End of the model, the popup for the adding of events-->
+    <!--navbar ends-->
 
-  <!-- start of notepad-->
-  <div class="notepad" > 
-    <div class="modal" id="myModal" >
-        <div class="modal-content2 animate">
-          <div class="modal-header">
-            <text class= "notepadtitle"> Note Area </text>
-            <span onclick="document.getElementById('myModal').style.display='none'" class="close"
-            title="Close Modal">&times;</span>
-          </div>
-          <div class="modal-body">
-            <textarea class = "notearea" placeholder = "Write Notes Here.." ></textarea>
-          </div>           
-      </div>
-    </div> 
-  </div>
-
-  <!-- end of notepad-->
-
-  <!-- Start of the calendar-->
-  <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule" style = "background: linear-gradient( 90deg, tomato 7.5%, orange 37.5%, #ffd700 52.5%, #9acd32 67.5%, #0d98ba 82.5%, #acace6 97.5%, tomato 115%)" >
-
-    <!-- start of the times of the day for the calendar-->
-    <div class="cd-schedule__timeline">
-      <ul>
-        <li><span >00:00</span></li>
-        <li><span >00:15</span></li>
-        <li><span >00:30</span></li>
-        <li><span >00:45</span></li>
-        <li><span >01:00</span></li>
-        <li><span >01:15</span></li>
-        <li><span >01:30</span></li>
-        <li><span >01:45</span></li>
-        <li><span >02:00</span></li>
-        <li><span >02:15</span></li>
-        <li><span >02:30</span></li>
-        <li><span >02:45</span></li>
-        <li><span >03:00</span></li>
-        <li><span >03:15</span></li>
-        <li><span >03:30</span></li>
-        <li><span >03:45</span></li>
-        <li><span >04:00</span></li>
-        <li><span >04:15</span></li>
-        <li><span >04:30</span></li>
-        <li><span >04:45</span></li>
-        <li><span >05:00</span></li>
-        <li><span >05:15</span></li>
-        <li><span >05:30</span></li>
-        <li><span >05:45</span></li>
-        <li><span >06:00</span></li>
-        <li><span >06:15</span></li>
-        <li><span >06:30</span></li>
-        <li><span >06:45</span></li>
-        <li><span >07:00</span></li>
-        <li><span >07:15</span></li>
-        <li><span >07:30</span></li>
-        <li><span >07:45</span></li>
-        <li><span >08:00</span></li>
-        <li><span >08:15</span></li>
-        <li><span >08:30</span></li>
-        <li><span >08:45</span></li>
-        <li><span >09:00</span></li>
-        <li><span >09:15</span></li>
-        <li><span >09:30</span></li>
-        <li><span >09:45</span></li>
-        <li><span >10:00</span></li>
-        <li><span >10:15</span></li>
-        <li><span >10:30</span></li>
-        <li><span >10:45</span></li>
-        <li><span >11:00</span></li>
-        <li><span >11:15</span></li>
-        <li><span >11:30</span></li>
-        <li><span >11:45</span></li>
-        <li><span >12:00</span></li>
-      </ul>
-    </div>
-    <!-- end of the table of the times for the calendar-->
-
-    <!-- Start of the list for all of the events for each day-->
-    <div class="cd-schedule__events" >
-      <ul>
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info" id = "custom-color-monday"><span>Monday</span></div>
-          <ul>
-          </ul>
-        </li>
-  
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info" id = "custom-color-tuesday"><span>Tuesday</span></div>
-          <ul>
-          </ul>
-        </li>
-  
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info" id = "custom-color-wednesday"><span>Wednesday</span></div>
-          <ul>
-          </ul>
-        </li>
-  
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info" id = "custom-color-thursday"><span>Thursday</span></div>
-          <ul>
-          </ul>
-        </li>
-  
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info" id = "custom-color-friday"><span>Friday</span></div>
-          <ul>
-          </ul>
-        </li>
-
-        <li class="cd-schedule__group">
-            <div class="cd-schedule__top-info" id = "custom-color-saturday"><span>Saturday</span></div>
-            <ul>
-            </ul>
-          </li>
-
-          <li class="cd-schedule__group">
-            <div class="cd-schedule__top-info" id = "custom-color-sunday"><span>Sunday</span></div>
-            <ul>
-            </ul>
-          </li>
-      </ul>
-    </div>
-    <!--end of the list for each day-->
-
-    <div class="cd-schedule-modal">
-      <header class="cd-schedule-modal__header">
-        <div class="cd-schedule-modal__content">
-          <span class="cd-schedule-modal__date"></span>
-          <h3 class="cd-schedule-modal__name"></h3>
+    <!-- home category starts -->
+    <header class="bg-gradient" id="home">
+        <div class="container mt-5">
+            <h1>Welcome to Your Special Calendar</h1>
+            <p class="subtitle">The unique calendar that will bring your life to a more simple style. </p>
         </div>
-  
-        <div class="cd-schedule-modal__header-bg"></div>
-      </header>
-  
-      <div class="cd-schedule-modal__body">
-        <div class="cd-schedule-modal__event-info"></div>
-        <div class="cd-schedule-modal__body-bg"></div>
-      </div>
-  
-      <a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
+        <div class="img-holder mt-3"><img src="images/calendar.png" height= 500 width= 700 class="img-fluid"></div>
+        <a href="login.html" class="btn button">Sign in here!</a></div>
+    </header>
+    <!-- home category ends -->
+
+    <!--feature category starts-->
+    <div class="section light-bg" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h3>Features interest you</h3>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-4">
+                    <div class="card features">
+                        <div class="card-body">
+                            <div class="media">
+                                <span class="ti-face-smile gradient-fill ti-3x mr-3"></span>
+                                <div class="media-body">
+                                    <h4 class="card-title">Easy to Use</h4>
+                                    <p class="card-text">Really easy and simple to get started, store all your saved assignments no matter log in with different devices</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="card features">
+                        <div class="card-body">
+                            <div class="media">
+                                <span class="ti-comments gradient-fill ti-3x mr-3"></span>
+                                <div class="media-body">
+                                    <h4 class="card-title">Customize for Students</h4>
+                                    <p class="card-text">Designed for students to organize their assignments, connect with the Canvas to make life of studying convenient</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="card features">
+                        <div class="card-body">
+                            <div class="media">
+                                <span class="ti-check gradient-fill ti-3x mr-3"></span>
+                                <div class="media-body">
+                                    <h4 class="card-title">Always Remind You</h4>
+                                    <p class="card-text">No matter you forget any assignment or not, you get reminders' back! Also be able to add checklist as notes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  
-    <div class="cd-schedule__cover-layer"></div>
-  </div> <!-- .cd-schedule -->
-</body> 
+    <!--feature category ends-->
+
+    <div class="section light-bg">
+        <div class="container">
+            <div class="section-title">
+                <h3>More useful function could be found here</h3>
+            </div>
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#communication">Useful feature template</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#schedule">Useful feature template</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="communication">
+                    <div class="d-flex flex-column flex-lg-row">
+                        <img src="images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
+                        <div>
+                            <h2>Useful feature template</h2>
+                            <p>Useful feate template</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="schedule">
+                    <div class="d-flex flex-column flex-lg-row">
+                        <div>
+                            <h2>Useful feature template</h2>
+                            <p>Useful feature template</p>
+                        </div>
+                        <img src="images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section light-bg">
+        <div class="container">
+            <div class="section-title">
+                <h3>Steps to Use your Calendar</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-8 d-flex align-items-center">
+                    <ul class="list-unstyled steps">
+                        <li class="media">
+                            <div class="circle-icon mr-4">1</div>
+                            <div class="media-body">
+                                <h5>Create an Account</h5>
+                                <p>Go to Log-in page to sign up. </p>
+                            </div>
+                        </li>
+                        <li class="media my-4">
+                            <div class="circle-icon mr-4">2</div>
+                            <div class="media-body">
+                                <h5>Create a New Assignment</h5>
+                                <p>Click the "Add" button on the top right to begin. </p>
+                            </div>
+                        </li>
+                        <li class="media my-4">
+                            <div class="circle-icon mr-4">3</div>
+                            <div class="media-body">
+                                <h5>Connect with the Canvas</h5>
+                                <p>You can always choose to connect with the Canvas to import all the existing assignment into your calendar. </p>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <div class="circle-icon mr-4">4</div>
+                            <div class="media-body">
+                                <h5>Enjoy Your Organized Schedule</h5>
+                                <p>Enjoy the well-organized and personal-customized calendar for everyday! Moreover, there will always be a timely reminder for every assignment! </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <img src="images/calendar.png" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section light-bg" id="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h3>Special View of the Calendar</h3>
+            </div>
+        <!--
+            <div class="img-gallery owl-carousel owl-theme">
+                <img src="images/screen1.png" alt="image">
+                <img src="images/screen2.png" alt="image">
+                <img src="images/screen1.png" alt="image">
+                <img src="images/screen2.png" alt="image">
+            </div>
+            -->
+        </div>
+    </div>
+
+    <div class="section">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="images/calendar.png"  class="img-fluid">
+                </div>
+                <div class="col-md-6 d-flex align-items-center">
+                    <div>
+                        <div class="box-icon"><span class="ti-rocket gradient-fill ti-3x"></span></div>
+                        <h2>Launch your calendar</h2>
+                        <p class="mb-4"> Get a look of the new calendar only designed for you</p>
+                        <a href="index.html" class="btn btn-primary">Learn more</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="section pt-0">
+        <div class="container">
+            <div class="section-title">
+                <h3>Frequently Asked Questions</h3>
+            </div>
+            <div class="row pt-4">
+                <div class="col-md-6">
+                    <h4 class="mb-3">How can I connect my calendar with the Canvas? </h4>
+                    <p class="light-font mb-5"> The answer is blablabla...</p>
+                    <h4 class="mb-3">How to create a new assignment event? </h4>
+                    <p class="light-font mb-5">The answer is blablabla... </p>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">How to change the current assignment? </h4>
+                    <p class="light-font mb-5">The answer is blablabla...</p>
+                    <h4 class="mb-3">Could I share my calendar with others? </h4>
+                    <p class="light-font mb-5">The answer is blablabla...</p>
+                </div>
+            </div>
+        </div>
+     </div>
+
+    <div class="light-bg py-5" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 text-center text-lg-left">
+                    <p class="mb-2"> <span class="ti-location-pin mr-2"></span> 210 S College Ave, Newark, Delaware, USA, 19716</p>
+                    <div class=" d-block d-sm-inline-block">
+                        <p class="mb-2">
+                            <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:email_address@udel.edu">email_address@udel.edu</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="my-5 text-center">
+        <p class="mb-2">COPYRIGHT © 2021. ALL RIGHTS RESERVED.</p>
+        <a href="#" class="m-2">TERMS</a>
+    </footer>
+</body>
 </html>
