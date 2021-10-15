@@ -3254,7 +3254,7 @@ u, .text-underline {
   @media (min-width: 64rem) {
     :root {
       --text-base-size: 1.25em;
-      --text-scale-ratio: 1.25
+      --text-scale-ratio: 1.5
     }
   }
 }
@@ -3401,7 +3401,7 @@ mark {
   --cd-color-border-l: 92%;
   --font-primary: 'Source Sans Pro', sans-serif;
   --schedule-rows-number: 48;
-  --schedule-rows-height: 50px
+  --schedule-rows-height: 50px;
 }
 
 body {
@@ -3416,6 +3416,7 @@ a {
 
 .cd-schedule {
   position: relative;
+  overflow-y: scroll;
 }
 
 .cd-schedule::before {
@@ -3484,7 +3485,7 @@ a {
     display: inline-block;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    transform: translateY(50%);
     font-size: 0.83333em;
     font-size: var(--text-sm)
   }
@@ -3598,7 +3599,7 @@ a {
   .js .cd-schedule__top-info>span {
     font-weight: normal;
     font-size: 0.83333em;
-    font-size: var(--text-sm);
+    font-size: var(--text-ms);
     margin-bottom: 0
   }
 }
@@ -4023,11 +4024,6 @@ a {
   background-color: transparent;
 }
 
-/* schedule background*/
-.cd-schedule {
-  background-color: rgb(247, 243, 243);
-}
-
 /*page background*/
 .custom-body-color {
   background-image: -moz-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
@@ -4036,11 +4032,6 @@ a {
   background-image: linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
   background-attachment: fixed;
   font-family: 'Rubik', sans-serif; 
-}
-
-/*Time's on side of calender*/
-.cd-schedule__timeline{
-  color: black;
 }
 
 /* Ryan's Popup */
@@ -4225,3 +4216,22 @@ button:hover {
       text-align: center;
 }
 
+.month-week-day-buttons-text {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  color:black;
+}
+
+.month-week-day-button-boxes{
+  border-left-width: 0;
+  flex-basis: 0;
+  flex-grow: 1;
+  list-style: none;
+}
+
+div ::-webkit-scrollbar-thumb{
+  -webkit-scrollbar-radius: 10px;
+  border-radius: 10px;
+  max-height: 50px;
+}
