@@ -97,6 +97,7 @@ img, video, svg {
 }
 
 :root {
+  --max-width-xxxs: 10rem;
   --max-width-xxs: 32rem;
   --max-width-xs: 38rem;
   --max-width-sm: 48rem;
@@ -3428,10 +3429,10 @@ a {
   .js .cd-schedule {
     width: calc(100% - 1.25em);
     width: calc(100% - 2*var(--component-padding));
-    margin-left: auto;
+    margin-left: var(--max-width-xxxs);
     margin-right: auto;
     max-width: 90rem;
-    max-width: var(--max-width-xl)
+    max-width: var(--max-width-md)
   }
   .js .cd-schedule::before {
     content: 'desktop'
