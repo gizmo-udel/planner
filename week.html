@@ -16,7 +16,7 @@
 
     <!--start of navbar with icons-->
     <div class="nav-menu fixed-top">
-      <div class="container">
+      <div class="container" id  = "custom-container">
           <div class="row">
               <div class="col-md-12">
                   <nav class="navbar navbar-dark navbar-expand-lg">
@@ -34,14 +34,20 @@
   </div>
 
     <h1 class="text-xl">
-    <!--  <a href ="./login.html" class = "pic-link"> <img src="./images/home.png" alt = "Home"></a> --> 
       <a href="#" onclick="document.getElementById('myModal').style.display='block'" class = "notepad pic"><img src = "./images/notepad.png" alt = "Add Notes"></a>
-
       <a href="#" onclick="document.getElementById('id01').style.display='block'" class = "pic-link"><img src = "./images/add_event.png" alt = "Add Event"></a>
     </h1>
     <!-- End of the navbar-->
 
   </header>
+
+  <!-- start of the month, week and day view of the calendar-->
+  <div class = "aaron-custom-row">
+    <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "day.html"> Day </a></div>
+    <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "week.html"> Week </a></div>
+    <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "month.html"> Month </a> </div>
+  </div>
+  <!-- end of the month, week, and day view of the calendar-->
 
   <!-- start of the model, popup to add events-->
   <div class="innerbody">
@@ -92,7 +98,7 @@
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
 
     <!-- start of the times of the day for the calendar-->
-    <div class="cd-schedule__timeline" style = "background-color: cornsilk;">
+    <div class="cd-schedule__timeline">
       <ul>
         <li><span >12:00 am</span></li>
         <li><span >12:30 am</span></li>

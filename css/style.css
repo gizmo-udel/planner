@@ -104,7 +104,8 @@ img, video, svg {
   --max-width-md: 64rem;
   --max-width-lg: 80rem;
   --max-width-xl: 90rem;
-  --max-width-xxl: 120rem
+  --max-width-xxl: 120rem;
+  --calendar-width: var(--max-width-md);
 }
 
 .container {
@@ -3417,7 +3418,7 @@ a {
 
 .cd-schedule {
   position: relative;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .cd-schedule::before {
@@ -3429,10 +3430,10 @@ a {
   .js .cd-schedule {
     width: calc(100% - 1.25em);
     width: calc(100% - 2*var(--component-padding));
-    margin-left: var(--max-width-xxxs);
+    margin-left: auto;
     margin-right: auto;
     max-width: 90rem;
-    max-width: var(--max-width-md)
+    max-width: var(--calendar-width)
   }
   .js .cd-schedule::before {
     content: 'desktop'
@@ -3452,7 +3453,8 @@ a {
     height: 100%;
     width: 100%;
     padding-top: 50px;
-    padding-top: var(--schedule-rows-height)
+    padding-top: var(--schedule-rows-height);
+    background-color:white;
   }
   .js .cd-schedule__timeline li {
     position: relative;
@@ -4025,6 +4027,32 @@ a {
   background-color: transparent;
 }
 
+.aaron-custom-row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: var(--calendar-width);
+}
+
+.aaron-custom-link{
+  text-decoration: none;
+}
+
+.aaron-custom-column{
+  flex-basis: 0;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  max-width: var(--max-width-md);
+  padding: 0;
+}
+
 /*page background*/
 .custom-body-color {
   background-image: -moz-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
@@ -4183,6 +4211,8 @@ button:hover {
   color: black;
 }
 
+/*navbar custom style*/ 
+
 .nav-menu{
   background-color: Tomato;
   background: -moz-linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
@@ -4214,25 +4244,5 @@ button:hover {
 }
 
 .navbar-nav .nav-item {
-      text-align: center;
-}
-
-.month-week-day-buttons-text {
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  color:black;
-}
-
-.month-week-day-button-boxes{
-  border-left-width: 0;
-  flex-basis: 0;
-  flex-grow: 1;
-  list-style: none;
-}
-
-div ::-webkit-scrollbar-thumb{
-  -webkit-scrollbar-radius: 10px;
-  border-radius: 10px;
-  max-height: 50px;
+  text-align: center;
 }
