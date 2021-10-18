@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>document.getElementsByTagName("html")[0].className += " js";</script> 
+        <script src="./JavaScript/popup.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/style.css">
+        <title>Schedule</title>
+        <link rel = "icon" href = "./images/scheduale.png" type ="image/icon type">
+    </head>
+    <body class = "custom-body-color">
+        <header class="cd-main-header text-center flex flex-column flex-center">
+          <p class="margin-top-md margin-bottom-xl"></p>
+      
+          <!--start of navbar with icons-->
+          <div class="nav-menu fixed-top">
+            <div class="container" id  = "custom-container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav class="navbar navbar-dark navbar-expand-lg">
+                            <div class="collapse navbar-collapse" id="navbar">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item"> <a class="nav-link" href="index.html">HOME</a> </li>
+                                    <li class="nav-item"> <a class="nav-link" href="login.html">LOG IN</a> </li>
+                                    <li class="nav-item"> <a class="nav-link active" href="week.html">CALENDAR</a> </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+          <h1 class="text-xl">
+            <a href="#" onclick="document.getElementById('myModal').style.display='block'" class = "notepad pic"><img src = "./images/notepad.png" alt = "Add Notes"></a>
+            <a href="#" onclick="document.getElementById('id01').style.display='block'" class = "pic-link"><img src = "./images/add_event.png" alt = "Add Event"></a>
+          </h1>
+          <!-- End of the navbar-->
+      
+        </header>
+      
+        <!-- start of the month, week and day view of the calendar-->
+        <div class = "aaron-custom-row">
+          <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "week.html"> Week </a></div>
+          <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "month.html"> Month </a> </div>
+        </div>
+        <!-- end of the month, week, and day view of the calendar-->
+      
+        <!-- start of the model, popup to add events-->
+        <div class="innerbody">
+          <div id="id01" class="modal">
+            <form class="modal-content animate">
+              <div class="container">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                  title="Close Modal">&times;</span>
+                <label>Event Name</label>
+                <input type="text"class="form-control" placeholder="Event Name" name="ename">
+                <br>
+                <label>Event Date</label>
+                <input type="text"class="form-control" placeholder="Event Date" name="edate">
+                <br>
+                <label>Event Description</label>
+                <br>
+                <textarea class="form-control" placeholder="Event Description" name="edesc"></textarea>
+                <br>
+                <button id="contact-overlay-buttons" class="submit" name="submit" type="submit">Submit</button>
+      
+                <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                  class="cancelbtn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- End of the model, the popup for the adding of events-->
+      
+        <!-- start of notepad-->
+        <div class="notepad" > 
+          <div class="modal" id="myModal" >
+              <div class="modal-content2 animate">
+                <div class="modal-header">
+                  <text class= "notepadtitle"> Note Area </text>
+                  <span onclick="document.getElementById('myModal').style.display='none'" class="close"
+                  title="Close Modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                  <textarea class = "notearea" placeholder = "Write Notes Here.." ></textarea>
+                </div>           
+            </div>
+          </div> 
+        </div>
+      
+        <!-- end of notepad-->
+      
+        <!-- Start of the calendar-->
+        <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
+      
+          <!-- start of the times of the day for the calendar-->
+          <div class="cd-schedule__timeline">
+            <ul>
+              <li><span >12:00 am</span></li>
+              <li><span >12:30 am</span></li>
+              <li><span >01:00 am</span></li>
+              <li><span >01:30 am</span></li>
+              <li><span >02:00 am</span></li>
+              <li><span >02:30 am</span></li>
+              <li><span >03:00 am</span></li>
+              <li><span >03:30 am</span></li>
+              <li><span >04:00 am</span></li>
+              <li><span >04:30 am</span></li>
+              <li><span >05:00 am</span></li>
+              <li><span >05:30 am</span></li>
+              <li><span >06:00 am</span></li>
+              <li><span >06:30 am</span></li>
+              <li><span >07:00 am</span></li>
+              <li><span >07:30 am</span></li>
+              <li><span >08:00 am</span></li>
+              <li><span >08:30 am</span></li>
+              <li><span >09:00 am</span></li>
+              <li><span >09:30 am</span></li>
+              <li><span >10:00 am</span></li>
+              <li><span >10:30 am</span></li>
+              <li><span >11:00 am</span></li>
+              <li><span >11:30 am</span></li>
+              <li><span >12:00 pm</span></li>
+              <li><span >12:30 pm</span></li>
+              <li><span >01:00 pm</span></li>
+              <li><span >01:30 pm</span></li>
+              <li><span >02:00 pm</span></li>
+              <li><span >02:30 pm</span></li>
+              <li><span >03:00 pm</span></li>
+              <li><span >03:30 pm</span></li>
+              <li><span >04:00 pm</span></li>
+              <li><span >04:30 pm</span></li>
+              <li><span >05:00 pm</span></li>
+              <li><span >05:30 pm</span></li>
+              <li><span >06:00 pm</span></li>
+              <li><span >06:30 pm</span></li>
+              <li><span >07:00 pm</span></li>
+              <li><span >07:30 pm</span></li>
+              <li><span >08:00 pm</span></li>
+              <li><span >08:30 pm</span></li>
+              <li><span >09:00 pm</span></li>
+              <li><span >09:30 pm</span></li>
+              <li><span >10:00 pm</span></li>
+              <li><span >10:30 pm</span></li>
+              <li><span >11:00 pm</span></li>
+              <li><span >11:30 pm</span></li>
+            </ul>
+          </div>
+          <!-- end of the table of the times for the calendar-->
+          
+          <!-- Start of the list for all of the events for each day-->
+          <div class="cd-schedule__events" >
+            <ul>
+              <li class="cd-schedule__group">
+                <div class="cd-schedule__top-info" id = "custom-color-monday">
+                  <span><a class = "aaron-custom-link" href = "day.html">Today</a></span>
+                </div>
+                <ul>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <!--end of the list for each day-->
+      
+          <div class="cd-schedule-modal">
+            <header class="cd-schedule-modal__header">
+              <div class="cd-schedule-modal__content">
+                <span class="cd-schedule-modal__date"></span>
+                <h3 class="cd-schedule-modal__name"></h3>
+              </div>
+        
+              <div class="cd-schedule-modal__header-bg"></div>
+            </header>
+        
+            <div class="cd-schedule-modal__body">
+              <div class="cd-schedule-modal__event-info"></div>
+              <div class="cd-schedule-modal__body-bg"></div>
+            </div>
+        
+            <a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
+          </div>
+        
+          <div class="cd-schedule__cover-layer"></div>
+        </div> <!-- .cd-schedule -->
+      </body> 
+      </html>
