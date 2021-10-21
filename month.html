@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script>document.getElementsByTagName("html")[0].className += " js";</script> 
-        <script src="./JavaScript/popup.js"></script>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="./css/style.css">
-        <title>Schedule</title>
-        <link rel = "icon" href = "./images/scheduale.png" type ="image/icon type">
-    </head>
-    <body>
-
-    </body>
+<html>
+  <head>
+    <title>Month View</title>
+    <link href="calendar.css" rel="stylesheet">
+    <script src="calendar.js"></script>
+  </head>
+  <body>
+    <div id="cal-wrap">
+      <!-- Month/Year Selection -->
+      <div id="cal-date">
+        <select id="cal-mth"></select>
+        <select id="cal-yr"></select>
+      </div>
+      <!-- Calendar -->
+      <div id="cal-container"></div>
+      <!-- Events -->
+      <div id="cal-event"></div>
+    </div>
+  </body>
 </html>
