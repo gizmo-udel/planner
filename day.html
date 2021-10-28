@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script>document.getElementsByTagName("html")[0].className += " js";</script> 
         <script src="./JavaScript/popup.js"></script>
+        <script scr = "./JavaScript/week.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="./css/style.css">
         <title>Schedule</title>
@@ -41,12 +42,12 @@
       
         </header>
       
-        <!-- start of the month, week and day view of the calendar-->
+        <!-- start of the month, week view of the calendar-->
         <div class = "aaron-custom-row">
           <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "week.html"> Week </a></div>
           <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "month.html"> Month </a> </div>
         </div>
-        <!-- end of the month, week, and day view of the calendar-->
+        <!-- end of the month, week view of the calendar-->
       
         <!-- start of the model, popup to add events-->
         <div class="innerbody">
@@ -157,12 +158,16 @@
               <li class="cd-schedule__group">
                 <div class="cd-schedule__top-info" id = "custom-color-monday">
                   <span>
+                    <!-- this is where the day for the day view is, appending with js-->
                     <div id = "change-to-right-day">
                     </div>
+                    <!--this is the end of where the day for the view is-->
                   </span>
                 </div>
+                <!--the start of the events that will apprear on the day view-->
                 <ul>
                 </ul>
+                <!--the end of the events that will appear on the day view-->
               </li>
             </ul>
           </div>

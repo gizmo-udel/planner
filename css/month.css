@@ -1,10 +1,18 @@
 /* Calendar Container */
 #cal-wrap {
-  max-width: 1000px;
   justify-content: center;
   position: flex;
-  padding-left: 20%;
+  padding-left: 5%;
   padding-top: 3%;
+}
+
+#cal-container table{
+  display: table;
+  box-sizing: border-box;
+  text-indent: initial;
+  border-spacing: 2px;
+  border-color: grey;
+  width: 90%
 }
 
 /* Month/Year Selector */
@@ -15,6 +23,7 @@
   font-size: 1.2em;
   border: 0;
   color: #fff;
+  width: 45%;
 }
 #cal-mth, #cal-yr { background: #ea4c4c; }
 #cal-set { background: #4e83d9; }

@@ -5,7 +5,7 @@ var cal = {
   sDay : 0, // Current selected day
   sMth : 0, // Current selected month
   sYear : 0, // Current selected year
-  sMon : false, // Week start on Monday?
+  sMon : false , // Week start on Monday?
   
   //Replace data with event information here (?)
   // Time : 1159 (Default - as this is the most common turn in time)
@@ -36,12 +36,14 @@ var cal = {
     // (B3) DRAWING CALCULATIONS
     // Determine the number of blank squares before start of month
     var squares = [];
+    //if the week starts on sunday and it is monday
     if (cal.sMon && startDay != 1) {
       var blanks = startDay==0 ? 7 : startDay ;
-      for (var i=1; i<blanks; i++) { squares.push("b"); }
+      for (var i=1; i<blanks; i++) { squares.push("blank"); }
     }
+    //if the week starts on monday and it is sunday
     if (!cal.sMon && startDay != 0) {
-      for (var i=0; i<startDay; i++) { squares.push("b"); }
+      for (var i=0; i<startDay; i++) { squares.push("blank"); }
     }
 
     // Populate the days of the month
@@ -50,11 +52,11 @@ var cal = {
     // Determine the number of blank squares after end of month
     if (cal.sMon && endDay != 0) {
       var blanks = endDay==6 ? 1 : 7-endDay;
-      for (var i=0; i<blanks; i++) { squares.push("b"); }
+      for (var i=0; i<blanks; i++) { squares.push("blank"); }
     }
     if (!cal.sMon && endDay != 6) {
       var blanks = endDay==0 ? 6 : 6-endDay;
-      for (var i=0; i<blanks; i++) { squares.push("b"); }
+      for (var i=0; i<blanks; i++) { squares.push("blank"); }
     }
 
     // (B4) DRAW HTML CALENDAR
@@ -68,7 +70,7 @@ var cal = {
     // First row - Day names
     var cRow = document.createElement("tr"),
         cCell = null,
-        days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+        days = ["Sunday", "Monday", "Tueday", "Wednesday", "Thurday", "Friday", "Saturday"];
     if (cal.sMon) { days.push(days.shift()); }
     
     // Create tables (boxes) for first row.
@@ -87,8 +89,9 @@ var cal = {
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
+      //the td html element is a standard cell within the table
       cCell = document.createElement("td");
-      if (squares[i]=="b") { cCell.classList.add("blank"); }
+      if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
         cCell.innerHTML = "<div class='dd'>"+squares[i]+"</div>";
         if (cal.data[squares[i]]) {

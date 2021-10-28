@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.getElementsByTagName("html")[0].className += " js";</script> 
   <script src="./JavaScript/popup.js"></script>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/style.css">
+  <script scr = "./JavaScript/week.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css"> </link>
+  <link rel="stylesheet" href="./css/style.css"></link>
   <title>Schedule</title>
-  <link rel = "icon" href = "./images/scheduale.png" type ="image/icon type">
+  <link rel = "icon" href = "./images/scheduale.png" type ="image/icon type"></link>
 </head>
 <body class = "custom-body-color">
   <header class="cd-main-header text-center flex flex-column flex-center">
@@ -152,19 +153,21 @@
     <!-- end of the table of the times for the calendar-->
     
     <!-- Start of the list for all of the events for each day-->
-    <div class="cd-schedule__events" >
+    <div class="cd-schedule__events" id = "custom-all-days">
       <ul>
         <li class="cd-schedule__group">
           <div class="cd-schedule__top-info" id = "custom-color-monday">
-            <span><a class = "aaron-custom-link" href = "day.html" id = "give-day-monday">Monday</a></span>
+            <span><a class = "aaron-custom-link" href = "day.html" id = "Monday">Monday</a></span>
           </div>
+          <!--start of the place where events are placed on the calendar for monday and for all of the other days-->
           <ul>
           </ul>
+          <!--end of the place hwere envets are placed on the calendar for monday and for all of the other days-->
         </li>
   
         <li class="cd-schedule__group">
           <div class="cd-schedule__top-info" id = "custom-color-tuesday">
-            <span><a class = "aaron-custom-link" href = "day.html" id = "give-day-tuesday">Tuesday</a></span>
+            <span><a class = "aaron-custom-link" href = "day.html" id = "Tuesday">Tuesday</a></span>
           </div>
           <ul>
           </ul>
@@ -172,7 +175,7 @@
   
         <li class="cd-schedule__group">
           <div class="cd-schedule__top-info" id = "custom-color-wednesday">
-            <span><a class = "aaron-custom-link" href = "day.html" id = "give-day-wednesday">Wednesday</a></span>
+            <span><a class = "aaron-custom-link" href = "day.html" id = "Wednesday">Wednesday</a></span>
           </div>
           <ul>
           </ul>
@@ -180,7 +183,7 @@
   
         <li class="cd-schedule__group">
           <div class="cd-schedule__top-info" id = "custom-color-thursday">
-            <span><a class = "aaron-custom-link" href = "day.html" id = "give-day-thursday">Thursday</a></span>
+            <span><a class = "aaron-custom-link" href = "day.html" id = "Thursday">Thursday</a></span>
           </div>
           <ul>
           </ul>
@@ -188,7 +191,7 @@
   
         <li class="cd-schedule__group">
           <div class="cd-schedule__top-info" id = "custom-color-friday">
-            <span><a class = "aaron-custom-link" href = "day.html" id = "give-day-friday">Friday</a></span>
+            <span><a class = "aaron-custom-link" href = "day.html" id = "Friday">Friday</a></span>
           </div>
           <ul>
           </ul>
@@ -196,7 +199,7 @@
 
         <li class="cd-schedule__group">
             <div class="cd-schedule__top-info" id = "custom-color-saturday">
-              <span><a class = "aaron-custom-link" href = "day.html" id = "give-day-saturday">Saturday</a></span>
+              <span><a class = "aaron-custom-link" href = "day.html" id = "Saturday">Saturday</a></span>
             </div>
             <ul>
             </ul>
@@ -204,7 +207,7 @@
 
           <li class="cd-schedule__group">
             <div class="cd-schedule__top-info" id = "custom-color-sunday">
-              <span><a class = "aaron-custom-link" href = "day.html" id = "give-day-sunday">Sunday</a></span>
+              <span><a class = "aaron-custom-link" href = "day.html" id = "Sunday">Sunday</a></span>
             </div>
             <ul>
             </ul>
