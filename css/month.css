@@ -6,6 +6,7 @@
   padding-top: 3%;
 }
 
+/*custom css of the table (Aaron)*/
 #cal-container table{
   display: table;
   box-sizing: border-box;
@@ -13,6 +14,16 @@
   border-spacing: 2px;
   border-color: grey;
   width: 90%
+}
+
+.custom-body{
+  background-image: -moz-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
+  background-image: -webkit-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
+  background-image: -ms-linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
+  background-image: linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
+  text-align: center;
+  background-attachment: fixed;
+  font-family: 'Rubik', sans-serif;
 }
 
 /* Month/Year Selector */
@@ -46,6 +57,7 @@
   border: 1px solid #ddd;
   width: 14.28%;
   padding: 15px 5px;
+  background-color:white;
   vertical-align: top;
   height: 70px;
 }
