@@ -23,6 +23,12 @@
   font-family: 'Rubik', sans-serif;
 }
 
+.custom-logo{
+  font-weight: bold;
+  color:white;
+  font-size: 1.5em;
+}
+
 /* Month/Year Selector */
 #cal-date { display: flex; }
 #cal-mth, #cal-yr, #cal-set {
@@ -31,7 +37,7 @@
   font-size: 1.2em;
   border: 0;
   color: #fff;
-  width: 30%;
+  width: 45%;
 }
 #cal-mth, #cal-yr { background: #ea4c4c; }
 #cal-set { background: #4e83d9; }
@@ -111,13 +117,18 @@
   resize: none;
   margin-left: 5%;
 }
-#cal-event input[type=button], #cal-event input[type=submit] {
+#cal-event input[type=button], #cal-event input[type=submit], #cal-event a {
   padding: 10px;
   margin: 5px;
   font-size: 1.2em;
   border: 0;
   background: #ea4c4c;
   color: #fff;
+}
+
+/*Aarons custom css to for links in the add event form */
+#cal-event a{
+  text-decoration: none;
 }
 
 /* Calendar Title, Event, Digit etc. Font */
