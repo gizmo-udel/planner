@@ -10,10 +10,10 @@
   
 body {
 
-    background-image: -moz-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
-    background-image: -webkit-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
-    background-image: -ms-linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
-    background-image: linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
+    background-image: -moz-linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
+    background-image: -webkit-linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
+    background-image: -ms-linear-gradient(110deg, #C1ECFA 20%,#719CAA 100%);
+    background-image: linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
     text-align: center;
     background-attachment: fixed;
     font-family: 'Rubik', sans-serif;
@@ -53,11 +53,11 @@ body {
     transition: .5s ease;
   }
   .tabs li a:hover {
-    background: #179b77;
+    background: #8FBAC8;
     color: #ffffff;
   }
   .tabs .active a {
-    background: MediumSeaGreen;
+    background: #719CAA;
     color: #ffffff;
   }
   
@@ -107,7 +107,7 @@ body {
   }
   input:focus, textarea:focus {
     outline: 0;
-    border-color: MediumSeaGreen;
+    border-color: #719CAA;
   }
   
  
@@ -138,10 +138,10 @@ body {
     padding: 15px 0;
     text-align: center;
     text-decoration: none;
-    background-image: -moz-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
-    background-image: -webkit-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
-    background-image: -ms-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
-    background-image: linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
+    background-image: -moz-linear-gradient(110deg, #C1ECFA 20%,#719CAA 100%);
+    background-image: -webkit-linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
+    background-image: -ms-linear-gradient(110deg, #C1ECFA 20%,#719CAA 100%);
+    background-image: linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
     box-shadow: 0px 9px 32px 0px rgba(0, 0, 0, 0.2);
     font-weight: 600;
     display: inline-block;
@@ -151,7 +151,7 @@ body {
   }
 
   .button:hover, .button:focus {
-    background: MediumSeaGreen;
+    background: #719CAA;
   }
   
   .button-block {
@@ -166,11 +166,11 @@ body {
 
   
 a {
-    color: rgb(60, 179, 113, 0.8);
+    color:#8FBAC8;
 }
 
 a:hover,a:focus {
-    color: rgb(60, 179, 113);
+    color:#8FBAC8;
 }
 
 h1 {
@@ -193,10 +193,10 @@ h2, h3 {
 
 
 .nav-menu{
-    background-color: Tomato;
-    background: -moz-linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
-    background: -webkit-linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
-    background: linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
+    background-color: #C1ECFA ;
+    background: -moz-linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
+    background: -webkit-linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
+    background: linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
     -webkit-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
@@ -213,7 +213,7 @@ h2, h3 {
 }
 .navbar-nav>.nav-item>.nav-link.active:after {
     content: "";
-    border-bottom: 3px solid Tomato;
+    border-bottom: 3px solid #C1ECFA;
     left: 1rem;
     right: 1rem;
     bottom: 5px;
