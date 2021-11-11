@@ -1,6 +1,6 @@
 var cal = {
   // (A) PROPERTIES
-  mName : ["January", "Feburary", "Mar", "April", "May", "June", "July", "August", "September", "Octuber", "November", "December"], // Month Names
+  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "Octuber", "November", "December"], // Month Names
   data : null, // Events for the selected period
   sDay : 0, // Current selected day
   sMth : 0, // Current selected month
@@ -122,15 +122,18 @@ var cal = {
     var tForm = "<h1>" + (cal.data[cal.sDay] ? "EDIT" : "ADD") + " EVENT</h1>";
     //changed it so that the month started first then the month
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + " " + cal.sDay + " " + + cal.sYear + "</div>";
+    // conditional ? true : false
     tForm += "<textarea id='evt-details' required>" + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "") + "</textarea>";
-    tForm += "<input type='time' id='evt-time' name='dueTime'>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
+    // this is where all of the time is being put in the calendar
+    tForm += "<input type='time' id='evt-stime' name='start-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
+    tForm += "<input type='time' id='evt-etime' name='end-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
+
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-    //added a button to change to the week view
+    // Aaron added a button to change to the week view
     tForm += "<a href = 'week.html'> Week View </a>";
     
-
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
     eForm.addEventListener("submit", cal.save);
@@ -149,7 +152,9 @@ var cal = {
   save : function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
-    cal.data[cal.sDay] = document.getElementById("evt-time").value;
+    cal.data[cal.sDay] = document.getElementById("evt-stime").value;
+    cal.data[cal.sDay] += " ";
+    cal.data[cal.sday] += document.getElementById("evt-etime").value;
     cal.data[cal.sDay] += " ";
     cal.data[cal.sDay] += document.getElementById("evt-details").value;
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
