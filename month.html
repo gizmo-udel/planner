@@ -3,7 +3,6 @@
   <head>
     <title>Month View</title>
     <link href="./css/month.css" rel="stylesheet">
-    <script src="./JavaScript/month.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"> </link>
   </head>
   <body class = "custom-body">
@@ -41,5 +40,28 @@
       <!-- Events -->
       <div id="cal-event"></div>
     </div>
+  
+    <script>
+      const firebaseConfig = {
+          apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
+          authDomain: "ud-planner.firebaseapp.com",
+          projectId: "ud-planner",
+          storageBucket: "ud-planner.appspot.com",
+          messagingSenderId: "396137599848",
+          appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
+          measurementId: "G-KMYYDKW7JM"
+        };
+  
+      // Given
+      const db = firebase.firestore();
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      </script>
+  
+  <!-- Needs to be at the bottom to load AFTER the html isdone parsing. -->
+  <script src="JavaScript/jquery-3.2.1.min.js"></script>
+  <script src="JavaScript/bootstrap.bundle.min.js"></script>
+  <script src="JavaScript/month.js"></script>
+
   </body>
 </html>
