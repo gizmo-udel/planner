@@ -17,7 +17,7 @@
 }
 
 .custom-body{
-  background-image: linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
+  background-image: linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
   text-align: center;
   background-attachment: fixed;
   font-family: 'Rubik', sans-serif;
@@ -41,7 +41,7 @@
   width: 45%;
   font-weight: bold;
 }
-#cal-mth, #cal-yr { background: #ea4c4c; }
+#cal-mth, #cal-yr { background: #53727c; }
 #cal-set { background: #4e83d9; }
 
 /* Calendar */
@@ -53,7 +53,7 @@
 #calendar tr.head td {
   font-weight: bold;
   color: #fff;
-  background: #f37070;
+  background: #719caa;;
   padding: 15px;
   text-align: center;
 }
@@ -66,7 +66,7 @@
   height: 110px;
 }
 #calendar tr.day td:hover {
-  background: #fff9e4;
+  background: #8db7c5;
   cursor: pointer;
 }
 #calendar tr td.blank {
@@ -120,24 +120,23 @@
   resize: none;
   margin-left: 5%;
 }
-#cal-event input[type=button], #cal-event input[type=submit] {
+#cal-event input[type=button], #cal-event input[type=submit]{
   padding: 10px;
   margin: 5px;
   font-size: 1.2em;
   border: 0;
-  background: #ea4c4c;
+  background: #719caa;
   color: #fff;
 }
 
 /*Aarons custom css to for links in the add event form */
 #cal-event a{
   padding: 13.5px;
-  margin: 5px;
+  text-decoration: none;
   font-size: 1.2em;
   border: 0;
-  background: #ea4c4c;
+  background: #719caa;
   color: #fff;
-  text-decoration: none;
 }
 
 /* Calendar Title, Event, Digit etc. Font */
@@ -147,7 +146,7 @@ html, body, textarea, input {
 
 /*custom-menu bar*/
 .nav-menu{
-  background: linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
+  background-image: linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
   box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
 }
 
@@ -163,7 +162,8 @@ html, body, textarea, input {
 }
 .navbar-nav>.nav-item>.nav-link.active:after {
   content: "";
-  border-bottom: 3px solid Tomato;
+  border-bottom: 3px solid #53727c;
+  color: #53727c;
   left: 1rem;
   right: 1rem;
   bottom: 5px;
