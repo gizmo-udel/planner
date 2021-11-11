@@ -5,9 +5,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/themify-icons.css">
     <link href="css/landing.css" rel="stylesheet">
-    <script src="JavaScript/jquery-3.2.1.min.js"></script>
-    <script src="JavaScript/bootstrap.bundle.min.js"></script>
-    <script src="JavaScript/landing.js"></script>
 </head>
 
 <body data-spy="scroll" data-target="#navbar" data-offset="30">
@@ -252,5 +249,28 @@
         <p class="mb-2">COPYRIGHT © 2021. ALL RIGHTS RESERVED.</p>
         <a href="#" class="m-2">TERMS</a>
     </footer>
+
+    <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
+        authDomain: "ud-planner.firebaseapp.com",
+        projectId: "ud-planner",
+        storageBucket: "ud-planner.appspot.com",
+        messagingSenderId: "396137599848",
+        appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
+        measurementId: "G-KMYYDKW7JM"
+      };
+
+    // Given
+    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    </script>
+
+<!-- Needs to be at the bottom to load AFTER the html isdone parsing. -->
+<script src="JavaScript/jquery-3.2.1.min.js"></script>
+<script src="JavaScript/bootstrap.bundle.min.js"></script>
+<script src="JavaScript/landing.js"></script>
+
 </body>
 </html>

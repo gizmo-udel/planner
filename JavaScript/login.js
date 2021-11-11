@@ -1,6 +1,3 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
 $('.form').find('input, textarea').on('keyup', function (e) {
   
   var $this = $(this),
