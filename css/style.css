@@ -4056,12 +4056,17 @@ a {
 
 /*page background*/
 .custom-body-color {
-  background-image: -moz-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
-  background-image: -webkit-linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
-  background-image: -ms-linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
-  background-image: linear-gradient( 110deg, Tomato 20%, MediumSeaGreen 100%);
+  background-image: -moz-linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
+  background-image: -webkit-linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
+  background-image: -ms-linear-gradient(110deg, #C1ECFA 20%,#719CAA 100%);
+  background-image: linear-gradient( 110deg, #C1ECFA 20%,#719CAA 100%);
   background-attachment: fixed;
   font-family: 'Rubik', sans-serif; 
+}
+.custom-logo{
+  font-weight: bold;
+  color:white;
+  font-size: 1.2em;
 }
 
 /* Ryan's Popup */
@@ -4215,10 +4220,10 @@ button:hover {
 /*navbar custom style*/ 
 
 .nav-menu{
-  background-color: Tomato;
-  background: -moz-linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
-  background: -webkit-linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
-  background: linear-gradient(110deg, Tomato 20%, MediumSeaGreen 100%);
+  background-color: #C1ECFA;
+  background: -moz-linear-gradient(110deg, #C1ECFA 20%,#719CAA 100%);
+  background: -webkit-linear-gradient(110deg, #C1ECFA 20%,#719CAA 100%);
+  background: linear-gradient(110deg, #C1ECFA 20%,#719CAA 100%);
   -webkit-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
@@ -4236,7 +4241,7 @@ button:hover {
 }
 .navbar-nav>.nav-item>.nav-link.active:after {
   content: "";
-  border-bottom: 3px solid Tomato;
+  border-bottom: 3px solid #53727c;
   left: 1rem;
   right: 1rem;
   bottom: 5px;
@@ -4246,4 +4251,27 @@ button:hover {
 
 .navbar-nav .nav-item {
   text-align: center;
+}
+
+/* the button use for changing the view of week and month*/
+.changeView{
+  padding-right: 12rem;
+}
+.buttonView {
+  background-color: #53727c;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 20px 10px;
+  cursor: pointer;
+}
+.buttonView:hover  {
+  background-color: white;
+}
+.buttonView a{
+  text-decoration: none;
 }
