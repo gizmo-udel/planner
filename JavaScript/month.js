@@ -132,6 +132,7 @@ var cal = {
     tForm += "<input type='submit' value='Save'/>";
     // Aaron added a button to change to the week view
     tForm += "<a href = 'week.html'> Week View </a>";
+    tForm += "<a href = 'agenda.html'> Agenda </1>";
     
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
