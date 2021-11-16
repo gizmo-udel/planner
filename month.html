@@ -3,6 +3,7 @@
   <head>
     <title>Month View</title>
     <link href="./css/month.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css"></link>
     <script src="./JavaScript/month.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"> </link>
   </head>
@@ -30,16 +31,22 @@
         </div>
       </div>
     </header>
-    <div id="cal-wrap">
-      <!-- Month/Year Selection -->
-      <div id="cal-date">
-        <select id="cal-mth"></select>
-        <select id="cal-yr"></select>
-      </div>
-      <!-- Calendar -->
-      <div id="cal-container"></div>
-      <!-- Events -->
-      <div id="cal-event"></div>
+    <div class = "changeView" style = "text-align: right;"></div>
+      <button class="buttonView"><a href = "week.html">Week </a></button>
+      <button class="buttonView"><a href = "#month">Month </a></button>
     </div>
+    <div class = "custom-calendar" id = "month">
+      <div id="cal-wrap">
+        <!-- Month/Year Selection -->
+        <div id="cal-date">
+          <select id="cal-mth"></select>
+          <select id="cal-yr"></select>
+        </div>
+        <!-- Calendar -->
+        <div id="cal-container"></div>
+        <!-- Events -->
+        <div id="cal-event"></div>
+      </div>
+    </div>   
   </body>
 </html>

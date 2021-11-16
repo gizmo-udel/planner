@@ -209,7 +209,7 @@ h2, h3 {
 }
 .navbar-nav>.nav-item>.nav-link.active:after {
     content: "";
-    border-bottom: 3px solid #C1ECFA;
+    border-bottom: 3px solid #53727c;
     left: 1rem;
     right: 1rem;
     bottom: 5px;

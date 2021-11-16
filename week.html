@@ -22,6 +22,7 @@
               <div class="col-md-12">
                   <nav class="navbar navbar-dark navbar-expand-lg">
                       <div class="collapse navbar-collapse" id="navbar">
+                        <span class = "custom-logo"> Aurora Tracker </span>
                           <ul class="navbar-nav ml-auto">
                               <li class="nav-item"> <a class="nav-link" href="index.html">HOME</a> </li>
                               <li class="nav-item"> <a class="nav-link" href="login.html">LOG IN</a> </li>
@@ -33,24 +34,21 @@
           </div>
       </div>
   </div>
-
-    <h1 class="text-xl">
-      <a href="#" onclick="document.getElementById('myModal').style.display='block'" class = "notepad pic"><img src = "./images/notepad.png" alt = "Add Notes"></a>
-      <a href="#" onclick="document.getElementById('id01').style.display='block'" class = "pic-link"><img src = "./images/add_event.png" alt = "Add Event"></a>
-    </h1>
     <!-- End of the navbar-->
 
   </header>
 
   <!-- start of the month, week and day view of the calendar-->
-  <div class = "aaron-custom-row">
-    <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "week.html"> Week </a></div>
-    <div class = "aaron-custom-column"><a class = "aaron-custom-link" href = "month.html"> Month </a> </div>
+  <div class = "changeView" style = "text-align: right;">
+    <a href="#" onclick="document.getElementById('myModal').style.display='block'" class = "notepad pic"><img src = "./images/notepad.png" alt = "Add Notes"></a>
+    <a href="#" onclick="document.getElementById('id01').style.display='block'" class = "pic-link"><img src = "./images/add_event.png" alt = "Add Event"></a>
+    <button class="buttonView"><a href = "#week">Week </a></button>
+    <button class="buttonView"><a href = "month.html">Month </a></button>
   </div>
   <!-- end of the month, week, and day view of the calendar-->
 
   <!-- start of the model, popup to add events-->
-  <div class="innerbody">
+  <div class="innerbody" id = "week">
     <div id="id01" class="modal">
       <form class="modal-content animate">
         <div class="container">
