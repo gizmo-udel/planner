@@ -1,6 +1,6 @@
 var cal = {
   // (A) PROPERTIES
-  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "Octuber", "November", "December"], // Month Names
+  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], // Month Names
   data : null, // Events for the selected period
   sDay : 0, // Current selected day
   sMth : 0, // Current selected month
@@ -132,6 +132,7 @@ var cal = {
     tForm += "<input type='submit' value='Save'/>";
     // Aaron added a button to change to the week view
     tForm += "<a href = 'week.html'> Week View </a>";
+    tForm += "<a href = 'agenda.html'> Agenda </1>";
     
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
