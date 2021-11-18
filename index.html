@@ -1,13 +1,17 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <title>Landing Page</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/themify-icons.css">
     <link href="css/landing.css" rel="stylesheet">
-    <script src="JavaScript/jquery-3.2.1.min.js"></script>
-    <script src="JavaScript/bootstrap.bundle.min.js"></script>
-    <script src="JavaScript/landing.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-functions.js"></script>
+    <!-- Temp Favicon Error Fix-->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 
 <body data-spy="scroll" data-target="#navbar" data-offset="30">
@@ -40,7 +44,7 @@
             <h1>Welcome to Your Special Calendar</h1>
             <p class="subtitle">The unique calendar that will bring your life to a more simple style. </p>
         </div>
-        <div class="img-holder mt-3"><img src="images/calendar.png" height= 500 width= 700 class="img-fluid"></div>
+        <div class="img-holder mt-3"><img src="images/calendar.png" height=500 width=700 class="img-fluid"></div>
         <a href="login.html" class="btn button">Sign in here!</a></div>
     </header>
     <!-- home category ends -->
@@ -59,7 +63,8 @@
                                 <span class="ti-face-smile gradient-fill ti-3x mr-3"></span>
                                 <div class="media-body">
                                     <h4 class="card-title">Easy to Use</h4>
-                                    <p class="card-text">Really easy and simple to get started, store all your saved assignments no matter log in with different devices</p>
+                                    <p class="card-text">Really easy and simple to get started, store all your saved
+                                        assignments no matter log in with different devices</p>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +77,8 @@
                                 <span class="ti-comments gradient-fill ti-3x mr-3"></span>
                                 <div class="media-body">
                                     <h4 class="card-title">Customize for Students</h4>
-                                    <p class="card-text">Designed for students to organize their assignments, connect with the Canvas to make life of studying convenient</p>
+                                    <p class="card-text">Designed for students to organize their assignments, connect
+                                        with the Canvas to make life of studying convenient</p>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +91,8 @@
                                 <span class="ti-check gradient-fill ti-3x mr-3"></span>
                                 <div class="media-body">
                                     <h4 class="card-title">Always Remind You</h4>
-                                    <p class="card-text">No matter you forget any assignment or not, you get reminders' back! Also be able to add checklist as notes</p>
+                                    <p class="card-text">No matter you forget any assignment or not, you get reminders'
+                                        back! Also be able to add checklist as notes</p>
                                 </div>
                             </div>
                         </div>
@@ -112,7 +119,8 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="communication">
                     <div class="d-flex flex-column flex-lg-row">
-                        <img src="images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
+                        <img src="images/graphic.png" alt="graphic"
+                            class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
                         <div>
                             <h2>Useful feature template</h2>
                             <p>Useful feate template</p>
@@ -125,7 +133,8 @@
                             <h2>Useful feature template</h2>
                             <p>Useful feature template</p>
                         </div>
-                        <img src="images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
+                        <img src="images/graphic.png" alt="graphic"
+                            class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
                     </div>
                 </div>
             </div>
@@ -158,14 +167,16 @@
                             <div class="circle-icon mr-4">3</div>
                             <div class="media-body">
                                 <h5>Connect with the Canvas</h5>
-                                <p>You can always choose to connect with the Canvas to import all the existing assignment into your calendar. </p>
+                                <p>You can always choose to connect with the Canvas to import all the existing
+                                    assignment into your calendar. </p>
                             </div>
                         </li>
                         <li class="media">
                             <div class="circle-icon mr-4">4</div>
                             <div class="media-body">
                                 <h5>Enjoy Your Organized Schedule</h5>
-                                <p>Enjoy the well-organized and personal-customized calendar for everyday! Moreover, there will always be a timely reminder for every assignment! </p>
+                                <p>Enjoy the well-organized and personal-customized calendar for everyday! Moreover,
+                                    there will always be a timely reminder for every assignment! </p>
                             </div>
                         </li>
                     </ul>
@@ -182,7 +193,7 @@
             <div class="section-title">
                 <h3>Special View of the Calendar</h3>
             </div>
-        <!--
+            <!--
             <div class="img-gallery owl-carousel owl-theme">
                 <img src="images/screen1.png" alt="image">
                 <img src="images/screen2.png" alt="image">
@@ -198,20 +209,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <img src="images/calendar.png"  class="img-fluid">
+                    <img src="images/calendar.png" class="img-fluid">
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
                     <div>
                         <div class="box-icon"><span class="ti-rocket gradient-fill ti-3x"></span></div>
                         <h2>Launch your calendar</h2>
                         <p class="mb-4"> Get a look of the new calendar only designed for you</p>
-                        <a href="index.html" class="btn btn-primary">Learn more</a></div>
+                        <a href="index.html" class="btn btn-primary">Learn more</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-     <div class="section pt-0">
+    <div class="section pt-0">
         <div class="container">
             <div class="section-title">
                 <h3>Frequently Asked Questions</h3>
@@ -231,16 +243,18 @@
                 </div>
             </div>
         </div>
-     </div>
+    </div>
 
     <div class="light-bg py-5" id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 text-center text-lg-left">
-                    <p class="mb-2"> <span class="ti-location-pin mr-2"></span> 210 S College Ave, Newark, Delaware, USA, 19716</p>
+                    <p class="mb-2"> <span class="ti-location-pin mr-2"></span> 210 S College Ave, Newark, Delaware,
+                        USA, 19716</p>
                     <div class=" d-block d-sm-inline-block">
                         <p class="mb-2">
-                            <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:email_address@udel.edu">email_address@udel.edu</a>
+                            <span class="ti-email mr-2"></span> <a class="mr-4"
+                                href="mailto:email_address@udel.edu">email_address@udel.edu</a>
                         </p>
                     </div>
                 </div>
@@ -252,5 +266,45 @@
         <p class="mb-2">COPYRIGHT © 2021. ALL RIGHTS RESERVED.</p>
         <a href="#" class="m-2">TERMS</a>
     </footer>
+
+    <!-- Analytics are throwing errors, not sure how to fix yet!
+  <script type="module">
+    // Add SDKs we're using
+  import {
+    initializeApp
+  } from "firebase/app";
+  import {
+    getAnalytics
+  } from "firebase/analytics";
+
+  // TODO: Add other SDKs that we may want to use.
+  // https://firebase.google.com/docs/web/setup#available-libraries
+  </script>
+      -->
+
+    <!-- Firebase Configuration -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
+            authDomain: "ud-planner.firebaseapp.com",
+            projectId: "ud-planner",
+            storageBucket: "ud-planner.appspot.com",
+            messagingSenderId: "396137599848",
+            appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
+            measurementId: "G-KMYYDKW7JM"
+        };
+
+        // Initialize database.
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        // const analytics = getAnalytics(app);
+    </script>
+
+    <!-- Needs to be at the bottom to load AFTER the html is done parsing. -->
+    <script src="JavaScript/jquery-3.2.1.min.js"></script>
+    <script src="JavaScript/bootstrap.bundle.min.js"></script>
+    <script src="JavaScript/landing.js"></script>
+
 </body>
+
 </html>

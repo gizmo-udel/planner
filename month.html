@@ -1,49 +1,93 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Month View</title>
-    <link href="./css/month.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/style.css"></link>
-    <script src="./JavaScript/month.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.min.css"> </link>
-  </head>
-  <body class = "custom-body">
-    <header class="cd-main-header text-center flex flex-column flex-center">
-      <p class="margin-top-md margin-bottom-xl"></p>
-      <div class="nav-menu fixed-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <nav class="navbar navbar-dark navbar-expand-lg">
-                        <div class="collapse navbar-collapse" id="navbar">
-                          <div>
-                            <span class = "custom-logo"> Aurora Tracker </span>
-                          </div>
-                          <ul class="navbar-nav ml-auto">
-                            <li class="nav-item"> <a class="nav-link" href="index.html">HOME</a> </li>
-                            <li class="nav-item"> <a class="nav-link" href="login.html">LOG IN</a> </li>
-                            <li class="nav-item"> <a class="nav-link active" href="month.html">CALENDAR</a> </li>
-                          </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
-      </div>
-    </header>
 
-    <div class = "custom-calendar" id = "month">
-      <div id="cal-wrap">
-        <!-- Month/Year Selection -->
-        <div id="cal-date">
-          <select id="cal-mth"></select>
-          <select id="cal-yr"></select>
+<head>
+  <title>Month View</title>
+  <link href="./css/month.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-functions.js"></script>
+  <!-- Temp Favicon Error Fix-->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </link>
+</head>
+
+<body class="custom-body">
+  <header class="cd-main-header text-center flex flex-column flex-center">
+    <p class="margin-top-md margin-bottom-xl"></p>
+    <div class="nav-menu fixed-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <nav class="navbar navbar-dark navbar-expand-lg">
+              <div class="collapse navbar-collapse" id="navbar">
+                <div>
+                  <span class="custom-logo"> Aurora Tracker </span>
+                </div>
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item"> <a class="nav-link" href="index.html">HOME</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="login.html">LOG IN</a> </li>
+                  <li class="nav-item"> <a class="nav-link active" href="month.html">CALENDAR</a> </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
         </div>
-        <!-- Calendar -->
-        <div id="cal-container"></div>
-        <!-- Events -->
-        <div id="cal-event"></div>
       </div>
-    </div>   
-  </body>
+    </div>
+  </header>
+  <div id="cal-wrap">
+    <!-- Month/Year Selection -->
+    <div id="cal-date">
+      <select id="cal-mth"></select>
+      <select id="cal-yr"></select>
+    </div>
+    <!-- Calendar -->
+    <div id="cal-container"></div>
+    <!-- Events -->
+    <div id="cal-event"></div>
+  </div>
+
+  <!-- Analytics are throwing errors, not sure how to fix yet!
+  <script type="module">
+    // Add SDKs we're using
+  import {
+    initializeApp
+  } from "firebase/app";
+  import {
+    getAnalytics
+  } from "firebase/analytics";
+
+  // TODO: Add other SDKs that we may want to use.
+  // https://firebase.google.com/docs/web/setup#available-libraries
+  </script>
+-->
+
+  <!-- Firebase Configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
+      authDomain: "ud-planner.firebaseapp.com",
+      projectId: "ud-planner",
+      storageBucket: "ud-planner.appspot.com",
+      messagingSenderId: "396137599848",
+      appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
+      measurementId: "G-KMYYDKW7JM"
+    };
+
+    // Initialize database.
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    // const analytics = getAnalytics(app);
+  </script>
+
+  <!-- Needs to be at the bottom to load AFTER the html is done parsing. -->
+  <script src="JavaScript/jquery-3.2.1.min.js"></script>
+  <script src="JavaScript/bootstrap.bundle.min.js"></script>
+  <script src="JavaScript/month.js"></script>
+
+</body>
+
 </html>
