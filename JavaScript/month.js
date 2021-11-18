@@ -1,6 +1,6 @@
 var cal = {
   // (A) PROPERTIES
-  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "Octuber", "November", "December"], // Month Names
+  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], // Month Names
   data : null, // Events for the selected period
   sDay : 0, // Current selected day
   sMth : 0, // Current selected month
@@ -68,7 +68,7 @@ var cal = {
     container.appendChild(cTable);
 
     // First row - Day names
-    var cRow = document.createElement("tr"),
+    var cRow = document.createElement("tr"), // tr is table row in html
         cCell = null,
         days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday"];
     if (cal.sMon) { days.push(days.shift()); }
@@ -79,13 +79,13 @@ var cal = {
       cCell.innerHTML = d;
       cRow.appendChild(cCell);
     }
-    cRow.classList.add("head");
+    cRow.classList.add("head"); // this addes the names for what day it is on top
     cTable.appendChild(cRow);
 
     // Days in Month
     var total = squares.length;
     cRow = document.createElement("tr");
-    cRow.classList.add("day");
+    cRow.classList.add("day"); // this is the whole row and can be used for the week view
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
@@ -121,18 +121,18 @@ var cal = {
     // (C2) Draw the event input form
     var tForm = "<h1>" + (cal.data[cal.sDay] ? "EDIT" : "ADD") + " EVENT</h1>";
     //changed it so that the month started first then the month
-    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + " " + cal.sDay + " " + + cal.sYear + "</div>";
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
     // conditional ? true : false
     tForm += "<textarea id='evt-details' required>" + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "") + "</textarea>";
     // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='evt-stime' name='start-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
-    tForm += "<input type='time' id='evt-etime' name='end-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
+    tForm += "<input type='time' id='evt-time' name='dueTime' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
 
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
     // Aaron added a button to change to the week view
     tForm += "<a href = 'week.html'> Week View </a>";
+    tForm += "<a href = 'agenda.html'> Agenda </1>";
     
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
@@ -152,9 +152,7 @@ var cal = {
   save : function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
-    cal.data[cal.sDay] = document.getElementById("evt-stime").value;
-    cal.data[cal.sDay] += " ";
-    cal.data[cal.sday] += document.getElementById("evt-etime").value;
+    cal.data[cal.sDay] = document.getElementById("evt-time").value;
     cal.data[cal.sDay] += " ";
     cal.data[cal.sDay] += document.getElementById("evt-details").value;
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
