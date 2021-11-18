@@ -5,11 +5,16 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/login.css">
-  <script src="JavaScript/jquery-3.2.1.min.js"></script>
-  <script src="JavaScript/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-functions.js"></script>
+  <!-- Temp Favicon Error Fix-->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 
 <body>
+
   <!-- navbar -->
   <div class="nav-menu fixed-top">
     <div class="container">
@@ -28,104 +33,119 @@
       </div>
     </div>
   </div>
-  
+
+  <h1></h1>
   <div class="form">
-  
+
     <ul class="tabs">
       <li class="tab active"><a href="#signup">Sign Up</a></li>
       <li class="tab"><a href="#login">Log In</a></li>
     </ul>
-      
+
     <div class="tab-content">
+      <div id="signup">
+        <h2>Sign Up Here!</h2>
 
-      <!-- signup form -->
+        <!-- <form action="month.html"> -->
 
-      <div id="signup">   
-      <h2>Sign Up Here!</h2>
-
-      <form action="week.html" id = "signup-form">
-          
-        <div class="user-name">
-
-          <div class="user-info">
-            <label>
-              First Name<span class="req">*</span>
-            </label>
-            <input type="text" id = "signup-first-name" required />
-          </div>
-      
-          <div class="user-info">
-            <label>
-              Last Name <span class="req">*</span>
-            </label>
-            <input type="text" id = "signup-last-name" required />
-          </div>
-
-        </div>
 
         <div class="user-info">
           <label>
             Email Address<span class="req">*</span>
           </label>
-          <input type="email" id = "signup-email" required />
+
+          <input type="email" id="new-user-email" required />
         </div>
-        
+
         <div class="user-info">
           <label>
             Set A Password<span class="req">*</span>
           </label>
-          <input type="password" id = "signup-password" required />
+
+          <input type="password" id="new-user-password" required />
         </div>
 
-        <a href= month.html>
-          <button type="submit" class="button button-block">Get Started</button>
-        </a>
-
-      </form>
-      </div>
-        
-      <!-- login form -->
-
-      <div id="login">   
-      <h3>Welcome Back!</h3>
-          
-      <form action="index.html" id = "login-form">
-          
         <div class="user-info">
           <label>
-            Email Address<span class="req">*</span>
+            Re-Enter Password<span class="req">*</span>
           </label>
-          <input type="email"required />
+          <input type="password" id="confirm-password" required />
         </div>
-      
-        <div class="user-info">
-          <label>
-            Password <span class="req">*</span>
-          </label>
-          <input type="password" required/>
-        </div>
-        
-        <p class="forgot"><a href="#">Forgot Password?</a></p>
-
-        <a href=month.html >
-          <button class="button button-block">Log In</button>
+        <!-- <a href=month.html> -->
+        <button type="submit" class="button button-block" id="sign-up-button">Get Started</button>
         </a>
+        </form>
 
-      </form>
       </div>
-        
-    <!-- login/signup tabs -->
-    </div>
 
-  <!-- entire form -->
-  </div> 
+      <div id="login">
+        <h3>Welcome Back!</h3>
+        <form action="index.html" id="login-form">
 
-  <!-- javascript -->
+          <div class="user-info">
+            <label>
+              Email Address<span class="req">*</span>
+            </label>
+            <input type="email" id="user-email" required />
+          </div>
 
+          <div class="user-info">
+            <label>
+              Password <span class="req">*</span>
+            </label>
+            <input type="password" id="user-password" required />
+          </div>
+
+          <p class="forgot"><a href="#">Forgot Password?</a></p>
+          <!--<a href=month.html> -->
+            <button class="button button-block" id="login-button">Log In</button>
+          </a>
+        </form>
+
+      </div>
+
+    </div><!-- login/signup tabs -->
+
+  </div> <!-- entire form -->
+
+  <!-- Analytics are throwing errors, not sure how to fix yet!
+  <script type="module">
+    // Add SDKs we're using
+  import {
+    initializeApp
+  } from "firebase/app";
+  import {
+    getAnalytics
+  } from "firebase/analytics";
+
+  // TODO: Add other SDKs that we may want to use.
+  // https://firebase.google.com/docs/web/setup#available-libraries
+  </script>
+-->
+
+  <!-- Firebase Configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
+      authDomain: "ud-planner.firebaseapp.com",
+      projectId: "ud-planner",
+      storageBucket: "ud-planner.appspot.com",
+      messagingSenderId: "396137599848",
+      appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
+      measurementId: "G-KMYYDKW7JM"
+    };
+
+    // Initialize database.
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    // const analytics = getAnalytics(app);
+  </script>
+
+  <!-- Needs to be at the bottom to load AFTER the html is done parsing. -->
+  <script src="JavaScript/jquery-3.2.1.min.js"></script>
+  <script src="JavaScript/bootstrap.bundle.min.js"></script>
   <script src="JavaScript/login.js"></script>
-   
-  <!-- handling authorization with firebase -->
-  <script src="JavaScript/auth.js"></script>
 
 </body>
+
 </html>
