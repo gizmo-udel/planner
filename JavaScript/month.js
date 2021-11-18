@@ -119,21 +119,27 @@ var cal = {
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
 
     // (C2) Draw the event input form
+    
     var tForm = "<h1>" + (cal.data[cal.sDay] ? "EDIT" : "ADD") + " EVENT</h1>";
     //changed it so that the month started first then the month
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + " " + cal.sDay + " " + + cal.sYear + "</div>";
     // conditional ? true : false
     tForm += "<textarea id='evt-details' required>" + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "") + "</textarea>";
     // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='evt-stime' name='start-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
-    tForm += "<input type='time' id='evt-etime' name='end-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
-
+    tForm += "<div id='event-time'> <p> Start Time:</p> <input type='time' id='evt-stime' name='start-time' required> <p> End Time: </p> <input type='time' id='evt-etime' name='end-time' required> </div>" 
+    + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
+    
+    
+    
+   
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-    // Aaron added a button to change to the week view
-    tForm += "<a href = 'week.html'> Week View </a>";
     
+   
+ 
+
+
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
     eForm.addEventListener("submit", cal.save);
@@ -150,8 +156,8 @@ var cal = {
 
   // (E) Save event
   save : function (evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
+    evt.stopPropagation(); //prevents propagation of the same event from being called.
+    evt.preventDefault();  //cancels the event if it is cancelable
     cal.data[cal.sDay] = document.getElementById("evt-stime").value;
     cal.data[cal.sDay] += " ";
     cal.data[cal.sday] += document.getElementById("evt-etime").value;

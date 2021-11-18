@@ -92,6 +92,8 @@
 }
 
 /* Add/Edit Events */
+
+
 #cal-event form {
   padding: 15px;
   margin-top: 20px;
@@ -175,3 +177,15 @@ html, body, textarea, input {
   text-align: center;
 }
 
+#event-time {
+  display:inline-flex;
+  padding:10px;
+}
+
+#event-time > p {
+margin: 0px 5px ;
+}
+
+#evt-stime{
+margin-right: 10px;
+}
