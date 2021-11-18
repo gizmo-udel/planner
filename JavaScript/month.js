@@ -6,12 +6,6 @@ var cal = {
   sMth : 0, // Current selected month
   sYear : 0, // Current selected year
   sMon : false , // Week start on Monday?
-  
-  //Replace data with event information here (?)
-  // Time : 1159 (Default - as this is the most common turn in time)
-  // Title : null
-  // Color : (Default color?)
-  // ??
 
   // (B) DRAW CALENDAR FOR SELECTED MONTH
   list : function () {
@@ -22,7 +16,7 @@ var cal = {
     cal.sYear = parseInt(document.getElementById("cal-yr").value); // selected year
     var daysInMth = new Date(cal.sYear, cal.sMth+1, 0).getDate(), // number of days in selected month
         startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // first day of the month
-        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // last day of the month
+        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // last day of the month by going to the next month and going back 1 day
 
     // (B2) LOAD DATA FROM LOCALSTORAGE
     cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
@@ -95,7 +89,8 @@ var cal = {
       else {
         cCell.innerHTML = "<div class='dd'>"+squares[i]+"</div>";
         if (cal.data[squares[i]]) {
-          cCell.innerHTML += "<div class='evt'>" + cal.data[squares[i]] + "</div>";
+          var LoadDayData = JSON.parse(cal.data[squares[i]]);
+          cCell.innerHTML += "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
         }
         cCell.addEventListener("click", function(){
           cal.show(this);
@@ -117,22 +112,24 @@ var cal = {
   show : function (el) {
     // (C1) Get current data
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
-
+    var dayData;
+    if(cal.data[cal.sDay]){dayData = JSON.parse(cal.data[cal.sDay]);}
     // (C2) Draw the event input form
     var tForm = "<h1>" + (cal.data[cal.sDay] ? "EDIT" : "ADD") + " EVENT</h1>";
     //changed it so that the month started first then the month
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
     // conditional ? true : false
-    tForm += "<textarea id='evt-details' required>" + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "") + "</textarea>";
+    tForm += "<textarea id='evt-details' required>" + (dayData ? dayData.detail : "") + "</textarea>";
     // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='evt-time' name='dueTime' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
+    tForm += "<input type='time' id='sevt-time' name='dueTime' required>"  + (dayData ? dayData.stime : "");
+    tForm += "<input type='time' id='devt-time' name='dueTime' required>"  + (dayData ? dayData.dtime : "");
 
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
     // Aaron added a button to change to the week view
     tForm += "<a href = 'week.html'> Week View </a>";
-    tForm += "<a href = 'agenda.html'> Agenda </1>";
+    tForm += "<a href = 'agenda.html'> Agenda </a>";
     
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
@@ -152,11 +149,11 @@ var cal = {
   save : function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
-    cal.data[cal.sDay] = document.getElementById("evt-time").value;
-    cal.data[cal.sDay] += " ";
-    cal.data[cal.sDay] += document.getElementById("evt-details").value;
+    cal.data[cal.sDay] = JSON.stringify({stime: document.getElementById("sevt-time").value,
+                                        dtime: document.getElementById("devt-time").value,
+                                        detail : document.getElementById("evt-details").value});
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
-    cal.list();
+     cal.list();
   },
 
   // (F) Delete event for selected date
