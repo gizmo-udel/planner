@@ -1,49 +1,76 @@
+// Firebase Sign-Up Function
 
+// TODO: Display errors to user such as ->
+// 1. Email already taken
+// 2. Passwork too weak (Firebase requires [reccomends?] 6 characters)
 
-// still need to add firebase sdk to project 
+// For now errors are displayed in console only (CTRL+Shift+i)
+$("#sign-up-button").click(function() {
 
-// only handling signup  (adding new users)
-// sign up form only for new users, not for returning users 
+    const signupForm = document.querySelector('#signup-form');
+    signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-const signupForm = document.querySelector('#signup-form');
-signupForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // get user info
-    const email = signupForm['signup-email'].value;
-    const password = signupForm['signup-password'].value;
-
-    // testing values
-    console.log(email, password)
-
-    /*
-
-    // sign up the user using firebase method
-    auth.createUserWithEmailAndPassword(email, password).then(cred => {
-        console.log(cred.user);
-        // reset form
-        signupForm.reset();
-    });
-    */
+    const auth = firebase.auth();
+  
+    var userEmail = document.getElementById("new-user-email").value;
+    var userPassword = document.getElementById("new-user-password").value;
+    var confirmPass = document.getElementById("confirm-password").value;
+    if (userPassword === confirmPass) { 
+      auth.createUserWithEmailAndPassword(userEmail, userPassword)
+        .then((userCredential) => {
+        // Signed in 
+          const user = userCredential.user;
+          signupForm.reset();
+          
+        db.collection("users").add({
+            email: userEmail
+        }).then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        })
+      });
+    } else {
+      // Change this later, alerts are terrible.
+      alert("Passwords must match");
+    }
+  })
 });
-
-// login 
-
-const loginForm = document.querySelector('#login-form');
-loginForm.addEventListener('submit', (e) => {
+  
+  // Firebase log-in function
+  
+  // TODO: Display errors to user such as ->
+  // 1. Only display ("Invalid Login") for security reasons?
+  
+  // For now errors are displayed in console only (CTRL+Shift+i)
+  const loginForm = document.querySelector('#login-form');
+  loginForm.addEventListener ('submit', (e) =>{
     e.preventDefault();
-    
-    // get user info
-    const email = loginForm['login-email'].value;
-    const password = loginForm['login-password'].value;
-
-    // log the user in
-    /*
-    auth.signInWithEmailAndPassword(email, password).then((cred) => {
-        console.log(cred.user);
-        //reset form
+    let userEmail = document.getElementById("user-email").value;
+    //console.log(u_email);
+    let userPassword = document.getElementById("user-password").value;
+    firebase.auth().signInWithEmailAndPassword(userEmail, userPassword)
+        .then((userCredential) => {
+        // Signed in 
+        window.location = 'month.html';
+        const user = userCredential.user;
+        console.log(user);
         loginForm.reset();
-    });
-    */
-
-});
+      });
+  });
+  /*
+  $("#login-button").click(function() {
+    let userEmail = document.getElementById("user-email").value;
+    //console.log(u_email);
+    let userPassword = document.getElementById("user-password").value;
+    firebase.auth().signInWithEmailAndPassword(userEmail, userPassword)
+        .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        alert("??");
+      });
+  });
+*/
