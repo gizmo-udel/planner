@@ -69,8 +69,22 @@ $("#sign-up-button").click(function() {
 // 1. Only display ("Invalid Login") for security reasons?
 
 // For now errors are displayed in console only (CTRL+Shift+i)
+const loginForm = document.querySelector('#login-form');
+loginForm.addEventListener ('submit', (e) =>{
+  e.preventDefault();
+  let userEmail = document.getElementById("user-email").value;
+  //console.log(u_email);
+  let userPassword = document.getElementById("user-password").value;
+  firebase.auth().signInWithEmailAndPassword(userEmail, userPassword)
+      .then((userCredential) => {
+      // Signed in 
+      window.location = 'month.html';
+      const user = userCredential.user;
+      console.log(user);
+    });
+});
+/*
 $("#login-button").click(function() {
-  
   let userEmail = document.getElementById("user-email").value;
   //console.log(u_email);
   let userPassword = document.getElementById("user-password").value;
@@ -79,5 +93,7 @@ $("#login-button").click(function() {
       // Signed in 
       const user = userCredential.user;
       console.log(user);
+      alert("??");
     });
 });
+*/
