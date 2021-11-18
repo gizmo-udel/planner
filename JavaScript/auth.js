@@ -31,6 +31,7 @@ $("#sign-up-button").click(function() {
         .catch((error) => {
             console.error("Error adding document: ", error);
         })
+        window.location = 'month.html';
       });
     } else {
       // Change this later, alerts are terrible.
