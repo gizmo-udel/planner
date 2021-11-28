@@ -4074,14 +4074,13 @@ a {
 button {
   background: rgb(240, 240, 240);
   margin-left: 10px;
-  border-radius: 10px;
   padding: 9px;
   width: 14%;
-  box-shadow: -1px 0px 1px rgba(26, 128, 224, 0.671);
+  box-shadow: -1px 0px 1px #719caa;
   font-weight: bold;
   font-family: Cagliostro;
   letter-spacing: 1px;
-  color: rgb(99, 99, 99);
+  color: #719caa;
 }
 
 /* The Modal (background) */
@@ -4258,20 +4257,15 @@ button:hover {
   padding-right: 12rem;
 }
 .buttonView {
-  background-color: #53727c;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-  margin: 20px 10px;
+  padding: 10px;
+  margin: 5px;
+  font-size: 1.2em;
+  border: 0;
+  background: #719caa;
+  color: #fff;
   cursor: pointer;
-}
-.buttonView:hover  {
-  background-color: white;
 }
 .buttonView a{
   text-decoration: none;
+  color: #fff;
 }

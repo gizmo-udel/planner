@@ -185,6 +185,11 @@ header {
     padding-bottom: 28%;
     overflow: hidden;
 }
+.custom-logo{
+    font-weight: bold;
+    color:white;
+    font-size: 1.2em;
+  }
 
 
 /* Features interest you */
