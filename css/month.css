@@ -3,7 +3,7 @@
   justify-content: center;
   position: flex;
   padding-left: 9%;
-  padding-top: 3%;
+  padding-top: 1%;
 }
 
 /*custom css of the table (Aaron)*/
@@ -12,7 +12,7 @@
   box-sizing: border-box;
   text-indent: initial;
   border-spacing: 2px;
-  border-color: grey;
+  border-color: #719CAA;
   width: 90%;
 }
 
@@ -25,7 +25,7 @@
 
 .custom-logo{
   font-weight: bold;
-  color:white;
+  color:#53727c;
   font-size: 1.5em;
 }
 
@@ -106,7 +106,7 @@
   margin: 0;
 }
 #evt-date {
-  color: #999;
+  color: #719CAA;
   margin: 10px 0;
   font-size: 1em;
 }
@@ -135,6 +135,7 @@
   text-decoration: none;
   font-size: 1.2em;
   border: 0;
+  margin: 5px;
   background: #719caa;
   color: #fff;
 }
@@ -163,7 +164,6 @@ html, body, textarea, input {
 .navbar-nav>.nav-item>.nav-link.active:after {
   content: "";
   border-bottom: 3px solid #53727c;
-  color: #53727c;
   left: 1rem;
   right: 1rem;
   bottom: 5px;
@@ -174,3 +174,4 @@ html, body, textarea, input {
 .navbar-nav .nav-item {
   text-align: center;
 }
+
