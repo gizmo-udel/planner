@@ -1,22 +1,37 @@
 var cal = {
   // (A) PROPERTIES
-  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], // Month Names
+  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "Octuber", "November", "December"], // Month Names
   data : null, // Events for the selected period
   sDay : 0, // Current selected day
   sMth : 0, // Current selected month
   sYear : 0, // Current selected year
-  sMon : false , // Week start on Monday?
+  sMon : false , // Start the week on Monday instead of Sunday (Sunday is standard)
+  
+  // Replace data with event information here (?)
+  // Time : 1159 (Default - as this is the most common turn in time)
+  // Title : null
+  // Color : (Default color?)
+  // ??
+
+
+  // TODO:
+  // Change the following to firebase instead of localSotrage:
+  // 1. Initial load of the data.
+  // 2. Saving new data
+  // 3. Deleting existing data.
+
+  // Once the above is working, we can change the fields/data and display it as we like.
 
   // (B) DRAW CALENDAR FOR SELECTED MONTH
   list : function () {
     // (B1) BASIC CALCULATIONS - DAYS IN MONTH, START + END DAY
     // Note - Jan is 0 & Dec is 11 in JS.
     // Note - Sun is 0 & Sat is 6
-    cal.sMth = parseInt(document.getElementById("cal-mth").value); // selected month
-    cal.sYear = parseInt(document.getElementById("cal-yr").value); // selected year
-    var daysInMth = new Date(cal.sYear, cal.sMth+1, 0).getDate(), // number of days in selected month
-        startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // first day of the month
-        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // last day of the month by going to the next month and going back 1 day
+    cal.sMth = parseInt(document.getElementById("cal-mth").value); // Selected month
+    cal.sYear = parseInt(document.getElementById("cal-yr").value); // Selected year
+    var daysInMth = new Date(cal.sYear, cal.sMth+1, 0).getDate(), // Number of days in selected month
+        startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // First day of the month
+        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // Last day of the month
 
     // (B2) LOAD DATA FROM LOCALSTORAGE
     cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
@@ -30,12 +45,12 @@ var cal = {
     // (B3) DRAWING CALCULATIONS
     // Determine the number of blank squares before start of month
     var squares = [];
-    //if the week starts on sunday and it is monday
+    // If the week starts on sunday and it is monday
     if (cal.sMon && startDay != 1) {
       var blanks = startDay==0 ? 7 : startDay ;
       for (var i=1; i<blanks; i++) { squares.push("blank"); }
     }
-    //if the week starts on monday and it is sunday
+    // If the week starts on monday and it is sunday
     if (!cal.sMon && startDay != 0) {
       for (var i=0; i<startDay; i++) { squares.push("blank"); }
     }
@@ -62,7 +77,7 @@ var cal = {
     container.appendChild(cTable);
 
     // First row - Day names
-    var cRow = document.createElement("tr"), // tr is table row in html
+    var cRow = document.createElement("tr"),
         cCell = null,
         days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday"];
     if (cal.sMon) { days.push(days.shift()); }
@@ -73,7 +88,7 @@ var cal = {
       cCell.innerHTML = d;
       cRow.appendChild(cCell);
     }
-    cRow.classList.add("head"); // this addes the names for what day it is on top
+    cRow.classList.add("head");
     cTable.appendChild(cRow);
 
     //temporary variable for limiting the amount of events adding, until parsing is complete
@@ -82,13 +97,14 @@ var cal = {
     // Days in Month
     var total = squares.length;
     cRow = document.createElement("tr");
+    
     cRow.classList.add("day"); // this is the whole row and can be used for the week view
     var NewCell; //this is to seperate the event from the square
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
       Hasdata = false;
-      //the td html element is a standard cell within the table
+      // The td html element is a standard cell within the table
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
@@ -123,6 +139,7 @@ var cal = {
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
     var dayData = JSON.parse(cal.data[cal.sDay]);
     // (C2) Draw the event input form
+
     var tForm = "<h1> EDIT EVENT </h1>";
 
     //changed it so that the month started first then the month
@@ -190,6 +207,7 @@ var cal = {
   save : function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
+
     if(!cal.data[cal.sDay]){
       var event1 = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
       cal.data[cal.sDay] = event1;
