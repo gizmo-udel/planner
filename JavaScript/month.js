@@ -83,6 +83,7 @@ var cal = {
     var total = squares.length;
     cRow = document.createElement("tr");
     cRow.classList.add("day"); // this is the whole row and can be used for the week view
+    var NewCell; //this is to seperate the event from the square
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
@@ -95,12 +96,13 @@ var cal = {
         if (cal.data[squares[i]]) {
           Hasdata = true;
           var LoadDayData = JSON.parse(cal.data[squares[i]]);
-          cCell.innerHTML += "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
+          NewCell = document.createElement("div");
+          NewCell.innerHTML = "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
+          cCell.innerHTML += NewCell.innerHTML;
         }
         cCell.addEventListener("click", function(){
-          // temperorary limitation to one event for right now, need to properly store the events
           if(!Hasdata){cal.AddingEvent(this);}
-         cal.EditingEvent(this);
+          cal.EditingEvent(this);
         });
       }
       cRow.appendChild(cCell);
@@ -167,8 +169,7 @@ var cal = {
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-    
-    // Aaron added a button to change to the week view
+
     tForm += "<a href = 'week.html'> Week View </a>";
     tForm += "<a href = 'agenda.html'> Agenda </a>";
     
