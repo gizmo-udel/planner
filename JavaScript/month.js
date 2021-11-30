@@ -92,7 +92,7 @@ var cal = {
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
-        cCell.innerHTML = "<div class='dd'>"+squares[i]+"</div>";
+        cCell.innerHTML = "<a class='dd' href = day.html> "+squares[i]+"</div>";
         if (cal.data[squares[i]]) {
           Hasdata = true;
           var LoadDayData = JSON.parse(cal.data[squares[i]]);
@@ -139,7 +139,6 @@ var cal = {
     tForm += "<input type='submit' value='Save'/>";
     
     // Aaron added a button to change to the week view
-    tForm += "<a href = 'week.html'> Week View </a>";
     tForm += "<a href = 'day.html'> Day View </a>";
     
     // (C3) Attach form to calendar
@@ -169,9 +168,6 @@ var cal = {
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-
-    tForm += "<a href = 'week.html'> Week View </a>";
-    tForm += "<a href = 'agenda.html'> Agenda </a>";
     
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
