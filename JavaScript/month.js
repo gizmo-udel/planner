@@ -5,24 +5,32 @@ var cal = {
   sDay : 0, // Current selected day
   sMth : 0, // Current selected month
   sYear : 0, // Current selected year
-  sMon : false , // Week start on Monday?
+  sMon : false , // Start the week on Monday instead of Sunday (Sunday is standard)
   
-  //Replace data with event information here (?)
+  // Replace data with event information here (?)
   // Time : 1159 (Default - as this is the most common turn in time)
   // Title : null
   // Color : (Default color?)
   // ??
+
+  // TODO:
+  // Change the following to firebase instead of localSotrage:
+  // 1. Initial load of the data.
+  // 2. Saving new data
+  // 3. Deleting existing data.
+
+  // Once the above is working, we can change the fields/data and display it as we like.
 
   // (B) DRAW CALENDAR FOR SELECTED MONTH
   list : function () {
     // (B1) BASIC CALCULATIONS - DAYS IN MONTH, START + END DAY
     // Note - Jan is 0 & Dec is 11 in JS.
     // Note - Sun is 0 & Sat is 6
-    cal.sMth = parseInt(document.getElementById("cal-mth").value); // selected month
-    cal.sYear = parseInt(document.getElementById("cal-yr").value); // selected year
-    var daysInMth = new Date(cal.sYear, cal.sMth+1, 0).getDate(), // number of days in selected month
-        startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // first day of the month
-        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // last day of the month
+    cal.sMth = parseInt(document.getElementById("cal-mth").value); // Selected month
+    cal.sYear = parseInt(document.getElementById("cal-yr").value); // Selected year
+    var daysInMth = new Date(cal.sYear, cal.sMth+1, 0).getDate(), // Number of days in selected month
+        startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // First day of the month
+        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // Last day of the month
 
     // (B2) LOAD DATA FROM LOCALSTORAGE
     cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
@@ -36,12 +44,12 @@ var cal = {
     // (B3) DRAWING CALCULATIONS
     // Determine the number of blank squares before start of month
     var squares = [];
-    //if the week starts on sunday and it is monday
+    // If the week starts on sunday and it is monday
     if (cal.sMon && startDay != 1) {
       var blanks = startDay==0 ? 7 : startDay ;
       for (var i=1; i<blanks; i++) { squares.push("blank"); }
     }
-    //if the week starts on monday and it is sunday
+    // If the week starts on monday and it is sunday
     if (!cal.sMon && startDay != 0) {
       for (var i=0; i<startDay; i++) { squares.push("blank"); }
     }
@@ -89,7 +97,7 @@ var cal = {
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
-      //the td html element is a standard cell within the table
+      // The td html element is a standard cell within the table
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
@@ -120,18 +128,18 @@ var cal = {
 
     // (C2) Draw the event input form
     var tForm = "<h1>" + (cal.data[cal.sDay] ? "EDIT" : "ADD") + " EVENT</h1>";
-    //changed it so that the month started first then the month
+    // Changed it so that the month started first then the month.
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + " " + cal.sDay + " " + + cal.sYear + "</div>";
-    // conditional ? true : false
+    // Conditional ? (True : False)
     tForm += "<textarea id='evt-details' required>" + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "") + "</textarea>";
-    // this is where all of the time is being put in the calendar
+    // Start and end time for events.
     tForm += "<input type='time' id='evt-stime' name='start-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
     tForm += "<input type='time' id='evt-etime' name='end-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
-
+    // Edit Modal clickable options.
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-    // Aaron added a button to change to the week view
+    // Aaron added a button to change to the week view.
     tForm += "<a href = 'week.html'> Week View </a>";
     
     // (C3) Attach form to calendar
