@@ -76,6 +76,9 @@ var cal = {
     cRow.classList.add("head"); // this addes the names for what day it is on top
     cTable.appendChild(cRow);
 
+    //temporary variable for limiting the amount of events adding, until parsing is complete
+    var Hasdata;
+
     // Days in Month
     var total = squares.length;
     cRow = document.createElement("tr");
@@ -83,17 +86,21 @@ var cal = {
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
+      Hasdata = false;
       //the td html element is a standard cell within the table
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
         cCell.innerHTML = "<div class='dd'>"+squares[i]+"</div>";
         if (cal.data[squares[i]]) {
+          Hasdata = true;
           var LoadDayData = JSON.parse(cal.data[squares[i]]);
           cCell.innerHTML += "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
         }
         cCell.addEventListener("click", function(){
-          cal.show(this);
+          // temperorary limitation to one event for right now, need to properly store the events
+          if(!Hasdata){cal.AddingEvent(this);}
+         cal.EditingEvent(this);
         });
       }
       cRow.appendChild(cCell);
@@ -109,24 +116,26 @@ var cal = {
   },
 
   // (C) Edit Docket
-  show : function (el) {
+  EditingEvent : function (el) {
     // (C1) Get current data
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
-    var dayData;
-    if(cal.data[cal.sDay]){dayData = JSON.parse(cal.data[cal.sDay]);}
+    var dayData = JSON.parse(cal.data[cal.sDay]);
     // (C2) Draw the event input form
-    var tForm = "<h1>" + (cal.data[cal.sDay] ? "EDIT" : "ADD") + " EVENT</h1>";
+    var tForm = "<h1> EDIT EVENT </h1>";
+
     //changed it so that the month started first then the month
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
-    // conditional ? true : false
     tForm += "<textarea id='evt-details' required>" + (dayData ? dayData.detail : "") + "</textarea>";
+
     // this is where all of the time is being put in the calendar
     tForm += "<input type='time' id='sevt-time' name='dueTime' required>"  + (dayData ? dayData.stime : "");
     tForm += "<input type='time' id='devt-time' name='dueTime' required>"  + (dayData ? dayData.dtime : "");
 
+    //buttons on the form
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
+    
     // Aaron added a button to change to the week view
     tForm += "<a href = 'week.html'> Week View </a>";
     tForm += "<a href = 'agenda.html'> Agenda </a>";
@@ -140,6 +149,37 @@ var cal = {
     container.appendChild(eForm);
   },
 
+  AddingEvent : function (el) {
+    // (C1) Get current data
+    cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
+    // (C2) Draw the event input form
+    var tForm = "<h1> ADD EVENT </h1>";
+
+    //changed it so that the month started first then the month
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-details' required> </textarea>";
+
+    // this is where all of the time is being put in the calendar
+    tForm += "<input type='time' id='sevt-time' name='dueTime' required>";
+    tForm += "<input type='time' id='devt-time' name='dueTime' required>";
+
+    //buttons on the form
+    tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
+    tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
+    tForm += "<input type='submit' value='Save'/>";
+    
+    // Aaron added a button to change to the week view
+    tForm += "<a href = 'week.html'> Week View </a>";
+    tForm += "<a href = 'agenda.html'> Agenda </a>";
+    
+    // (C3) Attach form to calendar
+    var eForm = document.createElement("form");
+    eForm.addEventListener("submit", cal.save);
+    eForm.innerHTML = tForm;
+    var container = document.getElementById("cal-event");
+    container.innerHTML = "";
+    container.appendChild(eForm);
+  },
   // (D) Close event input form
   close : function () {
     document.getElementById("cal-event").innerHTML = "";
@@ -149,9 +189,13 @@ var cal = {
   save : function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
-    cal.data[cal.sDay] = JSON.stringify({stime: document.getElementById("sevt-time").value,
-                                        dtime: document.getElementById("devt-time").value,
-                                        detail : document.getElementById("evt-details").value});
+    if(!cal.data[cal.sDay]){
+      var event1 = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+      cal.data[cal.sDay] = event1;
+    }
+    else{
+      cal.data[cal.sDay] = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    }
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
      cal.list();
   },
