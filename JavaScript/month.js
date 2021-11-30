@@ -13,6 +13,7 @@ var cal = {
   // Color : (Default color?)
   // ??
 
+
   // TODO:
   // Change the following to firebase instead of localSotrage:
   // 1. Initial load of the data.
@@ -90,23 +91,34 @@ var cal = {
     cRow.classList.add("head");
     cTable.appendChild(cRow);
 
+    //temporary variable for limiting the amount of events adding, until parsing is complete
+    var Hasdata;
+
     // Days in Month
     var total = squares.length;
     cRow = document.createElement("tr");
-    cRow.classList.add("day");
+    
+    cRow.classList.add("day"); // this is the whole row and can be used for the week view
+    var NewCell; //this is to seperate the event from the square
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
+      Hasdata = false;
       // The td html element is a standard cell within the table
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
         cCell.innerHTML = "<div class='dd'>"+squares[i]+"</div>";
         if (cal.data[squares[i]]) {
-          cCell.innerHTML += "<div class='evt'>" + cal.data[squares[i]] + "</div>";
+          Hasdata = true;
+          var LoadDayData = JSON.parse(cal.data[squares[i]]);
+          NewCell = document.createElement("div");
+          NewCell.innerHTML = "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
+          cCell.innerHTML += NewCell.innerHTML;
         }
         cCell.addEventListener("click", function(){
-          cal.show(this);
+          if(!Hasdata){cal.AddingEvent(this);}
+          cal.EditingEvent(this);
         });
       }
       cRow.appendChild(cCell);
@@ -122,25 +134,30 @@ var cal = {
   },
 
   // (C) Edit Docket
-  show : function (el) {
+  EditingEvent : function (el) {
     // (C1) Get current data
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
-
+    var dayData = JSON.parse(cal.data[cal.sDay]);
     // (C2) Draw the event input form
-    var tForm = "<h1>" + (cal.data[cal.sDay] ? "EDIT" : "ADD") + " EVENT</h1>";
-    // Changed it so that the month started first then the month.
-    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + " " + cal.sDay + " " + + cal.sYear + "</div>";
-    // Conditional ? (True : False)
-    tForm += "<textarea id='evt-details' required>" + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "") + "</textarea>";
-    // Start and end time for events.
-    tForm += "<input type='time' id='evt-stime' name='start-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
-    tForm += "<input type='time' id='evt-etime' name='end-time' required>"  + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "");
-    // Edit Modal clickable options.
+
+    var tForm = "<h1> EDIT EVENT </h1>";
+
+    //changed it so that the month started first then the month
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-details' required>" + (dayData ? dayData.detail : "") + "</textarea>";
+
+    // this is where all of the time is being put in the calendar
+    tForm += "<input type='time' id='sevt-time' name='dueTime' required>"  + (dayData ? dayData.stime : "");
+    tForm += "<input type='time' id='devt-time' name='dueTime' required>"  + (dayData ? dayData.dtime : "");
+
+    //buttons on the form
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-    // Aaron added a button to change to the week view.
+    
+    // Aaron added a button to change to the week view
     tForm += "<a href = 'week.html'> Week View </a>";
+    tForm += "<a href = 'day.html'> Day View </a>";
     
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
@@ -151,6 +168,36 @@ var cal = {
     container.appendChild(eForm);
   },
 
+  AddingEvent : function (el) {
+    // (C1) Get current data
+    cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
+    // (C2) Draw the event input form
+    var tForm = "<h1> ADD EVENT </h1>";
+
+    //changed it so that the month started first then the month
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-details' required> </textarea>";
+
+    // this is where all of the time is being put in the calendar
+    tForm += "<input type='time' id='sevt-time' name='dueTime' required>";
+    tForm += "<input type='time' id='devt-time' name='dueTime' required>";
+
+    //buttons on the form
+    tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
+    tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
+    tForm += "<input type='submit' value='Save'/>";
+
+    tForm += "<a href = 'week.html'> Week View </a>";
+    tForm += "<a href = 'agenda.html'> Agenda </a>";
+    
+    // (C3) Attach form to calendar
+    var eForm = document.createElement("form");
+    eForm.addEventListener("submit", cal.save);
+    eForm.innerHTML = tForm;
+    var container = document.getElementById("cal-event");
+    container.innerHTML = "";
+    container.appendChild(eForm);
+  },
   // (D) Close event input form
   close : function () {
     document.getElementById("cal-event").innerHTML = "";
@@ -160,13 +207,16 @@ var cal = {
   save : function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
-    cal.data[cal.sDay] = document.getElementById("evt-stime").value;
-    cal.data[cal.sDay] += " ";
-    cal.data[cal.sday] += document.getElementById("evt-etime").value;
-    cal.data[cal.sDay] += " ";
-    cal.data[cal.sDay] += document.getElementById("evt-details").value;
+
+    if(!cal.data[cal.sDay]){
+      var event1 = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+      cal.data[cal.sDay] = event1;
+    }
+    else{
+      cal.data[cal.sDay] = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    }
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
-    cal.list();
+     cal.list();
   },
 
   // (F) Delete event for selected date
