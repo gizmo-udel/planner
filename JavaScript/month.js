@@ -115,10 +115,13 @@ var cal = {
           NewCell = document.createElement("div");
           NewCell.innerHTML = "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
           cCell.innerHTML += NewCell.innerHTML;
+          NewCell.addEventListener("click", function(){
+            cal.EditingEvent(this);
+          });
         }
         cCell.addEventListener("click", function(){
-          if(Hasdata){cal.EditingEvent(this);}
-          cal.AddingEvent(this);
+          if(!Hasdata){cal.AddingEvent(this);}
+          cal.EditingEvent(this);
         });
       }
       cRow.appendChild(cCell);
