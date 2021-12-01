@@ -108,7 +108,7 @@ var cal = {
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
-        cCell.innerHTML = "<a class='dd' href = day.html> "+squares[i]+"</div>";
+        cCell.innerHTML = "<div><a class='dd' href = day.html> "+squares[i] + "</div>";
         if (cal.data[squares[i]]) {
           Hasdata = true;
           var LoadDayData = JSON.parse(cal.data[squares[i]]);
@@ -117,8 +117,8 @@ var cal = {
           cCell.innerHTML += NewCell.innerHTML;
         }
         cCell.addEventListener("click", function(){
-          if(!Hasdata){cal.AddingEvent(this);}
-          cal.EditingEvent(this);
+          if(Hasdata){cal.EditingEvent(this);}
+          cal.AddingEvent(this);
         });
       }
       cRow.appendChild(cCell);
@@ -144,19 +144,16 @@ var cal = {
 
     //changed it so that the month started first then the month
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
-    tForm += "<textarea id='evt-details' required>" + (dayData ? dayData.detail : "") + "</textarea>";
+    tForm += "<textarea id='evt-details' required>" + dayData.detail + "</textarea>";
 
     // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='sevt-time' name='dueTime' required>"  + (dayData ? dayData.stime : "");
-    tForm += "<input type='time' id='devt-time' name='dueTime' required>"  + (dayData ? dayData.dtime : "");
+    tForm += "<input type='time' id='sevt-time' name='dueTime' required>"  +  dayData.stime;
+    tForm += "<input type='time' id='devt-time' name='dueTime' required>"  +  dayData.dtime;
 
     //buttons on the form
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-    
-    // Aaron added a button to change to the week view
-    tForm += "<a href = 'day.html'> Day View </a>";
     
     // (C3) Attach form to calendar
     var eForm = document.createElement("form");
@@ -204,13 +201,11 @@ var cal = {
     evt.stopPropagation();
     evt.preventDefault();
 
-    if(!cal.data[cal.sDay]){
-      var event1 = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
-      cal.data[cal.sDay] = event1;
-    }
-    else{
-      cal.data[cal.sDay] = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
-    }
+    // if(!cal.data[cal.sDay]){
+    //   var event1 = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    //   cal.data[cal.sDay] = event1;
+    // }
+    cal.data[cal.sDay] = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
      cal.list();
   },
