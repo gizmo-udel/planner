@@ -91,9 +91,6 @@ var cal = {
     cRow.classList.add("head");
     cTable.appendChild(cRow);
 
-    //temporary variable for limiting the amount of events adding, until parsing is complete
-    var Hasdata;
-
     // Days in Month
     var total = squares.length;
     cRow = document.createElement("tr");
@@ -103,14 +100,12 @@ var cal = {
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
-      Hasdata = false;
       // The td html element is a standard cell within the table
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
-        cCell.innerHTML = "<div><a class='dd' href = day.html> "+squares[i] + "</div>";
+        cCell.innerHTML = "<a class='dd' href = 'day.html'>"+squares[i];
         if (cal.data[squares[i]]) {
-          Hasdata = true;
           var LoadDayData = JSON.parse(cal.data[squares[i]]);
           NewCell = document.createElement("div");
           NewCell.innerHTML = "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
@@ -119,10 +114,16 @@ var cal = {
             cal.EditingEvent(this);
           });
         }
-        cCell.addEventListener("click", function(){
-          if(!Hasdata){cal.AddingEvent(this);}
-          cal.EditingEvent(this);
+        if(cal.data[squares[i]]){
+          cCell.addEventListener("click", function(){
+              cal.EditingEvent(this);
+          });
+        }
+        else{
+          cCell.addEventListener("click", function(){
+            cal.AddingEvent(this);
         });
+        }
       }
       cRow.appendChild(cCell);
       if (i!=0 && (i+1)%7==0) {
