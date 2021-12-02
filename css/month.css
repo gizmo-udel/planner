@@ -78,7 +78,7 @@
 }
 
 /* Aaron's custom css */
-#calendar tr.day div:hover{
+#calendar tr.day p:hover{
   background: #8db7c5;
   cursor: pointer;
 }

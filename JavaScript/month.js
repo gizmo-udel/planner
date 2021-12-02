@@ -96,7 +96,6 @@ var cal = {
     cRow = document.createElement("tr");
     
     cRow.classList.add("day"); // this is the whole row and can be used for the week view
-    var NewCell; //this is to seperate the event from the square
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
@@ -107,29 +106,28 @@ var cal = {
         cCell.innerHTML = "<a class='dd' href = 'day.html'>"+squares[i];
         if (cal.data[squares[i]]) {
           var LoadDayData = JSON.parse(cal.data[squares[i]]);
-          NewCell = document.createElement("div");
-          NewCell.innerHTML = "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
-          cCell.innerHTML += NewCell.innerHTML;
-          NewCell.addEventListener("click", function(){
-            cal.EditingEvent(this);
-          });
+          cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-id' href = '#'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</p>";
         }
-        if(cal.data[squares[i]]){
-          cCell.addEventListener("click", function(){
-              cal.EditingEvent(this);
-          });
-        }
-        else{
-          cCell.addEventListener("click", function(){
-            cal.AddingEvent(this);
+        cCell.addEventListener("click", function(){
+          cal.AddingEvent(this);
         });
-        }
       }
       cRow.appendChild(cCell);
       if (i!=0 && (i+1)%7==0) {
         cTable.appendChild(cRow);
         cRow = document.createElement("tr");
         cRow.classList.add("day");
+      }
+    }
+    for ( var i = 0; i <total; i++){
+      var addingListener = "evt-" + i + "-id";
+      if(document.getElementById(addingListener)){
+        var temp = document.getElementById(addingListener).id.split("-")[1];
+        console.log(temp);
+        document.getElementById(addingListener).addEventListener("click", function(event){
+          event.stopPropagation();
+          cal.EditingEvent(temp);
+        });
       }
     }
 
@@ -140,7 +138,7 @@ var cal = {
   // (C) Edit Docket
   EditingEvent : function (el) {
     // (C1) Get current data
-    cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
+    cal.sDay = el;
     var dayData = JSON.parse(cal.data[cal.sDay]);
     // (C2) Draw the event input form
 
