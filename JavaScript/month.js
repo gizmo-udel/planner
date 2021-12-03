@@ -106,7 +106,7 @@ var cal = {
         cCell.innerHTML = "<a class='dd' href = 'day.html'>"+squares[i];
         if (cal.data[squares[i]]) {
           var LoadDayData = JSON.parse(cal.data[squares[i]]);
-          cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-id' href = '#'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</p>";
+          cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-id'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</p>";
         }
         cCell.addEventListener("click", function(){
           cal.AddingEvent(this);
@@ -149,8 +149,9 @@ var cal = {
     tForm += "<textarea id='evt-details' required>" + dayData.detail + "</textarea>";
 
     // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='sevt-time' name='dueTime' required>"  +  dayData.stime;
-    tForm += "<input type='time' id='devt-time' name='dueTime' required>"  +  dayData.dtime;
+    tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ dayData.stime + "'required>";
+    console.log(dayData.stime + " " + dayData.dtime)
+    tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + dayData.dtime + "'required>";
 
     //buttons on the form
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
