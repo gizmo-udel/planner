@@ -106,7 +106,11 @@ var cal = {
         cCell.innerHTML = "<a class='dd' href = 'day.html'>"+squares[i];
         if (cal.data[squares[i]]) {
           var LoadDayData = JSON.parse(cal.data[squares[i]]);
-          cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-id'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</p>";
+          for( var eventNum = 1; eventNum<=LoadDayData.numCount; eventNum++){
+            var tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
+            cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail + " " + tempEvent.dtime + "</p>"; // fix to have the day instead of square
+            console.log("<p class='evt' id = 'evt-" + i + "-" + eventNum + "-id'>" + tempEvent.detail + " " + tempEvent.dtime + "</p>");
+          }
         }
         cCell.addEventListener("click", function(){
           cal.AddingEvent(this);
@@ -119,15 +123,17 @@ var cal = {
         cRow.classList.add("day");
       }
     }
-    for ( var i = 0; i <total; i++){
-      var addingListener = "evt-" + i + "-id";
-      if(document.getElementById(addingListener)){
-        var temp = document.getElementById(addingListener).id.split("-")[1];
-        console.log(temp);
-        document.getElementById(addingListener).addEventListener("click", function(event){
-          event.stopPropagation();
-          cal.EditingEvent(temp);
-        });
+    for ( var day = 0; day <total; day++){//fix so that it  doe sthe day instead of the square
+      if(cal.data[day]){
+        var tempNumEvents = JSON.parse(cal.data[day]).numCount;
+        for(var tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++){
+          var addingListener = "evt-" + day  + "-" + tempNumEvent + "-id";
+          var temp = document.getElementById(addingListener).id.split("-");
+          document.getElementById(addingListener).addEventListener("click", function(event){
+            event.stopPropagation();
+            cal.EditingEvent(temp[1], temp[2]);
+          });
+        }
       }
     }
 
@@ -136,29 +142,21 @@ var cal = {
   },
 
   // (C) Edit Docket
-  EditingEvent : function (el) {
-    // (C1) Get current data
-    cal.sDay = el;
-    var dayData = JSON.parse(cal.data[cal.sDay]);
-    // (C2) Draw the event input form
-
+  EditingEvent : function (day, eventNum) {
+    cal.sDay = day;
+    console.log("this is testing" + day);
+    var event =JSON.parse(cal.data[cal.sDay]);
+    event= event["event" + eventNum];
+    event = JSON.parse(event);
+    console.log(event)
     var tForm = "<h1> EDIT EVENT </h1>";
-
-    //changed it so that the month started first then the month
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
-    tForm += "<textarea id='evt-details' required>" + dayData.detail + "</textarea>";
-
-    // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ dayData.stime + "'required>";
-    console.log(dayData.stime + " " + dayData.dtime)
-    tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + dayData.dtime + "'required>";
-
-    //buttons on the form
+    tForm += "<textarea id='evt-details' required>" + event.detail + "</textarea>";
+    tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ event.stime + "'required>";
+    tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + event.dtime + "'required>";
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-    
-    // (C3) Attach form to calendar
     var eForm = document.createElement("form");
     eForm.addEventListener("submit", cal.save);
     eForm.innerHTML = tForm;
@@ -168,25 +166,15 @@ var cal = {
   },
 
   AddingEvent : function (el) {
-    // (C1) Get current data
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
-    // (C2) Draw the event input form
     var tForm = "<h1> ADD EVENT </h1>";
-
-    //changed it so that the month started first then the month
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
     tForm += "<textarea id='evt-details' required> </textarea>";
-
-    // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='sevt-time' name='dueTime' required>";
-    tForm += "<input type='time' id='devt-time' name='dueTime' required>";
-
-    //buttons on the form
+    tForm += "<input type='time' id='sevt-time' value = '00:00' name='dueTime' required>";
+    tForm += "<input type='time' id='devt-time' value = '00:00' name='dueTime' required>";
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
     tForm += "<input type='submit' value='Save'/>";
-    
-    // (C3) Attach form to calendar
     var eForm = document.createElement("form");
     eForm.addEventListener("submit", cal.save);
     eForm.innerHTML = tForm;
@@ -204,13 +192,18 @@ var cal = {
     evt.stopPropagation();
     evt.preventDefault();
 
-    // if(!cal.data[cal.sDay]){
-    //   var event1 = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
-    //   cal.data[cal.sDay] = event1;
-    // }
-    cal.data[cal.sDay] = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    if(!cal.data[cal.sDay]){
+      cal.data[cal.sDay] = JSON.stringify({numCount:0});
+    }
+    var oldData = JSON.parse(cal.data[cal.sDay]);
+    var NewEvent = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    oldData.numCount = oldData.numCount + 1;
+    oldData["event" + oldData.numCount] = NewEvent;
+    console.log(JSON.stringify(oldData));
+    cal.data[cal.sDay] = JSON.stringify(oldData);
+    console.log(JSON.parse(cal.data[cal.sDay]));
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
-     cal.list();
+    cal.list();
   },
 
   // (F) Delete event for selected date
