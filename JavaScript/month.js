@@ -109,7 +109,7 @@ var cal = {
           for( var eventNum = 1; eventNum<=LoadDayData.numCount; eventNum++){
             var tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
             cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail + " " + tempEvent.dtime + "</p>"; // fix to have the day instead of square
-            console.log("<p class='evt' id = 'evt-" + i + "-" + eventNum + "-id'>" + tempEvent.detail + " " + tempEvent.dtime + "</p>");
+            console.log("<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>");
           }
         }
         cCell.addEventListener("click", function(){
@@ -123,16 +123,20 @@ var cal = {
         cRow.classList.add("day");
       }
     }
-    for ( var day = 0; day <total; day++){//fix so that it  doe sthe day instead of the square
+    for ( var day = 0; day <total; day++){//fix so that it does the day instead of the square
       if(cal.data[day]){
         var tempNumEvents = JSON.parse(cal.data[day]).numCount;
         for(var tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++){
-          var addingListener = "evt-" + day  + "-" + tempNumEvent + "-id";
-          var temp = document.getElementById(addingListener).id.split("-");
-          document.getElementById(addingListener).addEventListener("click", function(event){
-            event.stopPropagation();
-            cal.EditingEvent(temp[1], temp[2]);
-          });
+          (function(){
+            var addingListener = "evt-" + day  + "-" + tempNumEvent + "-id";
+            var temp = document.getElementById(addingListener).id.split("-");
+            console.log( addingListener + " " + "day-" + temp[1] + " event-" + temp[2]);
+            document.getElementById(addingListener).addEventListener("click", function(event){
+              event.stopPropagation();
+              event.preventDefault();
+              cal.EditingEvent(temp[1], temp[2]);
+           });
+          }());
         }
       }
     }
@@ -144,7 +148,7 @@ var cal = {
   // (C) Edit Docket
   EditingEvent : function (day, eventNum) {
     cal.sDay = day;
-    console.log("this is testing" + day);
+    console.log("this is testing" +day + " " + eventNum);
     var event =JSON.parse(cal.data[cal.sDay]);
     event= event["event" + eventNum];
     event = JSON.parse(event);
