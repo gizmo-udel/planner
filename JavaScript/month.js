@@ -222,6 +222,7 @@ var cal = {
       cal.sDay = day;
       console.log(eventNum);
       var event =JSON.parse(cal.data[cal.sDay]);
+      // rewrites the selected event into the next event creating two of the last event and deleting the last event
       for(var i = eventNum; i <event.numCount; i++){
         (function(){
           console.log(event["event" + i]);
