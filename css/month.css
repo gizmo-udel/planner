@@ -21,6 +21,8 @@
   text-align: center;
   background-attachment: fixed;
   font-family: 'Rubik', sans-serif;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .custom-logo{
@@ -66,7 +68,7 @@
   padding: 15px 5px;
   background-color:white;
   vertical-align: top;
-  height: 110px;
+  height: 8em;
 }
 #calendar tr.day td:hover {
   background: #8db7c5;
@@ -132,6 +134,7 @@
 }
 #cal-event textarea {
   display: block;
+  height: 15em;
   box-sizing: padding-box;
   width: 90%;
   padding: 10px;

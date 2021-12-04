@@ -109,7 +109,10 @@ var cal = {
           for( var eventNum = 1; eventNum<=LoadDayData.numCount; eventNum++){
             (function(){
               var tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
-              cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail + " " + tempEvent.dtime + "</p>"; // fix to have the day instead of square
+              var tempDtime = tempEvent.dtime.split(":");
+              cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" 
+                              + tempEvent.detail + " " + (parseInt(tempDtime[0], 10)<=12 ? (parseInt(tempDtime[0],10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" 
+                              : (parseInt(tempDtime[0], 10) -12) + ":" + tempDtime[1] + " pm") + "</p>";
             }());
           }
         }
