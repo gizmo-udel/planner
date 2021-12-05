@@ -159,7 +159,7 @@ var cal = {
     tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + event.dtime + "'required>";
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='button' value='Delete' onclick='cal.del(" + day + ',' + eventNum + ")'/>";//pass it the event num to know which one to remove and to reassign the future events to
-    console.log()
+    tForm += "<input type='button' value='Delete All' onclick='cal.del(" + day + ',' + 0 + ")'/>"
     tForm += "<input type='submit' value='Save'/>";
     var eForm = document.createElement("form");
     eForm.addEventListener("submit", function(evt){
@@ -181,6 +181,7 @@ var cal = {
     tForm += "<input type='time' id='sevt-time' value = '00:00' name='dueTime' required>";
     tForm += "<input type='time' id='devt-time' value = '00:00' name='dueTime' required>";
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
+    tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
     tForm += "<input type='submit' value='Save'/>";
     var eForm = document.createElement("form");
     eForm.addEventListener("submit", function (evt){
@@ -221,19 +222,22 @@ var cal = {
   del : function (day, eventNum) {
     if (confirm("Remove event?")) {
       cal.sDay = day;
-      console.log(eventNum);
-      var event =JSON.parse(cal.data[cal.sDay]);
-      // rewrites the selected event into the next event creating two of the last event and deleting the last event
-      for(var i = eventNum; i <event.numCount; i++){
-        (function(){
-          console.log(event["event" + i]);
-          var tempEvent = event["event" + (i + 1)];
-          event["event" + i] = tempEvent; 
-        }());
+      if(!eventNum){
+        delete cal.data[cal.sDay];
       }
-      delete event["event" + event.numCount];
-      event.numCount = event.numCount - 1;
-      cal.data[cal.sDay] = JSON.stringify(event);
+      else{
+        var event =JSON.parse(cal.data[cal.sDay]);
+        for(var i = eventNum; i <event.numCount; i++){
+          (function(){
+            console.log(event["event" + i]);
+            var tempEvent = event["event" + (i + 1)];
+            event["event" + i] = tempEvent; 
+          }());
+        }
+        delete event["event" + event.numCount];
+        event.numCount = event.numCount - 1;
+        cal.data[cal.sDay] = JSON.stringify(event);
+      }
       localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
       cal.list(); //Delete the event and redraw the calendar
     }
