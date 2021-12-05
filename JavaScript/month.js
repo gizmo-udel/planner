@@ -110,9 +110,7 @@ var cal = {
             (function(){
               var tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
               var tempDtime = tempEvent.dtime.split(":");
-              cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" 
-                              + tempEvent.detail + " " + (parseInt(tempDtime[0], 10)<=12 ? (parseInt(tempDtime[0],10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" 
-                              : (parseInt(tempDtime[0], 10) -12) + ":" + tempDtime[1] + " pm") + "</p>";
+              cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail.split(" ")[1] + " " + (parseInt(tempDtime[0], 10)<=12 ? (parseInt(tempDtime[0],10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" : (parseInt(tempDtime[0], 10) -12) + ":" + tempDtime[1] + " pm") + "</p>";
             }());
           }
         }
