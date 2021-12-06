@@ -146,20 +146,9 @@ var cal = {
     cal.close();
   },
 
-  // (C) Edit Docket
-  EditingEvent : function (day, eventNum) {
-    cal.sDay = day;
-    var event =JSON.parse(cal.data[cal.sDay]);
-    event= event["event" + eventNum];
-    event = JSON.parse(event);
-    var tForm = "<h1> EDIT EVENT </h1>";
-    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
-    tForm += "<textarea id='evt-details' required>" + event.detail + "</textarea>";
-    tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ event.stime + "'required>";
-    tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + event.dtime + "'required>";
+  helpingFunction :function (tForm, eventNum){
+    tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
-    tForm += "<input type='button' value='Delete' onclick='cal.del(" + day + ',' + eventNum + ")'/>";//pass it the event num to know which one to remove and to reassign the future events to
-    tForm += "<input type='button' value='Delete All' onclick='cal.del(" + day + ',' + 0 + ")'/>"
     tForm += "<input type='submit' value='Save'/>";
     var eForm = document.createElement("form");
     eForm.addEventListener("submit", function(evt){
@@ -173,6 +162,20 @@ var cal = {
     container.appendChild(eForm);
   },
 
+  EditingEvent : function (day, eventNum) {
+    cal.sDay = day;
+    var event =JSON.parse(cal.data[cal.sDay]);
+    event= event["event" + eventNum];
+    event = JSON.parse(event);
+    var tForm = "<h1> EDIT EVENT </h1>";
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-details' required>" + event.detail + "</textarea>";
+    tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ event.stime + "'required>";
+    tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + event.dtime + "'required>";
+    tForm += "<input type='button' value='Delete' onclick='cal.del(" + day + ',' + eventNum + ")'/>";
+    this.helpingFunction(tForm, eventNum);
+  },
+
   AddingEvent : function (el) {
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
     var tForm = "<h1> ADD EVENT </h1>";
@@ -180,19 +183,7 @@ var cal = {
     tForm += "<textarea id='evt-details' required> </textarea>";
     tForm += "<input type='time' id='sevt-time' value = '00:00' name='dueTime' required>";
     tForm += "<input type='time' id='devt-time' value = '00:00' name='dueTime' required>";
-    tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
-    tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
-    tForm += "<input type='submit' value='Save'/>";
-    var eForm = document.createElement("form");
-    eForm.addEventListener("submit", function (evt){
-      evt.stopPropagation();
-      evt.preventDefault();  
-      cal.save(0)
-    });// pass it zero to know that it is adding
-    eForm.innerHTML = tForm;
-    var container = document.getElementById("cal-event");
-    container.innerHTML = "";
-    container.appendChild(eForm);
+    this.helpingFunction(tForm, 0);
   },
   // (D) Close event input form
   close : function () {
@@ -210,9 +201,7 @@ var cal = {
       oldData.numCount = oldData.numCount + 1;
       oldData["event" + oldData.numCount] = NewEvent;
     }
-    else{
-      oldData["event" + eventNum] = NewEvent;
-    }
+    else{oldData["event" + eventNum] = NewEvent;}
     cal.data[cal.sDay] = JSON.stringify(oldData);
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
     cal.list();
