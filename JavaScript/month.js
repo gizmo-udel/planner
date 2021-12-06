@@ -109,7 +109,7 @@ var cal = {
         }
         cCell.addEventListener("click", function(){
           if(document.getElementById("evt-date")){
-            if(document.getElementById("evt-date").innerHTML.split("/")[1] === this.getElementsByClassName("dd")[0].innerHTML){cal.close();}
+            if(document.getElementById("evt-date").innerHTML.split("/")[1] === this.getElementsByClassName("dd")[0].innerHTML){cal.close(false);}
             else{cal.AddingEvent(this);}
           }
           else{cal.AddingEvent(this);}
@@ -140,13 +140,13 @@ var cal = {
     }
 
     // (B5) REMOVE ANY PREVIOUS ADD/EDIT EVENT DOCKET
-    cal.close();
+    cal.close(false);
   },
 
   helpingFunction :function (tForm, eventNum){
     tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
     tForm += "<input type='button' id = 'militaryTime' value='" + (cal.militaryTime ? "Military" : "AM/PM") +"' onclick='cal.ChangeTime()'/>";
-    tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
+    tForm += "<input type='button' value='Close' id = 'closingButton' onclick='cal.close(false)'/>";
     tForm += "<input type='submit' value='Save'/>";
     var eForm = document.createElement("form");
     eForm.addEventListener("submit", function(evt){
@@ -184,8 +184,9 @@ var cal = {
     this.helpingFunction(tForm, 0);
   },
   // (D) Close event input form
-  close : function () {
+  close : function (callList) {
     document.getElementById("cal-event").innerHTML = "";
+    if(callList){cal.list();}
   },
 
   // (E) Save event either by adding or by editing 
@@ -210,6 +211,8 @@ var cal = {
     var value = document.getElementById("militaryTime");
     if(cal.militaryTime){value.value = "Military";}
     else{ value.value = "AM/PM"}
+    value = document.getElementById("closingButton");
+    value.onclick = function (){cal.close(true);}
   },
 
   // (F) Delete selected event from the selected day
