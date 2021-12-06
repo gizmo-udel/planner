@@ -6,14 +6,8 @@ var cal = {
   sMth : 0, // Current selected month
   sYear : 0, // Current selected year
   sMon : false , // Start the week on Monday instead of Sunday (Sunday is standard)
+  militaryTime: false,
   
-  // Replace data with event information here (?)
-  // Time : 1159 (Default - as this is the most common turn in time)
-  // Title : null
-  // Color : (Default color?)
-  // ??
-
-
   // TODO:
   // Change the following to firebase instead of localSotrage:
   // 1. Initial load of the data.
@@ -99,7 +93,6 @@ var cal = {
 
     // Create table (boxes) for the rest of the days.
     for (var i=0; i<total; i++) {
-      // The td html element is a standard cell within the table
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
@@ -110,12 +103,16 @@ var cal = {
             (function(){
               var tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
               var tempDtime = tempEvent.dtime.split(":");
-              cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail.split(" ")[1] + " " + (parseInt(tempDtime[0], 10)<=12 ? (parseInt(tempDtime[0],10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" : (parseInt(tempDtime[0], 10) -12) + ":" + tempDtime[1] + " pm") + "</p>";
+              cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail.split(" ")[1] + " " + (cal.militaryTime ? tempEvent.dtime :(parseInt(tempDtime[0], 10)<=12 ? (parseInt(tempDtime[0],10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" : (parseInt(tempDtime[0], 10) -12) + ":" + tempDtime[1] + " pm")) + "</p>";
             }());
           }
         }
         cCell.addEventListener("click", function(){
-          cal.AddingEvent(this);
+          if(document.getElementById("evt-date")){
+            if(document.getElementById("evt-date").innerHTML.split("/")[1] === this.getElementsByClassName("dd")[0].innerHTML){cal.close();}
+            else{cal.AddingEvent(this);}
+          }
+          else{cal.AddingEvent(this);}
         });
       }
       cRow.appendChild(cCell);
@@ -125,7 +122,7 @@ var cal = {
         cRow.classList.add("day");
       }
     }
-    for ( var day = 0; day <total; day++){//fix so that it does the day instead of the square
+    for ( var day = 0; day <total; day++){
       if(cal.data[day]){
         var tempNumEvents = JSON.parse(cal.data[day]).numCount;
         for(var tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++){
@@ -148,6 +145,7 @@ var cal = {
 
   helpingFunction :function (tForm, eventNum){
     tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
+    tForm += "<input type='button' id = 'militaryTime' value='" + (cal.militaryTime ? "Military" : "AM/PM") +"' onclick='cal.ChangeTime()'/>";
     tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
     tForm += "<input type='submit' value='Save'/>";
     var eForm = document.createElement("form");
@@ -182,7 +180,7 @@ var cal = {
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
     tForm += "<textarea id='evt-details' required> </textarea>";
     tForm += "<input type='time' id='sevt-time' value = '00:00' name='dueTime' required>";
-    tForm += "<input type='time' id='devt-time' value = '00:00' name='dueTime' required>";
+    tForm += "<input type='time' id='devt-time' value = '23:59' name='dueTime' required>";
     this.helpingFunction(tForm, 0);
   },
   // (D) Close event input form
@@ -190,7 +188,7 @@ var cal = {
     document.getElementById("cal-event").innerHTML = "";
   },
 
-  // (E) Save event
+  // (E) Save event either by adding or by editing 
   save : function (eventNum) {
     if(!cal.data[cal.sDay]){
       cal.data[cal.sDay] = JSON.stringify({numCount:0});
@@ -207,7 +205,14 @@ var cal = {
     cal.list();
   },
 
-  // (F) Delete event for selected date
+  ChangeTime : function() {
+    cal.militaryTime = !cal.militaryTime;
+    var value = document.getElementById("militaryTime");
+    if(cal.militaryTime){value.value = "Military";}
+    else{ value.value = "AM/PM"}
+  },
+
+  // (F) Delete selected event from the selected day
   del : function (day, eventNum) {
     if (confirm("Remove event?")) {
       cal.sDay = day;
@@ -217,14 +222,9 @@ var cal = {
       else{
         var event =JSON.parse(cal.data[cal.sDay]);
         for(var i = eventNum; i <event.numCount; i++){
-          (function(){
-            console.log(event["event" + i]);
-            var tempEvent = event["event" + (i + 1)];
-            event["event" + i] = tempEvent; 
-          }());
+          (function(){event["event" + i] = event["event" + (i + 1)]; }());
         }
-        delete event["event" + event.numCount];
-        event.numCount = event.numCount - 1;
+        delete event["event" + event.numCount--];
         cal.data[cal.sDay] = JSON.stringify(event);
       }
       localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
