@@ -110,7 +110,10 @@ var cal = {
         cCell.addEventListener("click", function(){
           if(document.getElementById("evt-date")){
             if(document.getElementById("evt-date").innerHTML.split("/")[1] === this.getElementsByClassName("dd")[0].innerHTML){cal.close(false);}
-            else{cal.AddingEvent(this);}
+            else{
+              document.getElementById("evt-date").innerHTML = cal.mName[cal.sMth] + "/" + this.getElementsByClassName("dd")[0].innerHTML + "/" + + cal.sYear;
+              cal.sDay = this.getElementsByClassName("dd")[0].innerHTML;
+            }
           }
           else{cal.AddingEvent(this);}
         });
@@ -209,10 +212,8 @@ var cal = {
   ChangeTime : function() {
     cal.militaryTime = !cal.militaryTime;
     var value = document.getElementById("militaryTime");
-    if(cal.militaryTime){value.value = "Military";}
-    else{ value.value = "AM/PM"}
-    value = document.getElementById("closingButton");
-    value.onclick = function (){cal.close(true);}
+    value.value = this.militaryTime ? "MIlitary" : "AM/PM";
+    document.getElementById("closingButton").onclick = function (){cal.close(true);};
   },
 
   // (F) Delete selected event from the selected day
