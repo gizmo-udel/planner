@@ -92,19 +92,17 @@ var cal = {
     cRow.classList.add("day"); // this is the whole row and can be used for the week view
 
     // Create table (boxes) for the rest of the days.
-    for (var i=0; i<total; i++) {
+    for (let i=0; i<total; i++) {
       cCell = document.createElement("td");
       if (squares[i]=="blank") { cCell.classList.add("blank"); }
       else {
         cCell.innerHTML = "<a class='dd' href = 'day.html'>"+squares[i];
         if (cal.data[squares[i]]) {
-          var LoadDayData = JSON.parse(cal.data[squares[i]]);
-          for( var eventNum = 1; eventNum<=LoadDayData.numCount; eventNum++){
-            (function(){
-              var tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
-              var tempDtime = tempEvent.dtime.split(":");
+          let LoadDayData = JSON.parse(cal.data[squares[i]]);
+          for(let eventNum = 1; eventNum<=LoadDayData.numCount; eventNum++){
+              let tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
+              let tempDtime = tempEvent.dtime.split(":");
               cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail.split(" ")[1] + " " + (cal.militaryTime ? tempEvent.dtime :(parseInt(tempDtime[0], 10)<=12 ? (parseInt(tempDtime[0],10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" : (parseInt(tempDtime[0], 10) -12) + ":" + tempDtime[1] + " pm")) + "</p>";
-            }());
           }
         }
         cCell.addEventListener("click", function(){
@@ -115,8 +113,9 @@ var cal = {
               cal.sDay = this.getElementsByClassName("dd")[0].innerHTML;
             }
           }
-          else{cal.AddingEvent(this);}
+          else{cal.AddingEvent(this);};
         });
+        
       }
       cRow.appendChild(cCell);
       if (i!=0 && (i+1)%7==0) {
@@ -125,19 +124,16 @@ var cal = {
         cRow.classList.add("day");
       }
     }
-    for ( var day = 0; day <total; day++){
+    for ( let day = 0; day <total; day++){
       if(cal.data[day]){
-        var tempNumEvents = JSON.parse(cal.data[day]).numCount;
-        for(var tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++){
-          (function(){
-            var addingListener = "evt-" + day  + "-" + tempNumEvent + "-id";
-            var temp = document.getElementById(addingListener).id.split("-");
+        let tempNumEvents = JSON.parse(cal.data[day]).numCount;
+        for(let tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++){
+            let addingListener = "evt-" + day  + "-" + tempNumEvent + "-id";
             document.getElementById(addingListener).addEventListener("click", function(event){
               event.stopPropagation();
               event.preventDefault();
-              cal.EditingEvent(temp[1], temp[2]);
+              cal.EditingEvent(day, tempNumEvent);
            });
-          }());
         }
       }
     }
@@ -158,17 +154,15 @@ var cal = {
       cal.save(eventNum);
     }); //pass it the event number to know that it is editting
     eForm.innerHTML = tForm;
-    var container = document.getElementById("cal-event");
-    container.innerHTML = "";
-    container.appendChild(eForm);
+    document.getElementById("cal-event").appendChild(eForm);
   },
 
   EditingEvent : function (day, eventNum) {
     cal.sDay = day;
-    var event =JSON.parse(cal.data[cal.sDay]);
+    let event =JSON.parse(cal.data[cal.sDay]);
     event= event["event" + eventNum];
     event = JSON.parse(event);
-    var tForm = "<h1> EDIT EVENT </h1>";
+    let tForm = "<h1> EDIT EVENT </h1>";
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
     tForm += "<textarea id='evt-details' required>" + event.detail + "</textarea>";
     tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ event.stime + "'required>";
@@ -179,7 +173,7 @@ var cal = {
 
   AddingEvent : function (el) {
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
-    var tForm = "<h1> ADD EVENT </h1>";
+    let tForm = "<h1> ADD EVENT </h1>";
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
     tForm += "<textarea id='evt-details' required> </textarea>";
     tForm += "<input type='time' id='sevt-time' value = '00:00' name='dueTime' required>";
@@ -197,8 +191,8 @@ var cal = {
     if(!cal.data[cal.sDay]){
       cal.data[cal.sDay] = JSON.stringify({numCount:0});
     }
-    var oldData = JSON.parse(cal.data[cal.sDay]);
-    var NewEvent = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    let oldData = JSON.parse(cal.data[cal.sDay]);
+    let NewEvent = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
     if(!eventNum){
       oldData.numCount = oldData.numCount + 1;
       oldData["event" + oldData.numCount] = NewEvent;
@@ -211,22 +205,22 @@ var cal = {
 
   ChangeTime : function() {
     cal.militaryTime = !cal.militaryTime;
-    var value = document.getElementById("militaryTime");
+    let value = document.getElementById("militaryTime");
     value.value = this.militaryTime ? "MIlitary" : "AM/PM";
     document.getElementById("closingButton").onclick = function (){cal.close(true);};
   },
 
   // (F) Delete selected event from the selected day
   del : function (day, eventNum) {
-    if (confirm("Remove event?")) {
+    if (confirm("Remove"+ (!eventNum ? " all events?" : " event?"))) {
       cal.sDay = day;
       if(!eventNum){
         delete cal.data[cal.sDay];
       }
       else{
-        var event =JSON.parse(cal.data[cal.sDay]);
-        for(var i = eventNum; i <event.numCount; i++){
-          (function(){event["event" + i] = event["event" + (i + 1)]; }());
+        let event =JSON.parse(cal.data[cal.sDay]);
+        for(let i = eventNum; i <event.numCount; i++){
+          event["event" + i] = event["event" + (i + 1)];
         }
         delete event["event" + event.numCount--];
         cal.data[cal.sDay] = JSON.stringify(event);

@@ -40,7 +40,6 @@
   font-size: 1.2em;
   border: 0;
   color: #fff;
-    /*Aaron Changed to make fit the whole calendar*/
   width: 45%;
   font-weight: bold;
 }
@@ -61,14 +60,13 @@
   text-align: center;
 }
 
-
 #calendar tr.day td {
   border: 1px solid #afd0db;
   width: 14.28%;
   padding: 15px 5px;
   background-color:white;
   vertical-align: top;
-  height: 8em;
+  height: 150px;
 }
 #calendar tr.day td:hover {
   background: #8db7c5;
@@ -213,4 +211,3 @@ html, body, textarea, input {
 .navbar-nav .nav-item {
   text-align: center;
 }
-
