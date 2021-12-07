@@ -33,6 +33,7 @@ var cal = {
       startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // First day of the month
       endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // Last day of the month
 
+
     // (B2) LOAD DATA FROM LOCALSTORAGE
     cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear); //cal-12-02
     if (cal.data == null) {
@@ -116,7 +117,10 @@ var cal = {
     cRow.classList.add("day"); // this is the whole row and can be used for the week view
     var NewCell; //this is to seperate the event from the square
 
-    // Create table (boxes) for the rest of the days.
+    //Keep track of current day.
+    var currDay = 0;
+
+    // Create table (boxes) for the rest of the days and load stored data for any logged in user.
     for (var i = 0; i < total; i++) {
       Hasdata = false;
       // The td html element is a standard cell within the table
@@ -124,14 +128,45 @@ var cal = {
       if (squares[i] == "blank") {
         cCell.classList.add("blank");
       } else {
-        cCell.innerHTML = "<div class='dd'>" + squares[i] + "</div>";
-        if (cal.data[squares[i]]) {
-          Hasdata = true;
-          var LoadDayData = JSON.parse(cal.data[squares[i]]);
-          NewCell = document.createElement("div");
-          NewCell.innerHTML = "<div class='evt'>" + LoadDayData.detail + " " + LoadDayData.dtime + "</div>";
-          cCell.innerHTML += NewCell.innerHTML;
-        }
+        // If the square isn't "blank" (grey square) place day numbers.
+        cCell.innerHTML = "<div class='dd' id="+squares[i]+">" + squares[i] + "</div>";
+
+        testnum++;
+        console.log("Testnum (Else): "+testnum);
+
+        //Display data if any is currently stored for the logged in user.
+        firebase.auth().onAuthStateChanged(firebaseUser => {
+          if (firebaseUser) {
+
+            // Grab current logged in userID to match to the database.
+            const userID = firebaseUser.uid;            
+            db.collection('users').doc(userID).collection('events').get().then((snapshot) => {
+              //This needs to be here so it's not iterating for every document in the collection, causing skips.
+              currDay++;
+              snapshot.docs.forEach(doc => {
+                //console.log("Calling collections ok!");
+                //console.log("FIREBASE DOC ID: " + doc.id);
+                //console.log("MY DOC ID: " + Number(cal.sMth+1) + "-" + currDay + "-" + cal.sYear);
+                
+                // When saving we will have to use the format (mm-dd-yyyy) to match this query.
+                // This needs to be changed to unique values, and then we check the doc.data().eventDate string of each document instead of doc.id?
+                if (doc.id == Number(cal.sMth+1) + "-" + currDay + "-" + cal.sYear) {
+                  Hasdata = true;
+                  console.log("Matching Doc ID OK for day " + currDay + "!");
+
+                  // Load the data into the created cell.
+                  NewCell = document.createElement("div");
+                  NewCell.innerHTML = "<div class='evt'>" + doc.data().eventName + " " + doc.data().eventTime + "</div>";
+
+                  // Grab the current day to append to the correct cell.
+                  dayID = currDay.toString();
+                  document.getElementById(dayID).innerHTML += NewCell.innerHTML;
+                }
+              })
+            })
+          }
+        });
+        //??
         cCell.addEventListener("click", function () {
           if (!Hasdata) {
             cal.AddingEvent(this);
@@ -139,6 +174,7 @@ var cal = {
           cal.EditingEvent(this);
         });
       }
+      //Appening days
       cRow.appendChild(cCell);
       if (i != 0 && (i + 1) % 7 == 0) {
         cTable.appendChild(cRow);
@@ -225,43 +261,50 @@ var cal = {
   save: function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
-/*
-    // Firebase
-    // Initialize database.
-    const firebaseConfig = {
-      apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
-      authDomain: "ud-planner.firebaseapp.com",
-      projectId: "ud-planner",
-      storageBucket: "ud-planner.appspot.com",
-      messagingSenderId: "396137599848",
-      appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
-      measurementId: "G-KMYYDKW7JM"
-    };
+    /*
+        // Firebase
+        // Initialize database.
+        const firebaseConfig = {
+          apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
+          authDomain: "ud-planner.firebaseapp.com",
+          projectId: "ud-planner",
+          storageBucket: "ud-planner.appspot.com",
+          messagingSenderId: "396137599848",
+          appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
+          measurementId: "G-KMYYDKW7JM"
+        };
 
-    firebase.initializeApp(firebaseConfig);
-    const firebase = firebase.firestore();
-    const docRef = firestore.collection('events');
+        firebase.initializeApp(firebaseConfig);
+        const firebase = firebase.firestore();
+        const docRef = firestore.collection('events');
 
-    stime = document.getElementById("sevt-time").value;
-    dtime = document.getElementById("devt-time").value
-    detail = document.getElementById("evt-details").value
-    var event = {
-      eventStartTime: stime,
-      eventEndTime: dtime,
-      eventTitle: detail
-    }
-    */
+        stime = document.getElementById("sevt-time").value;
+        dtime = document.getElementById("devt-time").value
+        detail = document.getElementById("evt-details").value
+        var event = {
+          eventStartTime: stime,
+          eventEndTime: dtime,
+          eventTitle: detail
+        }
+        */
 
-    if (!cal.data[cal.sDay])
-    {
-      var event1 = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    if (!cal.data[cal.sDay]) {
+      var event1 = JSON.stringify({
+        stime: document.getElementById("sevt-time").value,
+        dtime: document.getElementById("devt-time").value,
+        detail: document.getElementById("evt-details").value
+      });
       cal.data[cal.sDay] = event1;
-    }
-    else{
-      cal.data[cal.sDay] = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    } else {
+      cal.data[cal.sDay] = JSON.stringify({
+        stime: document.getElementById("sevt-time").value,
+        dtime: document.getElementById("devt-time").value,
+        detail: document.getElementById("evt-details").value
+      });
     }
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
-     cal.list();
+    cal.list();
+    console.log(cal.data);
   },
 
   // (F) Delete event for selected date
