@@ -132,12 +132,14 @@
     content: ",";
     margin-inline-end: 4px;
   }
+  .dayview-cell-time:after{
+    content: ",";
+    margin-inline-end: 4px;
+  }
   .dayview-cell-extended {
     display: block;
   }
-  .dayview-cell-desc {
-    display: none;
-  }
+  
   .dayview-cell-title,
   .dayview-cell-desc {
     white-space: normal;
