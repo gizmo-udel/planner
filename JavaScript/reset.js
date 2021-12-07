@@ -9,6 +9,7 @@ resetPassword.addEventListener ('click', (e) => {
     auth.sendPasswordResetEmail(email)
     .then(() =>{
         window.location = 'login.html';
+        alert("Password reset email sent successfully!");
         console.log('Password reset email sent successfully!');
     })
     .catch(error => {
