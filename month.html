@@ -50,6 +50,42 @@
     <div id="cal-event"></div>
   </div>
 
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div id="event-modal" class="modal-content" style="--m-background: transparent;">
+      <div class="modal-header">
+        <div id='event-title1'></div>
+        
+        <button type="button" class="close" id="Close1"data-dismiss="modal">&times;</button>
+      </div>
+      <div id='evt-date'></div>
+      <div id='evt-info1'>
+        <textarea placeholder='Event Name' id='evt-name1'></textarea>
+        <textarea placeholder='Event Description' id='evt-details'></textarea>
+
+        <div id='evt-locatio1n'>
+          <img id='locimg1' src="images/location.png" alt="location">
+          <textarea placeholder='Event Location' id='location1'></textarea>
+        </div>
+
+        <div id='event-time'>
+          <img id='clockimg1' src="images/clock.png" alt="clock">
+          <input type='time' id='sevt-time' name='start-time' value = '00:00' required>
+          <p>to</p>
+           <input type='time' id='devt-time' name='end-time' value = '23:59' required>
+           </div>
+
+      </div>
+      <div id='buttons' class="buttonclass">
+        <button id='Delete1' class="modal_btn">Delete</button>
+        <button type='submit' id='Save1' class="modal_btn">Save</button>
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- Analytics are throwing errors, not sure how to fix yet!
   <script type="module">
     // Add SDKs we're using
