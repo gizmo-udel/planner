@@ -35,7 +35,7 @@ $("#sign-up-button").click(function() {
       });
     } else {
       // Change this later, alerts are terrible.
-      alert("Passwords must match");
+      window.alert("Passwords must match!");
     }
   })
 });
@@ -53,13 +53,22 @@ $("#sign-up-button").click(function() {
     //console.log(u_email);
     let userPassword = document.getElementById("user-password").value;
     firebase.auth().signInWithEmailAndPassword(userEmail, userPassword)
-        .then((userCredential) => {
+      .then((userCredential) => {
         // Signed in 
         window.location = 'month.html';
         const user = userCredential.user;
         console.log(user);
         loginForm.reset();
-      });
+      })
+      .catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode === 'auth/wrong-password') {
+          alert('Wrong password.');
+        } else {
+          alert('Wrong email or password.');
+        }
+    });
   });
   /*
   $("#login-button").click(function() {

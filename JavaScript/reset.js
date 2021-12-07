@@ -12,6 +12,7 @@ resetPassword.addEventListener ('click', (e) => {
         console.log('Password reset email sent successfully!');
     })
     .catch(error => {
+        alert("Email not found.");
         console.error(error);
     });
 });
