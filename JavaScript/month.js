@@ -113,7 +113,7 @@ var cal = {
               cal.sDay = this.getElementsByClassName("dd")[0].innerHTML;
             }
           }
-          else{cal.AddingEvent(this);};
+          else{cal.Event(this, 0 , 0);};
         });
       }
       cRow.appendChild(cCell);
@@ -131,7 +131,7 @@ var cal = {
             document.getElementById(addingListener).addEventListener("click", function(event){
               event.stopPropagation();
               event.preventDefault();
-              cal.EditingEvent(day, tempNumEvent);
+              cal.Event(this, day, tempNumEvent);
            });
         }
       }
@@ -141,7 +141,21 @@ var cal = {
     cal.close(false);
   },
 
-  helpingFunction :function (tForm, eventNum){
+  Event : function (el, day, eventNum) {
+    let event = null;
+    if(!day){cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;}
+    else{
+      cal.sDay = day;
+      event =JSON.parse(cal.data[cal.sDay]);
+      event= event["event" + eventNum];
+      event = JSON.parse(event);
+    }
+    let tForm = "<h1>" + (event ? "EDITTING EVENT" : "ADD EVENT") + "</h1>";
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-title' maxlength = 8 required>"+ (event ? event.title + "</textarea>": "</textarea>" );
+    tForm += "<textarea id='evt-details' placeholder = required>" + (event ? event.detail + "</textarea>":"</textarea>" );
+    tForm += "<input type='time' id='sevt-time' value =" + (event ? event.stime: "00:00") + " name='dueTime' required>";
+    tForm += "<input type='time' id='devt-time' value =" + (event ? event.dtime: "23:59") + " name='dueTime' required>";
     tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
     tForm += "<input type='button' id = 'militaryTime' value='" + (cal.militaryTime ? "Military" : "AM/PM") +"' onclick='cal.ChangeTime()'/>";
     tForm += "<input type='button' value='Close' id = 'closingButton' onclick='cal.close(false)'/>";
@@ -154,32 +168,6 @@ var cal = {
     }); //pass it the event number to know that it is editting
     eForm.innerHTML = tForm;
     document.getElementById("cal-event").appendChild(eForm);
-  },
-
-  EditingEvent : function (day, eventNum) {
-    cal.sDay = day;
-    let event =JSON.parse(cal.data[cal.sDay]);
-    event= event["event" + eventNum];
-    event = JSON.parse(event);
-    let tForm = "<h1> EDIT EVENT </h1>";
-    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
-    tForm += "<textarea id='evt-title' maxlength = 8 required>" +event.title + "</textarea>";
-    tForm += "<textarea id='evt-details' required>" + event.detail + "</textarea>";
-    tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ event.stime + "'required>";
-    tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + event.dtime + "'required>";
-    tForm += "<input type='button' value='Delete' onclick='cal.del(" + day + ',' + eventNum + ")'/>";
-    this.helpingFunction(tForm, eventNum);
-  },
-
-  AddingEvent : function (el) {
-    cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
-    let tForm = "<h1> ADD EVENT </h1>";
-    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
-    tForm += "<textarea id='evt-title' maxlength = 8 required></textarea>";
-    tForm += "<textarea id='evt-details' required></textarea>";
-    tForm += "<input type='time' id='sevt-time' value = '00:00' name='dueTime' required>";
-    tForm += "<input type='time' id='devt-time' value = '23:59' name='dueTime' required>";
-    this.helpingFunction(tForm, 0);
   },
   // (D) Close event input form
   close : function (callList) {
