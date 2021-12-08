@@ -3,6 +3,7 @@
 
 <head>
   <title>Month View</title>
+  <link rel="stylesheet" href="./css/style.css"></link>
   <link href="./css/month.css" rel="stylesheet">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
@@ -55,22 +56,22 @@
     <!-- Modal content -->
     <div id="event-modal" class="modal-content" style="--m-background: transparent;">
       <div class="modal-header">
-        <div id='event-title1'></div>
+        <div id='event-title'></div>
         
-        <button type="button" class="close" id="Close1"data-dismiss="modal">&times;</button>
+        <button type="button" class="close" id="Close"data-dismiss="modal">&times;</button>
       </div>
       <div id='evt-date'></div>
-      <div id='evt-info1'>
-        <textarea placeholder='Event Name' id='evt-name1'></textarea>
+      <div id='evt-info'>
+        <textarea placeholder='Event Name' id='evt-name' required></textarea>
         <textarea placeholder='Event Description' id='evt-details'></textarea>
 
-        <div id='evt-locatio1n'>
-          <img id='locimg1' src="images/location.png" alt="location">
-          <textarea placeholder='Event Location' id='location1'></textarea>
+        <div id='evt-location'>
+          <img id='locimg' src="images/location.png" alt="location">
+          <textarea placeholder='Event Location' id='location'></textarea>
         </div>
 
         <div id='event-time'>
-          <img id='clockimg1' src="images/clock.png" alt="clock">
+          <img id='clockimg' src="images/clock.png" alt="clock">
           <input type='time' id='sevt-time' name='start-time' value = '00:00' required>
           <p>to</p>
            <input type='time' id='devt-time' name='end-time' value = '23:59' required>
@@ -78,8 +79,10 @@
 
       </div>
       <div id='buttons' class="buttonclass">
-        <button id='Delete1' class="modal_btn">Delete</button>
-        <button type='submit' id='Save1' class="modal_btn">Save</button>
+        <button id = 'militaryTime' class="modal_btn" >AM/PM</button>
+        <button id='DeleteAll' class="modal_btn" style="display: none;">Delete All</button>
+        <button id='Delete' class="modal_btn" style="display: none;">Delete</button>
+        <button type='submit' id='Save' class="modal_btn">Save</button>
       </div>
 
     </div>
