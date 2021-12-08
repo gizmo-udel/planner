@@ -131,13 +131,12 @@ var cal = {
         // If the square isn't "blank" (grey square) place day numbers.
         cCell.innerHTML = "<div class='dd' id="+squares[i]+">" + squares[i] + "</div>";
 
-        testnum++;
-        console.log("Testnum (Else): "+testnum);
-
         //Display data if any is currently stored for the logged in user.
         firebase.auth().onAuthStateChanged(firebaseUser => {
           if (firebaseUser) {
 
+            document.getElementById('loginNav').style.display = 'none';
+            document.getElementById('logoutNav').style.display = 'block';
             // Grab current logged in userID to match to the database.
             const userID = firebaseUser.uid;            
             db.collection('users').doc(userID).collection('events').get().then((snapshot) => {
