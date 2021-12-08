@@ -102,7 +102,7 @@ var cal = {
           for(let eventNum = 1; eventNum<=LoadDayData.numCount; eventNum++){
               let tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
               let tempDtime = tempEvent.dtime.split(":");
-              cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail.split(" ")[1] + " " + (cal.militaryTime ? tempEvent.dtime :(parseInt(tempDtime[0], 10)<=12 ? (parseInt(tempDtime[0],10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" : (parseInt(tempDtime[0], 10) -12) + ":" + tempDtime[1] + " pm")) + "</p>";
+              cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.title + " " + (cal.militaryTime ? tempEvent.dtime :(parseInt(tempDtime[0], 10)<=12 ? (parseInt(tempDtime[0],10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" : (parseInt(tempDtime[0], 10) -12) + ":" + tempDtime[1] + " pm")) + "</p>";
           }
         }
         cCell.addEventListener("click", function(){
@@ -115,7 +115,6 @@ var cal = {
           }
           else{cal.AddingEvent(this);};
         });
-        
       }
       cRow.appendChild(cCell);
       if (i!=0 && (i+1)%7==0) {
@@ -164,6 +163,7 @@ var cal = {
     event = JSON.parse(event);
     let tForm = "<h1> EDIT EVENT </h1>";
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-title' maxlength = 8 required>" +event.title + "</textarea>";
     tForm += "<textarea id='evt-details' required>" + event.detail + "</textarea>";
     tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ event.stime + "'required>";
     tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + event.dtime + "'required>";
@@ -175,7 +175,8 @@ var cal = {
     cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
     let tForm = "<h1> ADD EVENT </h1>";
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
-    tForm += "<textarea id='evt-details' required> </textarea>";
+    tForm += "<textarea id='evt-title' maxlength = 8 required></textarea>";
+    tForm += "<textarea id='evt-details' required></textarea>";
     tForm += "<input type='time' id='sevt-time' value = '00:00' name='dueTime' required>";
     tForm += "<input type='time' id='devt-time' value = '23:59' name='dueTime' required>";
     this.helpingFunction(tForm, 0);
@@ -192,7 +193,7 @@ var cal = {
       cal.data[cal.sDay] = JSON.stringify({numCount:0});
     }
     let oldData = JSON.parse(cal.data[cal.sDay]);
-    let NewEvent = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail : document.getElementById("evt-details").value});
+    let NewEvent = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, title: document.getElementById('evt-title').value, detail : document.getElementById("evt-details").value});
     if(!eventNum){
       oldData.numCount = oldData.numCount + 1;
       oldData["event" + oldData.numCount] = NewEvent;
