@@ -220,6 +220,21 @@
         12:30 - 18:15 = "grid-row: 51/74;"
         Math for 12:30 -> (12 * hour) + (30 / minute) + 1 = 48 + 2 + 1 = 51
         Math for 18:15 -> (18 * hour) + (15 / minute) + 1 = 72 + 1 + 1 = 74
+
+
+
+        Pulling from the database:
+        1. Use some code from month.html/month.js to make a day dropdown?
+        2. If selected day has an event:
+            a. Pull event information (eventName, eventDesc, sTime, eTime)
+            b. Create dayview-cell
+            c. Parse sTime and eTime so we can perform math on the hours/mins and create correct style
+               -> Split at ":" (?), sTime -> (hh * 4) + (mm / 15) + 1 = left
+                                    eTime -> (hh * 4) + (mm / 15) + 1 = right
+                                    dayview-cell.style("grid-row:"+ left + "/" + right);
+            d. dayview-cell-title.innerHTML = eventName;
+               dayview-cell-time.innerHTML = sTime + "-" + eTime;
+               dayview-cell-desc.innerHTML = eventDesc;
         -->
         <div class="dayview-gridcell-container">
           <div class="dayview-gridcell">
