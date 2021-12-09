@@ -102,7 +102,7 @@ var cal = {
           for (let eventNum = 1; eventNum <= LoadDayData.numCount; eventNum++) {
             let tempEvent = JSON.parse(LoadDayData["event" + eventNum]);
             let tempDtime = tempEvent.dtime.split(":");
-            cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + tempEvent.detail + " " + (cal.militaryTime ? tempEvent.dtime : (parseInt(tempDtime[0], 10) <= 12 ? (parseInt(tempDtime[0], 10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + " am" : (parseInt(tempDtime[0], 10) - 12) + ":" + tempDtime[1] + " pm")) + "</p>";
+            cCell.innerHTML += "<p class='evt' id = 'evt-" + squares[i] + "-" + eventNum + "-id'>" + " " + (cal.militaryTime ? tempEvent.dtime : (parseInt(tempDtime[0], 10) <= 12 ? (parseInt(tempDtime[0], 10) === 00 ? 12 + ":" + tempDtime[1] : tempEvent.dtime) + "am" + " ": (parseInt(tempDtime[0], 10) - 12) + ":" + tempDtime[1] + "pm" + " ")) + " " + tempEvent.detail + "</p>";
           }
         }
         cCell.addEventListener("click", function () {
@@ -147,7 +147,6 @@ var cal = {
     var timebt = document.getElementById('militaryTime');
     timebt.onclick=function(){
       timebt.innerHTML= cal.militaryTime ? "AM/PM" : "Military"; 
-      console.log(timebt);
       cal.ChangeTime()
     };
 
@@ -207,14 +206,14 @@ var cal = {
     stime = event.stime;
     etime = event.dtime;
 
-    //display delete all button
-    var delall = document.getElementById("DeleteAll");
-    delall.style.display="inline";
-
     //display delete button
     var delbt = document.getElementById("Delete");
     delbt.style.display="inline";
     
+    //display delete all button
+    var delall = document.getElementById("DeleteAll");
+    delall.style.display="inline";
+
     //delete function on click
     var delbt = document.getElementById('Delete');
     delbt.onclick = function () { 
@@ -255,10 +254,6 @@ var cal = {
     //get and assign event date 
     var event_date = document.getElementById("evt-date");
     event_date = cal.mName[cal.sMth] + " / " + cal.sDay + " / " + + cal.sYear ;
-
-    //display delete all button
-    var delall = document.getElementById("DeleteAll");
-    delall.style.display="inline";
    
     //helping function to call other on click functions 
     this.helpingFunction(0);
@@ -277,8 +272,18 @@ var cal = {
 
   // (D) Close event input form
   close: function (callList) {
+    //close modal 
     var modal = document.getElementById('myModal');
     modal.style.display = "none";
+
+    //remove delete button
+    var delbt = document.getElementById("Delete");
+    delbt.style.display="none";
+    
+    //remove delete all button
+    var delall = document.getElementById("DeleteAll");
+    delall.style.display="none";
+
     if (callList) { 
       cal.list(); 
     }
@@ -302,7 +307,6 @@ var cal = {
   },
 
   ChangeTime: function () {
-    console.log("changed");
     cal.militaryTime = !cal.militaryTime;
     let value = document.getElementById("militaryTime");
     value.value = this.militaryTime ? "MIlitary" : "AM/PM";
@@ -362,4 +366,36 @@ window.addEventListener("load", function () {
   document.getElementById("cal-yr").addEventListener("click", cal.list);
   document.getElementById("cal-mth").addEventListener("click", cal.list);
   cal.list();
+
+  
 });
+
+//Outside Military + AM/PM button
+var timebt = document.getElementById('militaryTimeHeader');
+timebt.value= cal.militaryTime ? "Military" : "AM/PM"; 
+timebt.onclick=function(){
+  timebt.innerHTML= cal.militaryTime ? "AM/PM" : "Military"; 
+  cal.militaryTime = !cal.militaryTime;
+  timebt.value = this.militaryTime ? "Military" : "AM/PM";
+  cal.close(true); 
+};
+
+//Notepad popup
+var notepadmodal=document.getElementById('notepadModal');
+var btn = document.getElementById("notepadBtn");
+var span = document.getElementById("notepadClose");
+btn.onclick = function() {
+  notepadModal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  notepadModal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == notepadModal) {
+    notepadModal.style.display = "none";
+  }
+}
