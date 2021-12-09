@@ -1,18 +1,13 @@
 var cal = {
   // (A) PROPERTIES
-  mName: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], // Month Names
-  data: null, // Events for the selected period
-  sDay: 0, // Current selected day
-  sMth: 0, // Current selected month
-  sYear: 0, // Current selected year
-  sMon: false, // Start the week on Monday instead of Sunday (Sunday is standard)
-
-  // Replace data with event information here (?)
-  // Time : 1159 (Default - as this is the most common turn in time)
-  // Title : null
-  // Color : (Default color?)
-  // ??
-
+  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], // Month Names
+  data : null, // Events for the selected period
+  sDay : 0, // Current selected day
+  sMth : 0, // Current selected month
+  sYear : 0, // Current selected year
+  sMon : false , // Start the week on Monday instead of Sunday (Sunday is standard)
+  militaryTime: false,
+  
   // TODO:
   // Change the following to firebase instead of localStorage:
   // 1. Initial load of the data.
@@ -107,15 +102,11 @@ var cal = {
     cRow.classList.add("head");
     cTable.appendChild(cRow);
 
-    //temporary variable for limiting the amount of events adding, until parsing is complete
-    var Hasdata;
-
     // Days in Month
     var total = squares.length;
     cRow = document.createElement("tr");
 
     cRow.classList.add("day"); // this is the whole row and can be used for the week view
-    var NewCell; //this is to seperate the event from the square
 
     //Keep track of current day.
     var currDay = 0;
@@ -181,135 +172,97 @@ var cal = {
         cRow.classList.add("day");
       }
     }
+    for ( let day = 0; day <total; day++){
+      if(cal.data[day]){
+        let tempNumEvents = JSON.parse(cal.data[day]).numCount;
+        for(let tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++){
+            let addingListener = "evt-" + day  + "-" + tempNumEvent + "-id";
+            document.getElementById(addingListener).addEventListener("click", function(event){
+              event.stopPropagation();
+              event.preventDefault();
+              cal.Event(this, day, tempNumEvent);
+           });
+        }
+      }
+    }
 
     // (B5) REMOVE ANY PREVIOUS ADD/EDIT EVENT DOCKET
-    cal.close();
+    cal.close(false);
   },
 
-  // (C) Edit Docket
-  EditingEvent: function (el) {
-    // (C1) Get current data
-    cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
-    var dayData = JSON.parse(cal.data[cal.sDay]);
-    // (C2) Draw the event input form
-
-    var tForm = "<h1> EDIT EVENT </h1>";
-
-    //changed it so that the month started first then the month
-    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + +cal.sYear + "</div>";
-    tForm += "<textarea id='evt-details' required>" + (dayData ? dayData.detail : "") + "</textarea>";
-
-    // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='sevt-time' name='dueTime' required>" + (dayData ? dayData.stime : "");
-    tForm += "<input type='time' id='devt-time' name='dueTime' required>" + (dayData ? dayData.dtime : "");
-
-    //buttons on the form
-    tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
-    tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
+  Event : function (el, day, eventNum) {
+    let event = null;
+    if(!day){cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;}
+    else{
+      cal.sDay = day;
+      event =JSON.parse(cal.data[cal.sDay]);
+      event= event["event" + eventNum];
+      event = JSON.parse(event);
+    }
+    let tForm = "<h1>" + (event ? "EDITTING EVENT" : "ADD EVENT") + "</h1>";
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-title' maxlength = 8 required>"+ (event ? event.title + "</textarea>": "</textarea>" );
+    tForm += "<textarea id='evt-details' placeholder = required>" + (event ? event.detail + "</textarea>":"</textarea>" );
+    tForm += "<input type='time' id='sevt-time' value =" + (event ? event.stime: "00:00") + " name='dueTime' required>";
+    tForm += "<input type='time' id='devt-time' value =" + (event ? event.dtime: "23:59") + " name='dueTime' required>";
+    tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
+    tForm += "<input type='button' id = 'militaryTime' value='" + (cal.militaryTime ? "Military" : "AM/PM") +"' onclick='cal.ChangeTime()'/>";
+    tForm += "<input type='button' value='Close' id = 'closingButton' onclick='cal.close(false)'/>";
     tForm += "<input type='submit' value='Save'/>";
-
-    // Aaron added a button to change to the week view
-    tForm += "<a href = 'week.html'> Week View </a>";
-    tForm += "<a href = 'day.html'> Day View </a>";
-
-    // (C3) Attach form to calendar
     var eForm = document.createElement("form");
-    eForm.addEventListener("submit", cal.save);
+    eForm.addEventListener("submit", function(evt){
+      evt.stopPropagation();
+      evt.preventDefault();  
+      cal.save(eventNum);
+    }); //pass it the event number to know that it is editting
     eForm.innerHTML = tForm;
-    var container = document.getElementById("cal-event");
-    container.innerHTML = "";
-    container.appendChild(eForm);
-  },
-
-  AddingEvent: function (el) {
-    // (C1) Get current data
-    cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
-    // (C2) Draw the event input form
-    var tForm = "<h1> ADD EVENT </h1>";
-
-    //changed it so that the month started first then the month
-    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + +cal.sYear + "</div>";
-    tForm += "<textarea id='evt-details' required> </textarea>";
-
-    // this is where all of the time is being put in the calendar
-    tForm += "<input type='time' id='sevt-time' name='dueTime' required>";
-    tForm += "<input type='time' id='devt-time' name='dueTime' required>";
-
-    //buttons on the form
-    tForm += "<input type='button' value='Close' onclick='cal.close()'/>";
-    tForm += "<input type='button' value='Delete' onclick='cal.del()'/>";
-    tForm += "<input type='submit' value='Save'/>";
-
-    tForm += "<a href = 'week.html'> Week View </a>";
-    tForm += "<a href = 'agenda.html'> Agenda </a>";
-
-    // (C3) Attach form to calendar
-    var eForm = document.createElement("form");
-    eForm.addEventListener("submit", cal.save);
-    eForm.innerHTML = tForm;
-    var container = document.getElementById("cal-event");
-    container.innerHTML = "";
-    container.appendChild(eForm);
+    document.getElementById("cal-event").appendChild(eForm);
   },
   // (D) Close event input form
-  close: function () {
+  close : function (callList) {
     document.getElementById("cal-event").innerHTML = "";
+    if(callList){cal.list();}
   },
 
-  // (E) Save event
-  save: function (evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-    /*
-        // Firebase
-        // Initialize database.
-        const firebaseConfig = {
-          apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
-          authDomain: "ud-planner.firebaseapp.com",
-          projectId: "ud-planner",
-          storageBucket: "ud-planner.appspot.com",
-          messagingSenderId: "396137599848",
-          appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
-          measurementId: "G-KMYYDKW7JM"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const firebase = firebase.firestore();
-        const docRef = firestore.collection('events');
-
-        stime = document.getElementById("sevt-time").value;
-        dtime = document.getElementById("devt-time").value
-        detail = document.getElementById("evt-details").value
-        var event = {
-          eventStartTime: stime,
-          eventEndTime: dtime,
-          eventTitle: detail
-        }
-        */
-
-    if (!cal.data[cal.sDay]) {
-      var event1 = JSON.stringify({
-        stime: document.getElementById("sevt-time").value,
-        dtime: document.getElementById("devt-time").value,
-        detail: document.getElementById("evt-details").value
-      });
-      cal.data[cal.sDay] = event1;
-    } else {
-      cal.data[cal.sDay] = JSON.stringify({
-        stime: document.getElementById("sevt-time").value,
-        dtime: document.getElementById("devt-time").value,
-        detail: document.getElementById("evt-details").value
-      });
+  // (E) Save event either by adding or by editing 
+  save : function (eventNum) {
+    if(!cal.data[cal.sDay]){
+      cal.data[cal.sDay] = JSON.stringify({numCount:0});
     }
+    let oldData = JSON.parse(cal.data[cal.sDay]);
+    let NewEvent = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, title: document.getElementById('evt-title').value, detail : document.getElementById("evt-details").value});
+    if(!eventNum){
+      oldData.numCount = oldData.numCount + 1;
+      oldData["event" + oldData.numCount] = NewEvent;
+    }
+    else{oldData["event" + eventNum] = NewEvent;}
+    cal.data[cal.sDay] = JSON.stringify(oldData);
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
     cal.list();
-    console.log(cal.data);
   },
 
-  // (F) Delete event for selected date
-  del: function () {
-    if (confirm("Remove event?")) {
-      delete cal.data[cal.sDay];
+  ChangeTime : function() {
+    cal.militaryTime = !cal.militaryTime;
+    let value = document.getElementById("militaryTime");
+    value.value = this.militaryTime ? "MIlitary" : "AM/PM";
+    document.getElementById("closingButton").onclick = function (){cal.close(true);};
+  },
+
+  // (F) Delete selected event from the selected day
+  del : function (day, eventNum) {
+    if (confirm("Remove"+ (!eventNum ? " all events?" : " event?"))) {
+      cal.sDay = day;
+      if(!eventNum){
+        delete cal.data[cal.sDay];
+      }
+      else{
+        let event =JSON.parse(cal.data[cal.sDay]);
+        for(let i = eventNum; i <event.numCount; i++){
+          event["event" + i] = event["event" + (i + 1)];
+        }
+        delete event["event" + event.numCount--];
+        cal.data[cal.sDay] = JSON.stringify(event);
+      }
       localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
       cal.list(); //Delete the event and redraw the calendar
     }
