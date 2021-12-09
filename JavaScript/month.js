@@ -1,13 +1,13 @@
 var cal = {
   // (A) PROPERTIES
-  mName : ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], // Month Names
-  data : null, // Events for the selected period
-  sDay : 0, // Current selected day
-  sMth : 0, // Current selected month
-  sYear : 0, // Current selected year
-  sMon : false , // Start the week on Monday instead of Sunday (Sunday is standard)
+  mName: ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], // Month Names
+  data: null, // Events for the selected period
+  sDay: 0, // Current selected day
+  sMth: 0, // Current selected month
+  sYear: 0, // Current selected year
+  sMon: false, // Start the week on Monday instead of Sunday (Sunday is standard)
   militaryTime: false,
-  
+
   // TODO:
   // Change the following to firebase instead of localStorage:
   // 1. Initial load of the data.
@@ -18,7 +18,6 @@ var cal = {
 
   // (B) DRAW CALENDAR FOR SELECTED MONTH
   list: function () {
-
     // (B1) BASIC CALCULATIONS - DAYS IN MONTH, START + END DAY
     // Note - Jan is 0 & Dec is 11 in JS.
     // Note - Sun is 0 & Sat is 6
@@ -47,34 +46,24 @@ var cal = {
     // If the week starts on sunday and it is monday
     if (cal.sMon && startDay != 1) {
       var blanks = startDay == 0 ? 7 : startDay;
-      for (var i = 1; i < blanks; i++) {
-        squares.push("blank");
-      }
+      for (var i = 1; i < blanks; i++) { squares.push("blank"); }
     }
     // If the week starts on monday and it is sunday
     if (!cal.sMon && startDay != 0) {
-      for (var i = 0; i < startDay; i++) {
-        squares.push("blank");
-      }
+      for (var i = 0; i < startDay; i++) { squares.push("blank"); }
     }
 
     // Populate the days of the month
-    for (var i = 1; i <= daysInMth; i++) {
-      squares.push(i);
-    }
+    for (var i = 1; i <= daysInMth; i++) { squares.push(i); }
 
     // Determine the number of blank squares after end of month
     if (cal.sMon && endDay != 0) {
       var blanks = endDay == 6 ? 1 : 7 - endDay;
-      for (var i = 0; i < blanks; i++) {
-        squares.push("blank");
-      }
+      for (var i = 0; i < blanks; i++) { squares.push("blank"); }
     }
     if (!cal.sMon && endDay != 6) {
       var blanks = endDay == 0 ? 6 : 6 - endDay;
-      for (var i = 0; i < blanks; i++) {
-        squares.push("blank");
-      }
+      for (var i = 0; i < blanks; i++) { squares.push("blank"); }
     }
 
     // (B4) DRAW HTML CALENDAR
@@ -89,9 +78,7 @@ var cal = {
     var cRow = document.createElement("tr"),
       cCell = null,
       days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday"];
-    if (cal.sMon) {
-      days.push(days.shift());
-    }
+    if (cal.sMon) { days.push(days.shift()); }
 
     // Create tables (boxes) for first row.
     for (var d of days) {
@@ -172,16 +159,16 @@ var cal = {
         cRow.classList.add("day");
       }
     }
-    for ( let day = 0; day <total; day++){
-      if(cal.data[day]){
+    for (let day = 0; day < total; day++) {
+      if (cal.data[day]) {
         let tempNumEvents = JSON.parse(cal.data[day]).numCount;
-        for(let tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++){
-            let addingListener = "evt-" + day  + "-" + tempNumEvent + "-id";
-            document.getElementById(addingListener).addEventListener("click", function(event){
-              event.stopPropagation();
-              event.preventDefault();
-              cal.Event(this, day, tempNumEvent);
-           });
+        for (let tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++) {
+          let addingListener = "evt-" + day + "-" + tempNumEvent + "-id";
+          document.getElementById(addingListener).addEventListener("click", function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            cal.EditingEvent(day, tempNumEvent);
+          });
         }
       }
     }
@@ -190,22 +177,34 @@ var cal = {
     cal.close(false);
   },
 
-  Event : function (el, day, eventNum) {
-    let event = null;
-    if(!day){cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;}
-    else{
-      cal.sDay = day;
-      event =JSON.parse(cal.data[cal.sDay]);
-      event= event["event" + eventNum];
-      event = JSON.parse(event);
-    }
-    let tForm = "<h1>" + (event ? "EDITTING EVENT" : "ADD EVENT") + "</h1>";
-    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + cal.sYear + "</div>";
-    tForm += "<textarea id='evt-title' maxlength = 8 required>"+ (event ? event.title + "</textarea>": "</textarea>" );
-    tForm += "<textarea id='evt-details' placeholder = required>" + (event ? event.detail + "</textarea>":"</textarea>" );
-    tForm += "<input type='time' id='sevt-time' value =" + (event ? event.stime: "00:00") + " name='dueTime' required>";
-    tForm += "<input type='time' id='devt-time' value =" + (event ? event.dtime: "23:59") + " name='dueTime' required>";
-    tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
+  helpingFunction: function (eventNum) {
+
+    var timebt = document.getElementById('militaryTime');
+    timebt.onclick=function(){
+      timebt.innerHTML= cal.militaryTime ? "AM/PM" : "Military"; 
+      console.log(timebt);
+      cal.ChangeTime()
+    };
+
+    //close function on click
+    var closebt = document.getElementById('Close');
+    closebt.onclick = cal.close;
+    
+    //delete all event function on click 
+    var delall = document.getElementById("DeleteAll");
+    delall.onclick= function(){
+      cal.del(cal.sDay, 0)
+    };
+
+    //save event function on click 
+    var savebt = document.getElementById('Save');
+    savebt.onclick = function (evt) {
+      evt.stopPropagation();
+      evt.preventDefault();  
+      cal.save(eventNum)
+    };
+
+    /** tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
     tForm += "<input type='button' id = 'militaryTime' value='" + (cal.militaryTime ? "Military" : "AM/PM") +"' onclick='cal.ChangeTime()'/>";
     tForm += "<input type='button' value='Close' id = 'closingButton' onclick='cal.close(false)'/>";
     tForm += "<input type='submit' value='Save'/>";
@@ -216,48 +215,145 @@ var cal = {
       cal.save(eventNum);
     }); //pass it the event number to know that it is editting
     eForm.innerHTML = tForm;
-    document.getElementById("cal-event").appendChild(eForm);
+    document.getElementById("cal-event").appendChild(eForm);*/
   },
+
+  EditingEvent: function (day, eventNum) {
+    cal.sDay = day;
+    var event = JSON.parse(cal.data[cal.sDay]);
+    event = event["event" + eventNum];
+    event = JSON.parse(event);
+
+    //display modal 
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+
+    //get title element, change to edit event
+    var title = document.getElementById("event-title");
+    title.innerHTML = "<div> EDIT EVENT </div>";
+
+    //get and assign evt-date element
+    var event_date = document.getElementById("evt-date");
+    event_date = cal.mName[cal.sMth] + cal.sDay  + cal.sYear;
+
+    //get and assign time 
+    var stime = document.getElementById('sevt-time');
+    var etime = document.getElementById('devt-time');
+    stime = event.stime;
+    etime = event.dtime;
+
+    //display delete all button
+    var delall = document.getElementById("DeleteAll");
+    delall.style.display="inline";
+
+    //display delete button
+    var delbt = document.getElementById("Delete");
+    delbt.style.display="inline";
+    
+    //delete function on click
+    var delbt = document.getElementById('Delete');
+    delbt.onclick = function () { 
+      cal.del(day, eventNum) 
+    };
+
+    //helping function to call other on click methods 
+    this.helpingFunction(eventNum);
+
+    /** cal.sDay = day;
+    let event =JSON.parse(cal.data[cal.sDay]);
+    event= event["event" + eventNum];
+    event = JSON.parse(event);
+    let tForm = "<h1> EDIT EVENT </h1>";
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-details' required>" + event.detail + "</textarea>";
+    tForm += "<input type='time' id='sevt-time' name='dueTime' value = '"+ event.stime + "'required>";
+    tForm += "<input type='time' id='devt-time' name='dueTime' value = '" + event.dtime + "'required>";
+    tForm += "<input type='button' value='Delete' onclick='cal.del(" + day + ',' + eventNum + ")'/>";
+    this.helpingFunction(tForm, eventNum);*/
+  },
+
+  AddingEvent: function (el) {
+    //assign event day 
+    cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
+
+    //display event modal
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    
+    var timebt = document.getElementById('militaryTime');
+    timebt.value= cal.militaryTime ? "Military" : "AM/PM"; 
+
+    //get and assign title element to add event 
+    var title = document.getElementById("event-title");
+    title.innerHTML = "<div> ADD EVENT </div>";
+
+    //get and assign event date 
+    var event_date = document.getElementById("evt-date");
+    event_date = cal.mName[cal.sMth] + " / " + cal.sDay + " / " + + cal.sYear ;
+
+    //display delete all button
+    var delall = document.getElementById("DeleteAll");
+    delall.style.display="inline";
+   
+    //helping function to call other on click functions 
+    this.helpingFunction(0);
+
+
+    /**
+     * cal.sDay = el.getElementsByClassName("dd")[0].innerHTML;
+    let tForm = "<h1> ADD EVENT </h1>";
+    tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + + cal.sYear + "</div>";
+    tForm += "<textarea id='evt-details' required> </textarea>";
+    tForm += "<input type='time' id='sevt-time' value = '00:00' name='dueTime' required>";
+    tForm += "<input type='time' id='devt-time' value = '23:59' name='dueTime' required>";
+    this.helpingFunction(tForm, 0); */
+  },
+
+
   // (D) Close event input form
-  close : function (callList) {
-    document.getElementById("cal-event").innerHTML = "";
-    if(callList){cal.list();}
+  close: function (callList) {
+    var modal = document.getElementById('myModal');
+    modal.style.display = "none";
+    if (callList) { 
+      cal.list(); 
+    }
   },
 
   // (E) Save event either by adding or by editing 
-  save : function (eventNum) {
-    if(!cal.data[cal.sDay]){
-      cal.data[cal.sDay] = JSON.stringify({numCount:0});
+  save: function (eventNum) {
+    if (!cal.data[cal.sDay]) {
+      cal.data[cal.sDay] = JSON.stringify({ numCount: 0 });
     }
     let oldData = JSON.parse(cal.data[cal.sDay]);
-    let NewEvent = JSON.stringify({stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, title: document.getElementById('evt-title').value, detail : document.getElementById("evt-details").value});
-    if(!eventNum){
+    let NewEvent = JSON.stringify({ stime: document.getElementById("sevt-time").value, dtime: document.getElementById("devt-time").value, detail: document.getElementById("evt-name").value });
+    if (!eventNum) {
       oldData.numCount = oldData.numCount + 1;
       oldData["event" + oldData.numCount] = NewEvent;
     }
-    else{oldData["event" + eventNum] = NewEvent;}
+    else { oldData["event" + eventNum] = NewEvent; }
     cal.data[cal.sDay] = JSON.stringify(oldData);
     localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
     cal.list();
   },
 
-  ChangeTime : function() {
+  ChangeTime: function () {
+    console.log("changed");
     cal.militaryTime = !cal.militaryTime;
     let value = document.getElementById("militaryTime");
     value.value = this.militaryTime ? "MIlitary" : "AM/PM";
-    document.getElementById("closingButton").onclick = function (){cal.close(true);};
+    document.getElementById("Close").onclick = function () { cal.close(true); };
   },
 
   // (F) Delete selected event from the selected day
-  del : function (day, eventNum) {
-    if (confirm("Remove"+ (!eventNum ? " all events?" : " event?"))) {
+  del: function (day, eventNum) {
+    if (confirm("Remove" + (!eventNum ? " all events?" : " event?"))) {
       cal.sDay = day;
-      if(!eventNum){
+      if (!eventNum) {
         delete cal.data[cal.sDay];
       }
-      else{
-        let event =JSON.parse(cal.data[cal.sDay]);
-        for(let i = eventNum; i <event.numCount; i++){
+      else {
+        let event = JSON.parse(cal.data[cal.sDay]);
+        for (let i = eventNum; i < event.numCount; i++) {
           event["event" + i] = event["event" + (i + 1)];
         }
         delete event["event" + event.numCount--];
@@ -282,9 +378,7 @@ window.addEventListener("load", function () {
     var opt = document.createElement("option");
     opt.value = i;
     opt.innerHTML = cal.mName[i];
-    if (i == nowMth) {
-      opt.selected = true;
-    }
+    if (i == nowMth) { opt.selected = true; }
     month.appendChild(opt);
   }
 
@@ -295,9 +389,7 @@ window.addEventListener("load", function () {
     var opt = document.createElement("option");
     opt.value = i;
     opt.innerHTML = i;
-    if (i == nowYear) {
-      opt.selected = true;
-    }
+    if (i == nowYear) { opt.selected = true; }
     year.appendChild(opt);
   }
 
