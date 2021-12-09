@@ -194,9 +194,9 @@
         <div class="dayview-grid-marker-start"></div>
         <!-- 15 min intervals starting at 1
 
-        Therefore each hour is 4
-        Non complete hours are = (mm / 15)
-        ALWAYS add a baseline 1 at the end.
+        Therefore each hour is worth -> 4 grid spaces
+        Partial hours are worth -> mm/15 grid spaces
+        ALWAYS add a baseline 1 at the end to adjust for the top "bar" that has no area.
 
         00:00 - 01:00 = "grid-row: 1/5";
         Math for 00:00 -> (00 * 4) + (00/15) + 1 = 0 + 0 + 1 = 1
@@ -206,13 +206,15 @@
         12:45 - 14:45 = "grid-row: 52/60;"
         Math for 12:45 -> (12 * 4) + (45 / 15) + 1 = 48 + 3 + 1 = 52
         Math for 14:45 -> (14 * 4) + (45 / 15) + 1 = 56 + 3 + 1 = 60
+        Therefore: "grid-row: 52/60"
 
         12:30 - 18:15 = "grid-row: 51/74;"
         Math for 12:30 -> (12 * 4) + (30 / 15) + 1 = 48 + 2 + 1 = 51
         Math for 18:15 -> (18 * 4) + (15 / 15) + 1 = 72 + 1 + 1 = 74
+        Therefore: "grid-row: 51/74"
 
-        Hour will always be worth 4
-        Minute will always be worth 15
+        Hour will always be worth hh*4
+        Minute will always be worth mm/15
 
         So with:
         hour = 4;
