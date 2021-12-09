@@ -10,9 +10,10 @@ var cal = {
 
   // TODO:
   // Change the following to firebase instead of localStorage:
-  // 1. Initial load of the data. DONE!
-  // 2. Saving new data
-  // 3. Deleting existing data.
+  // 1. Initial load of the data. DONE
+  // 2. Saving new data. DONE
+  // 3. Editing current data. DONE
+  // 4. Deleting existing data.
 
   /* CURRENT FIREBASE STRUCTURE
   See: loadData() fucntion for efficient (lol?) implementation structure.
@@ -25,14 +26,13 @@ var cal = {
                                                           etc...
   */
 
+                                                        
   /*
   document.getElementById("evt-name").value
   document.getElementById("evt-details").value
   document.getElementById("sevt-time").value
   document.getElementById("devt-time").value
   */
-
-  // Once the above is working, we can change the fields/data and display it as we like.
 
   // (B) DRAW CALENDAR FOR SELECTED MONTH
 
@@ -46,7 +46,7 @@ var cal = {
       startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // First day of the month
       endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // Last day of the month
 
-    // (B2) Load data from Firebase for currently logged in user.
+    // (B2) Load saved data from Firebase for the currently logged in user.
     for (var i = 1; i <= daysInMth; i++) {
       cal.loadData(i);
     }
@@ -118,23 +118,26 @@ var cal = {
 
     cRow.classList.add("day"); // this is the whole row and can be used for the week view
 
-    // Create table (boxes) for the rest of the days and load stored data for any logged in user.
+    // Create table (boxes) for the rest of the days
+    // Load stored data for any logged in user.
     for (var i = 0; i < total; i++) {
       Hasdata = false;
       // The td html element is a standard cell within the table
       cCell = document.createElement("td");
+      // "Empty" spaces for the beginning/end of the month.
       if (squares[i] == "blank") {
         cCell.classList.add("blank");
-      } else {
+      }
+      // Build non-empty spaces for the month.
+      else {
         cCell.classList.add("td");
         cCell.setAttribute('id', 'td');
         // If the square isn't "blank" (grey square) place day numbers.
         cCell.innerHTML = "<div class='dd' id=" + squares[i] + ">" + squares[i] + "</div>";
 
-        // Chooses weather to add or edit (?)
-        // Remove this and just use the token on in edit?
+        // Event listener for editing spaces.
         cCell.addEventListener("click", function () {
-          cal.EditingEvent(this);
+          cal.modifyEvent(this);
         });
       }
 
@@ -183,21 +186,21 @@ var cal = {
 
   },
 
-  EditingEvent: function (currentDay) {
+  modifyEvent: function (currentDay) {
     // Month Names
     var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     //cal.sDay = currentDay;
-    console.log(currentDay);
+    //console.log(currentDay);
 
     // Grab clicked date (Month Day Year)
     var sMth = cal.sMth + 1;
     var sDay = currentDay.firstChild.id;
+    console.log(sDay.toString());
     var sYear = cal.sYear;
 
     // Debugging
     //console.log("Editing!: " + (parseInt(sMth) + 1).toString(), sDay.toString(), sYear);
-    console.log("Month name: " + mName[parseInt(sMth) - 1]);
-    console.log("Right after dec: " + sMth + "-" + sYear + sDay.toString());
+    //console.log("Month name: " + mName[parseInt(sMth) - 1]);
 
     //display modal 
     var modal = document.getElementById("myModal");
@@ -206,30 +209,39 @@ var cal = {
     firebase.auth().onAuthStateChanged(firebaseUser => {
       if (firebaseUser) {
         const userID = firebaseUser.uid;
-        console.log(userID, sMth + "-" + sYear, sDay.toString());
-
+        //console.log(userID, sMth + "-" + sYear + " " + sDay.toString());
+        var sDayString = sDay.toString();
+        console.log("Post: " + sDayString);
         document.body.addEventListener('click', function (event) {
+          console.log("Clicked event ID: "+event.target.id);
+          console.log("Need to match: 'evt' or 'td' or " + sDayString);
 
           // If clicking an already exsiting event the... (EDIT)
           if (event.target.id == 'evt') {
+            console.log("evt - EventID: " + event.target.id);
+             // Month Names
+             var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+             
             // Grab clicked date (Month Day Year)
             var sMth = cal.sMth + 1;
             var sDay = currentDay.firstChild.id;
             var sYear = cal.sYear;
+
             event.stopPropagation();
+
             let id = event.target.getAttribute('data-id');
-            console.log("Target atty: " + id);
+            //console.log("Target atty: " + id);
 
             const saveEdit = document.getElementById('Save');
             saveEdit.innerHTML = "Edit";
             // Add different button for edit? hide save show edit in here?
             // It's saving a wiped field atm.
-            console.log("RIGHT BEFORE: " + sMth + "-" + sYear + sDay.toString());
+            //console.log("RIGHT BEFORE: " + sMth + "-" + sYear + sDay.toString());
 
             db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).get().then((snapshot) => {
               //console.log(snapshot.data());
               console.log("in snapshot id: " + id)
-              console.log("in: " + sMth + "-" + sYear + sDay.toString());
+              console.log("in: " + sMth + "-" + sYear + " " + sDay.toString());
               var tempEvent = snapshot.get('eventName');
               var tempDesc = snapshot.get('eventDesc');
               document.getElementById("evt-name").value = snapshot.get('eventName');
@@ -246,7 +258,7 @@ var cal = {
 
               //console.log("Event name: " + tempEvent);
               var title = document.getElementById("event-title");
-              title.innerHTML = "<div> Editing: " + tempEvent + " for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear + " </div>";
+              title.innerHTML = "<div> Editing: <b>[" + tempEvent + "]</b> for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear + " </div>";
               saveEdit.addEventListener("click", (event) => {
                 var eventName = document.getElementById("evt-name").value;
                 var eventDesc = document.getElementById("evt-details").value;
@@ -260,35 +272,44 @@ var cal = {
                   eTime: document.getElementById("devt-time").value
                 })
                 console.log("Event EDITED to: " + eventName, eventDesc, sTime, eTime);
+                saveEdit.innerHTML = "Save";
                 // RELOAD HERE?
               })
             })
             // If clicking an empty area then... (ADD NEW)
-          } else if (event.target.id == 'td') {
-            //Add new
-            /*console.log("Else if event.target.id == 'td'")
-            cal.save(sDay);*/
-
+          } else if (event.target.id == 'td' || event.target.id == sDayString) {
+            console.log(sDay);
             // Grab current logged in userID to match to the database.
             const userID = firebaseUser.uid;
 
             // Month Names
-            //var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
             // Grab clicked date (Month Day Year)
             var sMth = cal.sMth + 1;
             var sDay = currentDay.firstChild.id;
             var sYear = cal.sYear;
+
+            console.log("target.id: " + event.target.id  + " - sDay: " + sDay.toString());
+            if(event.target.id == sDay)
+            {
+              console.log("id = sDay");
+            }
+
+            // TODO: Create separate edit button prob.
+            const title = document.getElementById("event-title");
             const saveEdit = document.getElementById('Save');
-            saveEdit.innerHTML = "Edit";
+            title.innerHTML = "<div> Adding event for: <b>[" + mName[parseInt(sMth) - 1] + "]</b>" + " " + sDay + " " + sYear + "</div>";
+
             // Debugging
             console.log(sMth + "-" + sYear + " " + sDay.toString());
             saveEdit.addEventListener("click", () => {
+              saveEdit.innerHTML = "Edit";
               console.log("INSIDE THE EDIT ADD NEW LISTENER!!");
-              sTime = document.getElementById("sevt-time").value;
-              eTime = document.getElementById("devt-time").value;
-              eventName = document.getElementById("evt-name").value;
-              eventDesc = document.getElementById("evt-details").value;
+              var sTime = document.getElementById("sevt-time").value;
+              var eTime = document.getElementById("devt-time").value;
+              var eventName = document.getElementById("evt-name").value;
+              var eventDesc = document.getElementById("evt-details").value;
 
               console.log(sMth + "-" + sYear + " " + sDay);
 
@@ -305,13 +326,11 @@ var cal = {
               console.log("Document: " + userID + "\nWritten with the following:\n" + mName[parseInt(sMth) - 1] + "-" + sYear, sDay.toString(), sTime, eTime, eventName, eventDesc);
               document.getElementById("evt-name").value = '';
               document.getElementById("evt-details").value = '';
+              saveEdit.innerHTML = "Save";
               var modal = document.getElementById('myModal');
               modal.style.display = "none";
             })
           }
-
-
-
         });
       }
     })
