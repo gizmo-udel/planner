@@ -129,6 +129,7 @@ var cal = {
         for(let tempNumEvent = 1; tempNumEvent <= tempNumEvents; tempNumEvent++){
             let addingListener = "evt-" + day  + "-" + tempNumEvent + "-id";
             document.getElementById(addingListener).addEventListener("click", function(event){
+              cal.close();
               event.stopPropagation();
               event.preventDefault();
               cal.Event(this, day, tempNumEvent);
@@ -152,10 +153,11 @@ var cal = {
     }
     let tForm = "<h1>" + (event ? "EDITTING EVENT" : "ADD EVENT") + "</h1>";
     tForm += "<div id='evt-date'>" + cal.mName[cal.sMth] + "/" + cal.sDay + "/" + cal.sYear + "</div>";
-    tForm += "<textarea id='evt-title' maxlength = 8 required>"+ (event ? event.title + "</textarea>": "</textarea>" );
-    tForm += "<textarea id='evt-details' placeholder = required>" + (event ? event.detail + "</textarea>":"</textarea>" );
+    tForm += "<textarea id='evt-title' maxlength = 8 placeholder = 'title' required>"+ (event ? event.title + "</textarea>": "</textarea>" );
+    tForm += "<textarea id='evt-details' placeholder = 'detail for the event' required>" + (event ? event.detail + "</textarea>":"</textarea>" );
     tForm += "<input type='time' id='sevt-time' value =" + (event ? event.stime: "00:00") + " name='dueTime' required>";
     tForm += "<input type='time' id='devt-time' value =" + (event ? event.dtime: "23:59") + " name='dueTime' required>";
+    if(eventNum){tForm += "<input type='button' value='Delete' onclick='cal.del(" + cal.sDay + ',' + eventNum + ")'/>"}
     tForm += "<input type='button' value='Delete All' onclick='cal.del(" + cal.sDay + ',' + 0 + ")'/>"
     tForm += "<input type='button' id = 'militaryTime' value='" + (cal.militaryTime ? "Military" : "AM/PM") +"' onclick='cal.ChangeTime()'/>";
     tForm += "<input type='button' value='Close' id = 'closingButton' onclick='cal.close(false)'/>";
@@ -212,7 +214,9 @@ var cal = {
           event["event" + i] = event["event" + (i + 1)];
         }
         delete event["event" + event.numCount--];
-        cal.data[cal.sDay] = JSON.stringify(event);
+        console.log(event.numCount + " " + cal.sDay);
+        if(!event.numCount){delete cal.data[cal.sDay];}
+        else{cal.data[cal.sDay] = JSON.stringify(event);}
       }
       localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
       cal.list(); //Delete the event and redraw the calendar
