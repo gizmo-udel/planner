@@ -25,12 +25,12 @@ var cal = {
                                                           etc...
   */
 
-/*
-document.getElementById("evt-name").value
-document.getElementById("evt-details").value
-document.getElementById("sevt-time").value
-document.getElementById("devt-time").value
-*/
+  /*
+  document.getElementById("evt-name").value
+  document.getElementById("evt-details").value
+  document.getElementById("sevt-time").value
+  document.getElementById("devt-time").value
+  */
 
   // Once the above is working, we can change the fields/data and display it as we like.
 
@@ -126,17 +126,18 @@ document.getElementById("devt-time").value
       if (squares[i] == "blank") {
         cCell.classList.add("blank");
       } else {
+        cCell.classList.add("td");
+        cCell.setAttribute('id', 'td');
         // If the square isn't "blank" (grey square) place day numbers.
         cCell.innerHTML = "<div class='dd' id=" + squares[i] + ">" + squares[i] + "</div>";
 
         // Chooses weather to add or edit (?)
+        // Remove this and just use the token on in edit?
         cCell.addEventListener("click", function () {
-          if (!Hasdata) {
-            cal.AddingEvent(this);
-          }
           cal.EditingEvent(this);
         });
       }
+
       //Appending days (M-S)
       cRow.appendChild(cCell);
       if (i != 0 && (i + 1) % 7 == 0) {
@@ -171,31 +172,32 @@ document.getElementById("devt-time").value
     };
 
     //save event function on click 
+    /*
     var savebt = document.getElementById('Save');
     savebt.onclick = function (evt) {
       evt.stopPropagation();
       evt.preventDefault();
       cal.save(eventNum)
     };
+    */
 
   },
 
   EditingEvent: function (currentDay) {
     // Month Names
     var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    cal.sDay = currentDay;
+    //cal.sDay = currentDay;
     console.log(currentDay);
-    // Grab clicked date (Month Day Year)
-    var sMth = document.getElementById("cal-mth").value;
-    var sDay = currentDay.firstChild.id;
-    var sYear = document.getElementById("cal-yr").value;
 
-    //Account for 1-12 month.
-    sMth = parseInt(sMth) + 1;
+    // Grab clicked date (Month Day Year)
+    var sMth = cal.sMth + 1;
+    var sDay = currentDay.firstChild.id;
+    var sYear = cal.sYear;
 
     // Debugging
     //console.log("Editing!: " + (parseInt(sMth) + 1).toString(), sDay.toString(), sYear);
-    console.log("Month name: "+ mName[parseInt(sMth) - 1]);
+    console.log("Month name: " + mName[parseInt(sMth) - 1]);
+    console.log("Right after dec: " + sMth + "-" + sYear + sDay.toString());
 
     //display modal 
     var modal = document.getElementById("myModal");
@@ -207,7 +209,13 @@ document.getElementById("devt-time").value
         console.log(userID, sMth + "-" + sYear, sDay.toString());
 
         document.body.addEventListener('click', function (event) {
+
+          // If clicking an already exsiting event the... (EDIT)
           if (event.target.id == 'evt') {
+            // Grab clicked date (Month Day Year)
+            var sMth = cal.sMth + 1;
+            var sDay = currentDay.firstChild.id;
+            var sYear = cal.sYear;
             event.stopPropagation();
             let id = event.target.getAttribute('data-id');
             console.log("Target atty: " + id);
@@ -216,25 +224,34 @@ document.getElementById("devt-time").value
             saveEdit.innerHTML = "Edit";
             // Add different button for edit? hide save show edit in here?
             // It's saving a wiped field atm.
+            console.log("RIGHT BEFORE: " + sMth + "-" + sYear + sDay.toString());
 
             db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).get().then((snapshot) => {
               //console.log(snapshot.data());
               console.log("in snapshot id: " + id)
+              console.log("in: " + sMth + "-" + sYear + sDay.toString());
               var tempEvent = snapshot.get('eventName');
+              var tempDesc = snapshot.get('eventDesc');
               document.getElementById("evt-name").value = snapshot.get('eventName');
               document.getElementById("evt-details").value = snapshot.get('eventDesc');
-              
-              // Are these pulling correctly? What format is it?
-              document.getElementById("sevt-time").value = snapshot.get('sTime');
-              document.getElementById("devt-time").value = snapshot.get('eTime');
 
-              console.log("sevt-time: "+document.getElementById("sevt-time").value);
-              console.log("devt-time: "+document.getElementById("devt-time").value);
+              console.log("tempEvent: " + tempEvent + "\nDesc: " + tempDesc);
+
+              // Are these pulling correctly? What format is it?
+              //document.getElementById("sevt-time").value = snapshot.get('sTime');
+              //document.getElementById("devt-time").value = snapshot.get('eTime');
+
+              console.log("sevt-time: " + document.getElementById("sevt-time").value);
+              console.log("devt-time: " + document.getElementById("devt-time").value);
 
               //console.log("Event name: " + tempEvent);
               var title = document.getElementById("event-title");
-              title.innerHTML = "<div> Editing: "+ tempEvent + " for " + mName[parseInt(sMth)-1] + " " + sDay + " " + sYear + " </div>";
-              saveEdit.addEventListener("click", (event)=>{
+              title.innerHTML = "<div> Editing: " + tempEvent + " for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear + " </div>";
+              saveEdit.addEventListener("click", (event) => {
+                var eventName = document.getElementById("evt-name").value;
+                var eventDesc = document.getElementById("evt-details").value;
+                var sTime = document.getElementById("sevt-time").value;
+                var eTime = document.getElementById("devt-time").value;
                 db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).set({
                   eventName: document.getElementById("evt-name").value,
                   eventDesc: document.getElementById("evt-details").value,
@@ -242,12 +259,59 @@ document.getElementById("devt-time").value
                   sTime: document.getElementById("sevt-time").value,
                   eTime: document.getElementById("devt-time").value
                 })
-                console.log("sTime: "+sTime);
-                console.log("eTime: "+eTime);
-              //Reload values here?
+                console.log("Event EDITED to: " + eventName, eventDesc, sTime, eTime);
+                // RELOAD HERE?
               })
             })
-          };
+            // If clicking an empty area then... (ADD NEW)
+          } else if (event.target.id == 'td') {
+            //Add new
+            /*console.log("Else if event.target.id == 'td'")
+            cal.save(sDay);*/
+
+            // Grab current logged in userID to match to the database.
+            const userID = firebaseUser.uid;
+
+            // Month Names
+            //var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            // Grab clicked date (Month Day Year)
+            var sMth = cal.sMth + 1;
+            var sDay = currentDay.firstChild.id;
+            var sYear = cal.sYear;
+            const saveEdit = document.getElementById('Save');
+            saveEdit.innerHTML = "Edit";
+            // Debugging
+            console.log(sMth + "-" + sYear + " " + sDay.toString());
+            saveEdit.addEventListener("click", () => {
+              console.log("INSIDE THE EDIT ADD NEW LISTENER!!");
+              sTime = document.getElementById("sevt-time").value;
+              eTime = document.getElementById("devt-time").value;
+              eventName = document.getElementById("evt-name").value;
+              eventDesc = document.getElementById("evt-details").value;
+
+              console.log(sMth + "-" + sYear + " " + sDay);
+
+              db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).add({
+                // name: input
+                // KEEP NAMING CONSISTENT, THESE VALUES ARE SPECIFICALLY CALLED
+                // CURRENT EVENT DETAILS: sTime, eTime, eventName, eventDesc
+                // Can easily add more later
+                sTime: document.getElementById("sevt-time").value,
+                eTime: document.getElementById("devt-time").value,
+                eventName: document.getElementById("evt-name").value,
+                eventDesc: document.getElementById("evt-details").value,
+              });
+              console.log("Document: " + userID + "\nWritten with the following:\n" + mName[parseInt(sMth) - 1] + "-" + sYear, sDay.toString(), sTime, eTime, eventName, eventDesc);
+              document.getElementById("evt-name").value = '';
+              document.getElementById("evt-details").value = '';
+              var modal = document.getElementById('myModal');
+              modal.style.display = "none";
+            })
+          }
+
+
+
         });
       }
     })
@@ -294,49 +358,55 @@ document.getElementById("devt-time").value
   },
 
   // (E) Save event either by adding or by editing 
+  /*
+    save: function (currentDay) {
+      firebase.auth().onAuthStateChanged(firebaseUser => {
+        if (firebaseUser) {
+          // Display/hide appropriate buttons.
+          // These should be moved to a separate listener later.
+          document.getElementById('loginNav').style.display = 'none';
+          document.getElementById('logoutNav').style.display = 'block';
 
-  save: function (currentDay) {
-    firebase.auth().onAuthStateChanged(firebaseUser => {
-      if (firebaseUser) {
-        // Display/hide appropriate buttons.
-        // These should be moved to a separate listener later.
-        document.getElementById('loginNav').style.display = 'none';
-        document.getElementById('logoutNav').style.display = 'block';
+          // Grab current logged in userID to match to the database.
+          const userID = firebaseUser.uid;
 
-        // Grab current logged in userID to match to the database.
-        const userID = firebaseUser.uid;
+          // Month Names
+          //var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-        // Month Names
-        //var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-        // Selected month (+1 to account for 0-11 making it 1-12)
-        var sMth = cal.sMth + 1;
-        // Selected year
-        var sYear = cal.sYear;
-
-        // Debugging
-        sTime = document.getElementById("sevt-time").value;
-        eTime = document.getElementById("devt-time").value;
-        eventName = document.getElementById("evt-name").value;
-        eventDesc = document.getElementById("evt-details").value;
-        db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(currentDay.toString()).add({
-          // name: input
-          // KEEP NAMING CONSISTENT, THESE VALUES ARE SPECIFICALLY CALLED
-          // CURRENT EVENT DETAILS: sTime, eTime, eventName, eventDesc
-          // Can easily add more later
-          sTime: document.getElementById("sevt-time").value,
-          eTime: document.getElementById("devt-time").value,
-          eventName: document.getElementById("evt-name").value,
-          eventDesc: document.getElementById("evt-details").value,
-        });
-        console.log("Document: " + userID + "\nWritten with the following:\n" + sMth + "-" + sYear, currentDay, sTime, eTime, eventName, eventDesc);
-        document.getElementById("evt-name").value = '';
-        document.getElementById("evt-details").value = '';
-        var modal = document.getElementById('myModal');
-        modal.style.display = "none";
-      }
-    })
-  },
+          // Selected month (+1 to account for 0-11 making it 1-12)
+          var sMth = cal.sMth + 1;
+          // Selected year
+          var sYear = cal.sYear;
+          const saveEdit = document.getElementById('Save');
+          saveEdit.innerHTML = "Edit";
+          // Debugging
+          console.log(sMth + "-" + sYear + " " + currentDay.toString());
+          saveEdit.addEventListener("click", () => {
+            console.log("INSIDE THE EDIT ADD NEW LISTENER!!");
+            sTime = document.getElementById("sevt-time").value;
+            eTime = document.getElementById("devt-time").value;
+            eventName = document.getElementById("evt-name").value;
+            eventDesc = document.getElementById("evt-details").value;
+            db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(currentDay.toString()).add({
+              // name: input
+              // KEEP NAMING CONSISTENT, THESE VALUES ARE SPECIFICALLY CALLED
+              // CURRENT EVENT DETAILS: sTime, eTime, eventName, eventDesc
+              // Can easily add more later
+              sTime: document.getElementById("sevt-time").value,
+              eTime: document.getElementById("devt-time").value,
+              eventName: document.getElementById("evt-name").value,
+              eventDesc: document.getElementById("evt-details").value,
+            });
+            console.log("Document: " + userID + "\nWritten with the following:\n" + sMth + "-" + sYear, currentDay, sTime, eTime, eventName, eventDesc);
+            document.getElementById("evt-name").value = '';
+            document.getElementById("evt-details").value = '';
+            var modal = document.getElementById('myModal');
+            modal.style.display = "none";
+          })
+        }
+      })
+    },
+    */
 
   ChangeTime: function () {
     console.log("changed");
