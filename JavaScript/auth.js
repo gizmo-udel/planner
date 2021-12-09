@@ -64,7 +64,7 @@ $("#sign-up-button").click(function() {
         var errorCode = error.code;
         var errorMessage = error.message;
         if (errorCode === 'auth/wrong-password') {
-          alert('Wrong password.');
+          alert('Wrong email or password.');
         } else {
           alert('Wrong email or password.');
         }
