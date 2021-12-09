@@ -229,9 +229,9 @@
             a. Pull event information (eventName, eventDesc, sTime, eTime)
             b. Create dayview-cell
             c. Parse sTime and eTime so we can perform math on the hours/mins and create correct style
-               -> Split at ":" (?), sTime -> (hh * 4) + (mm / 15) + 1 = left
-                                    eTime -> (hh * 4) + (mm / 15) + 1 = right
-                                    dayview-cell.style("grid-row:"+ left + "/" + right);
+               -> Split at ":" (?), sTime -> (hh * 4) + parseInt(mm/15) + 1 = left
+                                    eTime -> (hh * 4) + parseInt(mm/15) + 1 = right
+                                    dayview-cell.style("grid-row:"+ left + " / " + right);
             d. dayview-cell-title.innerHTML = eventName;
                dayview-cell-time.innerHTML = sTime + "-" + eTime;
                dayview-cell-desc.innerHTML = eventDesc;
