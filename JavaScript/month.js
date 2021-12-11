@@ -7,6 +7,7 @@ var cal = {
   sYear: 0, // Current selected year
   sMon: false, // Start the week on Monday instead of Sunday (Sunday is standard)
   militaryTime: false,
+  dummyData: 0,
 
   // TODO:
   // Change the following to firebase instead of localStorage:
@@ -17,6 +18,8 @@ var cal = {
 
   // TODO (BUGS):
   // 1. Events aren't being loaded on month selection! FIXED!
+  // 2. Events aren't being loaded on year/month if a doc doesn't alreay exist. FIXED
+  // 3. 
 
   /* CURRENT FIREBASE STRUCTURE
   See: loadData() fucntion for efficient (lol?) implementation structure.
@@ -41,7 +44,7 @@ var cal = {
 
     // (B2) Load saved data from Firebase for the currently logged in user.
     for (var i = 1; i <= daysInMth; i++) {
-      cal.loadData(i);
+        cal.loadData(i);
     }
 
     // (B3) DRAWING CALCULATIONS
@@ -205,10 +208,10 @@ var cal = {
         var sDayString = sDay.toString();
         console.log("Post: " + sDayString);
         document.body.addEventListener('click', function (event) {
-          console.log("Clicked event ID: " + event.target.id);
-          console.log("Need to match: 'evt' or 'td' or " + sDayString);
+          //console.log("Clicked event ID: " + event.target.id);
+          //console.log("Need to match: 'evt' or 'td' or " + sDayString);
 
-          // If clicking an already exsiting event the... (EDIT)
+          // If clicking an already exsiting event then... (EDIT)
           if (event.target.id == 'evt') {
             console.log("evt - EventID: " + event.target.id);
             // Month Names
@@ -263,7 +266,7 @@ var cal = {
                   sTime: document.getElementById("sevt-time").value,
                   eTime: document.getElementById("devt-time").value
                 })
-                console.log("Event EDITED to: " + eventName, eventDesc, sTime, eTime);
+                console.log("%cEvent successfully changed", 'color: #00D833', "to: ", '\n' + eventName, eventDesc, '\n' + sTime, eTime);
                 saveEdit.innerHTML = "Save";
                 document.getElementById("evt-name").value = '';
                 document.getElementById("evt-details").value = '';
@@ -297,10 +300,10 @@ var cal = {
             title.innerHTML = "<div> Adding event for: <b>[" + mName[parseInt(sMth) - 1] + "]</b>" + " " + sDay + " " + sYear + "</div>";
 
             // Debugging
-            console.log(sMth + "-" + sYear + " " + sDay.toString());
+            //console.log(sMth + "-" + sYear + " " + sDay.toString());
             saveEdit.addEventListener("click", () => {
               saveEdit.innerHTML = "Edit";
-              console.log("INSIDE THE EDIT ADD NEW LISTENER!!");
+
               var sTime = document.getElementById("sevt-time").value;
               var eTime = document.getElementById("devt-time").value;
               var eventName = document.getElementById("evt-name").value;
@@ -318,7 +321,7 @@ var cal = {
                 eventName: document.getElementById("evt-name").value,
                 eventDesc: document.getElementById("evt-details").value,
               });
-              console.log("Document: " + userID + "\nWritten with the following:\n" + mName[parseInt(sMth) - 1] + "-" + sYear, sDay.toString(), sTime, eTime, eventName, eventDesc);
+              console.log("%cDocument successfully written", "color: #00D833", "with the following: ", '\n', + sDay.toString(), mName[parseInt(sMth) - 1] + "-" + sYear, '\n', sTime, eTime, '\n', eventName, eventDesc);
               document.getElementById("evt-name").value = '';
               document.getElementById("evt-details").value = '';
               saveEdit.innerHTML = "Save";
@@ -372,7 +375,7 @@ var cal = {
   },
 
   ChangeTime: function () {
-    console.log("changed");
+    //console.log("changed");
     cal.militaryTime = !cal.militaryTime;
     let value = document.getElementById("militaryTime");
     value.value = this.militaryTime ? "MIlitary" : "AM/PM";
@@ -436,15 +439,9 @@ var cal = {
                     db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(currentDay.toString()).get().then(snapshot => {
                       if (snapshot.docs.length > 0) {
                         snapshot.docs.forEach(doc => {
-                          //console.log(doc.id);
-                          //console.log("Calling collections ok!");
-                          //console.log("Current Day: "+day);
-
-                          // When saving we will have to use the format (mm-dd-yyyy) to match this query.
-                          // This needs to be changed to unique values, and then we check the doc.data().eventDate string of each document instead of doc.id?
-
+                          // When saving we will have to use the format (mm-yyyy) to match this query.
                           Hasdata = true;
-                          console.log("Matching Doc ID OK for day " + currentDay + "!");
+                          //console.log("Matching Doc ID OK for day " + currentDay + "!");
 
                           // Load the data into the created cell.
                           NewCell = document.createElement("div");
@@ -455,21 +452,27 @@ var cal = {
 
                           // Grab the current day to append to the correct cell.
                           document.getElementById(currentDay).innerHTML += NewCell.innerHTML;
-                          console.log("Event loaded for day: " + currentDay + "!");
+                          console.log("%cEvent loaded", 'color: #00D833', "for '" + mName[parseInt(sMth) - 1], currentDay + "'!");
 
                         })
                       } else {
-                        //console.log("'" + currentDay + "' collection exists, but no documents found!");
+                        console.log("%cNo event found", 'color: #FF5733', "for '" + mName[parseInt(sMth) - 1], currentDay + "'!");
                       }
                     })
-                  } else {
-                    console.log("No events for the month of " + mName[sMth] + "-" + sYear + ".");
-                    // Should break the function call here if I can.
-                    // No need to check/say there are no events 30+ times!
+                    // Dummy data needs to be created in firestore documents or it CANNOT be accessed.
+                  } else if (cal.dummyData != 1) {
+                    console.log("%cNo events", 'color: #FF5733', "for the month of " + mName[parseInt(sMth) - 1] + "-" + sYear + ".\nCreating dummy data...");
+                    db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).set({
+                      name: mName[parseInt(sMth) - 1] + " " + sYear 
+                    }).then
+                    {
+                      console.log("%cDummy data successfully created.", 'color: #00D833');
+                      cal.dummyData = 1;
+                    }
                   }
                 })
               } else {
-                console.log("No user ID Found!");
+                console.log("%cNo user ID Found!", 'color: #FF5733');
               }
             });
       }
@@ -515,7 +518,8 @@ window.addEventListener("load", function () {
   }
 
   // (G4) Start/Draw calendar
-  //TODO: add a listener to the acutal month/year elements, not the dropdown button itself. DONE
+  //TODO: add a listener to the acutal month/year elements, not the dropdown button itself.
+  //DONE --> see below.
 
   //document.getElementById("cal-yr").addEventListener("click", cal.list);
   //document.getElementById("cal-mth").addEventListener("click", cal.list);
