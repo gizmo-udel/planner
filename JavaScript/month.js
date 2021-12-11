@@ -19,7 +19,7 @@ var cal = {
   // TODO (BUGS):
   // 1. Events aren't being loaded on month selection! FIXED!
   // 2. Events aren't being loaded on year/month if a doc doesn't alreay exist. FIXED
-  // 3. 
+  // 3. Listeners save in the session resulting in multiple writes/edit. Clear event listeners on modal close?
 
   /* CURRENT FIREBASE STRUCTURE
   See: loadData() fucntion for efficient (lol?) implementation structure.
@@ -155,7 +155,7 @@ var cal = {
     var timebt = document.getElementById('militaryTime');
     timebt.onclick = function () {
       timebt.innerHTML = cal.militaryTime ? "AM/PM" : "Military";
-      console.log(timebt);
+      //console.log(timebt);
       cal.ChangeTime()
     };
 
@@ -190,7 +190,6 @@ var cal = {
     // Grab clicked date (Month Day Year)
     var sMth = cal.sMth + 1;
     var sDay = currentDay.firstChild.id;
-    console.log(sDay.toString());
     var sYear = cal.sYear;
 
     // Debugging
@@ -206,14 +205,12 @@ var cal = {
         const userID = firebaseUser.uid;
         //console.log(userID, sMth + "-" + sYear + " " + sDay.toString());
         var sDayString = sDay.toString();
-        console.log("Post: " + sDayString);
         document.body.addEventListener('click', function (event) {
           //console.log("Clicked event ID: " + event.target.id);
           //console.log("Need to match: 'evt' or 'td' or " + sDayString);
 
           // If clicking an already exsiting event then... (EDIT)
           if (event.target.id == 'evt') {
-            console.log("evt - EventID: " + event.target.id);
             // Month Names
             var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -234,26 +231,14 @@ var cal = {
             //console.log("RIGHT BEFORE: " + sMth + "-" + sYear + sDay.toString());
 
             db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).get().then((snapshot) => {
-              //console.log(snapshot.data());
-              console.log("in snapshot id: " + id)
-              console.log("in: " + sMth + "-" + sYear + " " + sDay.toString());
               var tempEvent = snapshot.get('eventName');
-              var tempDesc = snapshot.get('eventDesc');
+              //var tempDesc = snapshot.get('eventDesc');
               document.getElementById("evt-name").value = snapshot.get('eventName');
               document.getElementById("evt-details").value = snapshot.get('eventDesc');
 
-              console.log("tempEvent: " + tempEvent + "\nDesc: " + tempDesc);
-
-              // Are these pulling correctly? What format is it?
-              //document.getElementById("sevt-time").value = snapshot.get('sTime');
-              //document.getElementById("devt-time").value = snapshot.get('eTime');
-
-              console.log("sevt-time: " + document.getElementById("sevt-time").value);
-              console.log("devt-time: " + document.getElementById("devt-time").value);
-
               //console.log("Event name: " + tempEvent);
               var title = document.getElementById("event-title");
-              title.innerHTML = "<div> Editing: <b>[" + tempEvent + "]</b> for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear + " </div>";
+              title.innerHTML = "<div> Editing: <b>[" + tempEvent + "]</b> for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear, "</div>";
               saveEdit.addEventListener("click", (event) => {
                 var eventName = document.getElementById("evt-name").value;
                 var eventDesc = document.getElementById("evt-details").value;
@@ -275,7 +260,6 @@ var cal = {
             })
             // If clicking an empty area then... (ADD NEW)
           } else if (event.target.id == 'td' || event.target.id == sDayString) {
-            console.log(sDay);
             // Grab current logged in userID to match to the database.
             const userID = firebaseUser.uid;
 
@@ -287,17 +271,12 @@ var cal = {
             var sDay = currentDay.firstChild.id;
             var sYear = cal.sYear;
 
-            console.log("target.id: " + event.target.id + " - sDay: " + sDay.toString());
-            if (event.target.id == sDay) {
-              console.log("id = sDay");
-            }
-
             // TODO: Create separate edit button prob.
             const title = document.getElementById("event-title");
             const saveEdit = document.getElementById('Save');
             document.getElementById("evt-name").value = '';
             document.getElementById("evt-details").value = '';
-            title.innerHTML = "<div> Adding event for: <b>[" + mName[parseInt(sMth) - 1] + "]</b>" + " " + sDay + " " + sYear + "</div>";
+            title.innerHTML = "<div>Adding event for: <b>[" + mName[parseInt(sMth) - 1] + "]</b>" + " " + sDay + " " + sYear, "</div>";
 
             // Debugging
             //console.log(sMth + "-" + sYear + " " + sDay.toString());
@@ -309,8 +288,6 @@ var cal = {
               var eventName = document.getElementById("evt-name").value;
               var eventDesc = document.getElementById("evt-details").value;
 
-              console.log(sMth + "-" + sYear + " " + sDay);
-
               db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).add({
                 // name: input
                 // KEEP NAMING CONSISTENT, THESE VALUES ARE SPECIFICALLY CALLED
@@ -321,7 +298,7 @@ var cal = {
                 eventName: document.getElementById("evt-name").value,
                 eventDesc: document.getElementById("evt-details").value,
               });
-              console.log("%cDocument successfully written", "color: #00D833", "with the following: ", '\n', + sDay.toString(), mName[parseInt(sMth) - 1] + "-" + sYear, '\n', sTime, eTime, '\n', eventName, eventDesc);
+              console.log("%cDocument successfully written", "color: #00D833", "with the following: ", '\n', + sDay.toString(), mName[parseInt(sMth) - 1], sYear, '\n', sTime, eTime, '\n', eventName, eventDesc);
               document.getElementById("evt-name").value = '';
               document.getElementById("evt-details").value = '';
               saveEdit.innerHTML = "Save";
@@ -461,7 +438,7 @@ var cal = {
                     })
                     // Dummy data needs to be created in firestore documents or it CANNOT be accessed.
                   } else if (cal.dummyData != 1) {
-                    console.log("%cNo events", 'color: #FF5733', "for the month of " + mName[parseInt(sMth) - 1] + "-" + sYear + ".\nCreating dummy data...");
+                    console.log("%cNo events", 'color: #FF5733', "for the month of " + mName[parseInt(sMth) - 1], sYear + ".\nCreating dummy data...");
                     db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).set({
                       name: mName[parseInt(sMth) - 1] + " " + sYear 
                     }).then
@@ -528,13 +505,11 @@ window.addEventListener("load", function () {
   const mthOpts = document.getElementById('cal-mth')
 
   // Listener to load calendar data when a different year is selected.
-  yrOpts.addEventListener('change', (e) => {
-    console.log(`e.target.value = ${ e.target.value }`);
+  yrOpts.addEventListener('change', () => {
     cal.list();
   });
   // Listener to load calendar data when a different month is selected.
-  mthOpts.addEventListener('change', (e) => {
-    console.log(`e.target.value = ${ e.target.value }`);
+  mthOpts.addEventListener('change', () => {
     cal.list();
   });
   cal.list();
