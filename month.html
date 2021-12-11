@@ -60,7 +60,7 @@
       <div class="modal-header">
         <div id='event-title'></div>
         
-        <button type="button" class="close" id="Close"data-dismiss="modal">&times;</button>
+        <button type="button" class="close" id="Close" onclick="cal.closeModal()" data-dismiss="modal">&times;</button>
       </div>
       <div id='evt-date'></div>
       <div id='evt-info'>
@@ -84,7 +84,8 @@
         <button id = 'militaryTime' class="modal_btn" >AM/PM</button>
         <button id='DeleteAll' class="modal_btn" style="display: none;">Delete All</button>
         <button id='Delete' class="modal_btn" style="display: none;">Delete</button>
-        <button type='submit' id='Save' class="modal_btn">Save</button>
+        <button type='submit' id='Save' style="display: none;" class="modal_btn">Save</button>
+        <button type='submit' id='edit' style="display: none;" class="modal_btn">Edit</button>
       </div>
 
     </div>

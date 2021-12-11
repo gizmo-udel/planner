@@ -17,9 +17,27 @@ var cal = {
   // 4. Deleting existing data.
 
   // TODO (BUGS):
-  // 1. Events aren't being loaded on month selection! FIXED!
+  // 1. Events aren't being loaded on month selection! FIXED
   // 2. Events aren't being loaded on year/month if a doc doesn't alreay exist. FIXED
-  // 3. Listeners save in the session resulting in multiple writes/edit. Clear event listeners on modal close?
+  // 3. Listeners save in the session resulting in multiple writes/edit. Clear event listeners somehow.
+  // ==>  I have no idea how to fix this... 
+  //      1. Removing the listener after the event triggeres is not working.
+  //      2. Limiting to single trigger {once: true} is not working.
+  //      3. Remoing the listener inside the listener itself also is not working.
+
+
+//Try self destructing listener?
+  /*
+  addBlurListener(element, field) {
+    const listenToBlur = (e) => {
+        e.target.removeEventListener(e.type, listenToBlur);
+        //your stuff
+    };
+    element.addEventListener('blur', listenToBlur);
+},
+*/
+
+// Or try searching "how to removeeventlistener from anonymous functions"
 
   /* CURRENT FIREBASE STRUCTURE
   See: loadData() fucntion for efficient (lol?) implementation structure.
@@ -146,11 +164,12 @@ var cal = {
     }
 
     // (B5) REMOVE ANY PREVIOUS ADD/EDIT EVENT DOCKET
-    cal.close(false);
+    //???
+    //cal.closeModal(false);
   },
 
 
-
+/*
   helpingFunction: function (eventNum) {
     var timebt = document.getElementById('militaryTime');
     timebt.onclick = function () {
@@ -160,8 +179,9 @@ var cal = {
     };
 
     //close function on click
+    
     var closebt = document.getElementById('Close');
-    closebt.onclick = cal.close;
+    closebt.onclick = cal.closeModal();
 
     //delete all event function on click 
     var delall = document.getElementById("DeleteAll");
@@ -170,16 +190,16 @@ var cal = {
     };
 
     //save event function on click 
-    /*
+    
     var savebt = document.getElementById('Save');
     savebt.onclick = function (evt) {
       evt.stopPropagation();
       evt.preventDefault();
       cal.save(eventNum)
     };
-    */
+  
 
-  },
+  },*/
 
   modifyEvent: function (currentDay) {
     // Month Names
@@ -198,7 +218,7 @@ var cal = {
 
     //display modal 
     var modal = document.getElementById("myModal");
-    modal.style.display = "block";
+    modal.style.display = "flex";
 
     firebase.auth().onAuthStateChanged(firebaseUser => {
       if (firebaseUser) {
@@ -224,11 +244,11 @@ var cal = {
             let id = event.target.getAttribute('data-id');
             //console.log("Target atty: " + id);
 
-            const saveEdit = document.getElementById('Save');
-            saveEdit.innerHTML = "Edit";
-            // Add different button for edit? hide save show edit in here?
-            // It's saving a wiped field atm.
-            //console.log("RIGHT BEFORE: " + sMth + "-" + sYear + sDay.toString());
+            // Show appropriate buttons for editing.
+            const editBtn = document.getElementById('edit');
+            const delbt = document.getElementById("Delete");
+            delbt.style.display = "inline";
+            editBtn.style.display = "inline";
 
             db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).get().then((snapshot) => {
               var tempEvent = snapshot.get('eventName');
@@ -239,11 +259,13 @@ var cal = {
               //console.log("Event name: " + tempEvent);
               var title = document.getElementById("event-title");
               title.innerHTML = "<div> Editing: <b>[" + tempEvent + "]</b> for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear, "</div>";
-              saveEdit.addEventListener("click", (event) => {
+              editBtn.removeEventListener
+              editBtn.addEventListener("click", (event) => {
                 var eventName = document.getElementById("evt-name").value;
                 var eventDesc = document.getElementById("evt-details").value;
                 var sTime = document.getElementById("sevt-time").value;
                 var eTime = document.getElementById("devt-time").value;
+
                 db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).set({
                   eventName: document.getElementById("evt-name").value,
                   eventDesc: document.getElementById("evt-details").value,
@@ -252,11 +274,14 @@ var cal = {
                   eTime: document.getElementById("devt-time").value
                 })
                 console.log("%cEvent successfully changed", 'color: #00D833', "to: ", '\n' + eventName, eventDesc, '\n' + sTime, eTime);
-                saveEdit.innerHTML = "Save";
+                /*
+                editBtn.style.display = "none";
                 document.getElementById("evt-name").value = '';
                 document.getElementById("evt-details").value = '';
-                // RELOAD HERE?
-              })
+                */
+                cal.closeModal();
+
+              },{once: true})
             })
             // If clicking an empty area then... (ADD NEW)
           } else if (event.target.id == 'td' || event.target.id == sDayString) {
@@ -271,18 +296,18 @@ var cal = {
             var sDay = currentDay.firstChild.id;
             var sYear = cal.sYear;
 
-            // TODO: Create separate edit button prob.
+            // Show appropriate buttons for saving.
             const title = document.getElementById("event-title");
-            const saveEdit = document.getElementById('Save');
-            document.getElementById("evt-name").value = '';
-            document.getElementById("evt-details").value = '';
+            const saveBtn = document.getElementById('Save');
+            const modal = document.getElementById("myModal");
+            saveBtn.style.display = "inline";
+
+            // Label title.
             title.innerHTML = "<div>Adding event for: <b>[" + mName[parseInt(sMth) - 1] + "]</b>" + " " + sDay + " " + sYear, "</div>";
 
             // Debugging
             //console.log(sMth + "-" + sYear + " " + sDay.toString());
-            saveEdit.addEventListener("click", () => {
-              saveEdit.innerHTML = "Edit";
-
+            saveBtn.addEventListener("click", (event) => {
               var sTime = document.getElementById("sevt-time").value;
               var eTime = document.getElementById("devt-time").value;
               var eventName = document.getElementById("evt-name").value;
@@ -299,34 +324,38 @@ var cal = {
                 eventDesc: document.getElementById("evt-details").value,
               });
               console.log("%cDocument successfully written", "color: #00D833", "with the following: ", '\n', + sDay.toString(), mName[parseInt(sMth) - 1], sYear, '\n', sTime, eTime, '\n', eventName, eventDesc);
+
+              // Wipe fields
+              /*
               document.getElementById("evt-name").value = '';
               document.getElementById("evt-details").value = '';
-              saveEdit.innerHTML = "Save";
-              var modal = document.getElementById('myModal');
-              modal.style.display = "none";
-            })
+              */
+              // Close modal on button press.
+              cal.closeModal();
+            },{once: true})
           }
-        });
+        },{once: true});
       }
     })
 
-    //get title element, change to edit event
-
     //get and assign evt-date element
+    /*
     var event_date = document.getElementById("evt-date");
     event_date = cal.mName[cal.sMth] + cal.sDay + cal.sYear;
 
     //get and assign time 
     var stime = document.getElementById('sevt-time');
     var etime = document.getElementById('devt-time');
-    /*
+    
     stime = event.stime;
     etime = event.dtime;
-    */
+    
 
     //display delete all button
+    
     var delall = document.getElementById("DeleteAll");
     delall.style.display = "inline";
+    
 
     //display delete button
     var delbt = document.getElementById("Delete");
@@ -335,20 +364,44 @@ var cal = {
     //delete function on click
     var delbt = document.getElementById('Delete');
     delbt.onclick = function () {
-      cal.del(day, eventNum)
+      cal.del(day)
     };
 
     //helping function to call other on click methods 
-    this.helpingFunction(sDay);
+    //this.helpingFunction(sDay);
+    */
   },
 
   // (D) Close event input form
-  close: function (callList) {
-    var modal = document.getElementById('myModal');
+  
+  closeModal: function () {
+    const modal = document.getElementById('myModal');
+    const saveBtn = document.getElementById('Save');
+    const delbt = document.getElementById("Delete");
+    const editBtn = document.getElementById("edit");
+
+    // Bad place for all this if they can close the modal my other means (clicking outside, hitting esc, etc) then none of this will fire.
     modal.style.display = "none";
+
+    //saveBtn.removeEventListener("click", cal.confirmSave());
+    //editBtn.removeEventListener("click", cal.confirmEdit());
+
+    saveBtn.style.display = "none";
+    delbt.style.display = "none";
+    editBtn.style.display = "none";
+
+    document.getElementById("evt-name").value = '';
+    document.getElementById("evt-details").value = '';
+    document.getElementById("sevt-time").value = '00:00';
+    document.getElementById("devt-time").value = '23:59';
+
+    // We should implement a listener for firebase, this should never be needed.
+    /*
     if (callList) {
       //cal.list();
     }
+    */
+    
   },
 
   ChangeTime: function () {
@@ -357,9 +410,10 @@ var cal = {
     let value = document.getElementById("militaryTime");
     value.value = this.militaryTime ? "MIlitary" : "AM/PM";
     document.getElementById("Close").onclick = function () {
-      cal.close(true);
+      cal.closeModal();
     };
   },
+  
 
   // (F) Delete selected event from the selected day
   del: function (day, eventNum) {
