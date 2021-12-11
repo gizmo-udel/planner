@@ -15,6 +15,9 @@ var cal = {
   // 3. Editing current data. DONE
   // 4. Deleting existing data.
 
+  // TODO (BUGS):
+  // 1. Events aren't being loaded on month selection! FIXED!
+
   /* CURRENT FIREBASE STRUCTURE
   See: loadData() fucntion for efficient (lol?) implementation structure.
   db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(currentDay.toString()).doc(docID).eventName.value;
@@ -23,19 +26,9 @@ var cal = {
   													                              sTime
   													                              eTime
   													                              eventDesc
-                                                          etc...
-  */
-
-                                                        
-  /*
-  document.getElementById("evt-name").value
-  document.getElementById("evt-details").value
-  document.getElementById("sevt-time").value
-  document.getElementById("devt-time").value
-  */
+                                                          etc... */
 
   // (B) DRAW CALENDAR FOR SELECTED MONTH
-
   list: function () {
     // (B1) BASIC CALCULATIONS - DAYS IN MONTH, START + END DAY
     // Note - Jan is 0 & Dec is 11 in JS.
@@ -118,8 +111,7 @@ var cal = {
 
     cRow.classList.add("day"); // this is the whole row and can be used for the week view
 
-    // Create table (boxes) for the rest of the days
-    // Load stored data for any logged in user.
+    // Create table (boxes) for the rest of the days and load saved data.
     for (var i = 0; i < total; i++) {
       Hasdata = false;
       // The td html element is a standard cell within the table
@@ -213,15 +205,15 @@ var cal = {
         var sDayString = sDay.toString();
         console.log("Post: " + sDayString);
         document.body.addEventListener('click', function (event) {
-          console.log("Clicked event ID: "+event.target.id);
+          console.log("Clicked event ID: " + event.target.id);
           console.log("Need to match: 'evt' or 'td' or " + sDayString);
 
           // If clicking an already exsiting event the... (EDIT)
           if (event.target.id == 'evt') {
             console.log("evt - EventID: " + event.target.id);
-             // Month Names
-             var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-             
+            // Month Names
+            var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
             // Grab clicked date (Month Day Year)
             var sMth = cal.sMth + 1;
             var sDay = currentDay.firstChild.id;
@@ -273,6 +265,8 @@ var cal = {
                 })
                 console.log("Event EDITED to: " + eventName, eventDesc, sTime, eTime);
                 saveEdit.innerHTML = "Save";
+                document.getElementById("evt-name").value = '';
+                document.getElementById("evt-details").value = '';
                 // RELOAD HERE?
               })
             })
@@ -290,15 +284,16 @@ var cal = {
             var sDay = currentDay.firstChild.id;
             var sYear = cal.sYear;
 
-            console.log("target.id: " + event.target.id  + " - sDay: " + sDay.toString());
-            if(event.target.id == sDay)
-            {
+            console.log("target.id: " + event.target.id + " - sDay: " + sDay.toString());
+            if (event.target.id == sDay) {
               console.log("id = sDay");
             }
 
             // TODO: Create separate edit button prob.
             const title = document.getElementById("event-title");
             const saveEdit = document.getElementById('Save');
+            document.getElementById("evt-name").value = '';
+            document.getElementById("evt-details").value = '';
             title.innerHTML = "<div> Adding event for: <b>[" + mName[parseInt(sMth) - 1] + "]</b>" + " " + sDay + " " + sYear + "</div>";
 
             // Debugging
@@ -375,57 +370,6 @@ var cal = {
       //cal.list();
     }
   },
-
-  // (E) Save event either by adding or by editing 
-  /*
-    save: function (currentDay) {
-      firebase.auth().onAuthStateChanged(firebaseUser => {
-        if (firebaseUser) {
-          // Display/hide appropriate buttons.
-          // These should be moved to a separate listener later.
-          document.getElementById('loginNav').style.display = 'none';
-          document.getElementById('logoutNav').style.display = 'block';
-
-          // Grab current logged in userID to match to the database.
-          const userID = firebaseUser.uid;
-
-          // Month Names
-          //var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-          // Selected month (+1 to account for 0-11 making it 1-12)
-          var sMth = cal.sMth + 1;
-          // Selected year
-          var sYear = cal.sYear;
-          const saveEdit = document.getElementById('Save');
-          saveEdit.innerHTML = "Edit";
-          // Debugging
-          console.log(sMth + "-" + sYear + " " + currentDay.toString());
-          saveEdit.addEventListener("click", () => {
-            console.log("INSIDE THE EDIT ADD NEW LISTENER!!");
-            sTime = document.getElementById("sevt-time").value;
-            eTime = document.getElementById("devt-time").value;
-            eventName = document.getElementById("evt-name").value;
-            eventDesc = document.getElementById("evt-details").value;
-            db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(currentDay.toString()).add({
-              // name: input
-              // KEEP NAMING CONSISTENT, THESE VALUES ARE SPECIFICALLY CALLED
-              // CURRENT EVENT DETAILS: sTime, eTime, eventName, eventDesc
-              // Can easily add more later
-              sTime: document.getElementById("sevt-time").value,
-              eTime: document.getElementById("devt-time").value,
-              eventName: document.getElementById("evt-name").value,
-              eventDesc: document.getElementById("evt-details").value,
-            });
-            console.log("Document: " + userID + "\nWritten with the following:\n" + sMth + "-" + sYear, currentDay, sTime, eTime, eventName, eventDesc);
-            document.getElementById("evt-name").value = '';
-            document.getElementById("evt-details").value = '';
-            var modal = document.getElementById('myModal');
-            modal.style.display = "none";
-          })
-        }
-      })
-    },
-    */
 
   ChangeTime: function () {
     console.log("changed");
@@ -552,6 +496,7 @@ window.addEventListener("load", function () {
     if (i == nowMth) {
       opt.selected = true;
     }
+    opt.setAttribute('id', 'option');
     month.appendChild(opt);
   }
 
@@ -565,11 +510,28 @@ window.addEventListener("load", function () {
     if (i == nowYear) {
       opt.selected = true;
     }
+    opt.setAttribute('id', 'option');
     year.appendChild(opt);
   }
 
   // (G4) Start/Draw calendar
-  document.getElementById("cal-yr").addEventListener("click", cal.list);
-  document.getElementById("cal-mth").addEventListener("click", cal.list);
+  //TODO: add a listener to the acutal month/year elements, not the dropdown button itself. DONE
+
+  //document.getElementById("cal-yr").addEventListener("click", cal.list);
+  //document.getElementById("cal-mth").addEventListener("click", cal.list);
+
+  const yrOpts = document.getElementById('cal-yr');
+  const mthOpts = document.getElementById('cal-mth')
+
+  // Listener to load calendar data when a different year is selected.
+  yrOpts.addEventListener('change', (e) => {
+    console.log(`e.target.value = ${ e.target.value }`);
+    cal.list();
+  });
+  // Listener to load calendar data when a different month is selected.
+  mthOpts.addEventListener('change', (e) => {
+    console.log(`e.target.value = ${ e.target.value }`);
+    cal.list();
+  });
   cal.list();
 });
