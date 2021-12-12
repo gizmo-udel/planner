@@ -230,7 +230,7 @@ var cal = {
           //console.log("Clicked event ID: " + event.target.id);
           //console.log("Need to match: 'evt' or 'td' or " + sDayString);
 
-          // If clicking an already exsiting event then... (EDIT)
+          // Editing Event
           if (event.target.id == 'evt') {
             // Month Names
             var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -247,8 +247,8 @@ var cal = {
 
             // Show appropriate buttons for editing.
             const editBtn = document.getElementById('edit');
-            const delbt = document.getElementById("Delete");
-            delbt.style.display = "inline";
+            const delBtn = document.getElementById("Delete");
+            delBtn.style.display = "inline";
             editBtn.style.display = "inline";
 
             db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).get().then((snapshot) => {
@@ -260,7 +260,7 @@ var cal = {
               //console.log("Event name: " + tempEvent);
               var title = document.getElementById("event-title");
               title.innerHTML = "<div> Editing: <b>[" + tempEvent + "]</b> for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear, "</div>";
-              editBtn.removeEventListener
+              
               editBtn.addEventListener("click", (event) => {
                 var eventName = document.getElementById("evt-name").value;
                 var eventDesc = document.getElementById("evt-details").value;
@@ -284,7 +284,14 @@ var cal = {
 
               },{once: true})
             })
-            // If clicking an empty area then... (ADD NEW)
+            // Delete event.
+            delBtn.addEventListener("click", (event) => {
+              // Delete function call.
+              db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).delete();
+              console.log("Event %c(" + id + ")",'color: #FF5733', "successfully deleted.");
+              cal.closeModal();
+            },{once: true})
+            // Adding New Event
           } else if (event.target.id == 'td' || event.target.id == sDayString) {
             // Grab current logged in userID to match to the database.
             const userID = firebaseUser.uid;
@@ -385,7 +392,7 @@ var cal = {
   closeModal: function () {
     const modal = document.getElementById('myModal');
     const saveBtn = document.getElementById('Save');
-    const delbt = document.getElementById("Delete");
+    const delBtn = document.getElementById("Delete");
     const editBtn = document.getElementById("edit");
 
     // Bad place for all this if they can close the modal my other means (clicking outside, hitting esc, etc) then none of this will fire.
@@ -395,7 +402,7 @@ var cal = {
     //editBtn.removeEventListener("click", cal.confirmEdit());
 
     saveBtn.style.display = "none";
-    delbt.style.display = "none";
+    delBtn.style.display = "none";
     editBtn.style.display = "none";
 
     document.getElementById("evt-name").value = '';
@@ -419,29 +426,6 @@ var cal = {
     document.getElementById("Close").onclick = function () {
       cal.closeModal();
     };
-  },
-  
-
-  // (F) Delete selected event from the selected day
-  del: function (day, eventNum) {
-    /*
-    if (confirm("Remove" + (!eventNum ? " all events?" : " event?"))) {
-      cal.sDay = day;
-      if (!eventNum) {
-        delete cal.data[cal.sDay];
-      }
-      else {
-        let event = JSON.parse(cal.data[cal.sDay]);
-        for (let i = eventNum; i < event.numCount; i++) {
-          event["event" + i] = event["event" + (i + 1)];
-        }
-        delete event["event" + event.numCount--];
-        cal.data[cal.sDay] = JSON.stringify(event);
-      }
-      localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
-      */
-    cal.list(); //Delete the event and redraw the calendar
-
   },
 
   // Load the saved data for the currently logged in user, display it on the calendar.
