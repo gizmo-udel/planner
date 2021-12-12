@@ -15,6 +15,7 @@ var cal = {
   // 2. Saving new data. DONE
   // 3. Editing current data. DONE
   // 4. Deleting existing data.
+  // 5. Add listener to load data dynamically so we don't need to refresh.
 
   // TODO (BUGS):
   // 1. Events aren't being loaded on month selection! FIXED
@@ -332,7 +333,13 @@ var cal = {
               */
               // Close modal on button press.
               cal.closeModal();
+
+              
             },{once: true})
+          }
+          else if (event.target.id == 'Close')
+          {
+            cal.closeModal;
           }
         },{once: true});
       }
@@ -370,6 +377,7 @@ var cal = {
     //helping function to call other on click methods 
     //this.helpingFunction(sDay);
     */
+    //cal.closeModal();
   },
 
   // (D) Close event input form
@@ -401,7 +409,6 @@ var cal = {
       //cal.list();
     }
     */
-    
   },
 
   ChangeTime: function () {
