@@ -27,7 +27,7 @@ var cal = {
   //      3. Remoing the listener inside the listener itself also is not working.
 
 
-//Try self destructing listener?
+  //Try self destructing listener?
   /*
   addBlurListener(element, field) {
     const listenToBlur = (e) => {
@@ -38,7 +38,7 @@ var cal = {
 },
 */
 
-// Or try searching "how to removeeventlistener from anonymous functions"
+  // Or try searching "how to removeeventlistener from anonymous functions"
 
   /* CURRENT FIREBASE STRUCTURE
   See: loadData() fucntion for efficient (lol?) implementation structure.
@@ -63,7 +63,7 @@ var cal = {
 
     // (B2) Load saved data from Firebase for the currently logged in user.
     for (var i = 1; i <= daysInMth; i++) {
-        cal.loadData(i);
+      cal.loadData(i);
     }
 
     // (B3) DRAWING CALCULATIONS
@@ -170,37 +170,37 @@ var cal = {
   },
 
 
-/*
-  helpingFunction: function (eventNum) {
-    var timebt = document.getElementById('militaryTime');
-    timebt.onclick = function () {
-      timebt.innerHTML = cal.militaryTime ? "AM/PM" : "Military";
-      //console.log(timebt);
-      cal.ChangeTime()
-    };
+  /*
+    helpingFunction: function (eventNum) {
+      var timebt = document.getElementById('militaryTime');
+      timebt.onclick = function () {
+        timebt.innerHTML = cal.militaryTime ? "AM/PM" : "Military";
+        //console.log(timebt);
+        cal.ChangeTime()
+      };
 
-    //close function on click
+      //close function on click
+      
+      var closebt = document.getElementById('Close');
+      closebt.onclick = cal.closeModal();
+
+      //delete all event function on click 
+      var delall = document.getElementById("DeleteAll");
+      delall.onclick = function () {
+        cal.del(cal.sDay, 0)
+      };
+
+      //save event function on click 
+      
+      var savebt = document.getElementById('Save');
+      savebt.onclick = function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        cal.save(eventNum)
+      };
     
-    var closebt = document.getElementById('Close');
-    closebt.onclick = cal.closeModal();
 
-    //delete all event function on click 
-    var delall = document.getElementById("DeleteAll");
-    delall.onclick = function () {
-      cal.del(cal.sDay, 0)
-    };
-
-    //save event function on click 
-    
-    var savebt = document.getElementById('Save');
-    savebt.onclick = function (evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
-      cal.save(eventNum)
-    };
-  
-
-  },*/
+    },*/
 
   modifyEvent: function (currentDay) {
     // Month Names
@@ -260,7 +260,7 @@ var cal = {
               //console.log("Event name: " + tempEvent);
               var title = document.getElementById("event-title");
               title.innerHTML = "<div> Editing: <b>[" + tempEvent + "]</b> for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear, "</div>";
-              
+
               editBtn.addEventListener("click", (event) => {
                 var eventName = document.getElementById("evt-name").value;
                 var eventDesc = document.getElementById("evt-details").value;
@@ -282,15 +282,22 @@ var cal = {
                 */
                 cal.closeModal();
 
-              },{once: true})
+              }, {
+                once: true
+              })
             })
+
             // Delete event.
-            delBtn.addEventListener("click", (event) => {
+            delBtn.addEventListener("click", (e) => {
               // Delete function call.
               db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).delete();
-              console.log("Event %c(" + id + ")",'color: #FF5733', "successfully deleted.");
+
+              console.log("Event %c(" + id + ")", 'color: #FF5733', "successfully deleted.");
               cal.closeModal();
-            },{once: true})
+            }, {
+              once: true
+            })
+
             // Adding New Event
           } else if (event.target.id == 'td' || event.target.id == sDayString) {
             // Grab current logged in userID to match to the database.
@@ -315,6 +322,7 @@ var cal = {
 
             // Debugging
             //console.log(sMth + "-" + sYear + " " + sDay.toString());
+            // Save event.
             saveBtn.addEventListener("click", (event) => {
               var sTime = document.getElementById("sevt-time").value;
               var eTime = document.getElementById("devt-time").value;
@@ -331,7 +339,7 @@ var cal = {
                 eventName: document.getElementById("evt-name").value,
                 eventDesc: document.getElementById("evt-details").value,
               });
-              console.log("%cDocument successfully written", "color: #00D833", "with the following: ", '\n', + sDay.toString(), mName[parseInt(sMth) - 1], sYear, '\n', sTime, eTime, '\n', eventName, eventDesc);
+              console.log("%cDocument successfully written", "color: #00D833", "with the following: ", '\n', +sDay.toString(), mName[parseInt(sMth) - 1], sYear, '\n', sTime, eTime, '\n', eventName, eventDesc);
 
               // Wipe fields
               /*
@@ -341,14 +349,16 @@ var cal = {
               // Close modal on button press.
               cal.closeModal();
 
-              
-            },{once: true})
-          }
-          else if (event.target.id == 'Close')
-          {
+
+            }, {
+              once: true
+            })
+          } else if (event.target.id == 'Close') {
             cal.closeModal;
           }
-        },{once: true});
+        }, {
+          once: true
+        });
       }
     })
 
@@ -388,7 +398,7 @@ var cal = {
   },
 
   // (D) Close event input form
-  
+
   closeModal: function () {
     const modal = document.getElementById('myModal');
     const saveBtn = document.getElementById('Save');
@@ -485,7 +495,7 @@ var cal = {
                   } else if (cal.dummyData != 1) {
                     console.log("%cNo events", 'color: #FF5733', "for the month of " + mName[parseInt(sMth) - 1], sYear + ".\nCreating dummy data...");
                     db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).set({
-                      name: mName[parseInt(sMth) - 1] + " " + sYear 
+                      name: mName[parseInt(sMth) - 1] + " " + sYear
                     }).then
                     {
                       console.log("%cDummy data successfully created.", 'color: #00D833');
