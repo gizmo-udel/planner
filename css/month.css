@@ -276,6 +276,11 @@ margin-right: 10px;
   background: var(--m-background);
 
 }
+
+#modal-header{
+  text-align: center;
+  display:block;
+}
 #notepadModal{
   padding: 0px;
 }
@@ -292,7 +297,7 @@ margin-right: 10px;
 #event-modal{
   background-color: rgb(248, 246, 246);
   width: 40rem;
-  height: 35rem;
+  height: 37rem;
   border-radius: .8rem;
   box-shadow: var(--m-shadow, .4rem .4rem 10.2rem .2rem) var(--shadow-1);
   position: relative;

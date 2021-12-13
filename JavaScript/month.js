@@ -211,7 +211,7 @@ var cal = {
 
               //console.log("Event name: " + tempEvent);
               var title = document.getElementById("event-title");
-              title.innerHTML = "<div> Editing: <b>[" + tempEvent + "]</b> for " + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear, "</div>";
+              title.innerHTML = "<div> EDIT EVENT: " + tempEvent + "</br>" + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear, "</div>";
 
               editBtn.addEventListener("click", (event) => {
                 var eventName = document.getElementById("evt-name").value;
@@ -265,7 +265,7 @@ var cal = {
             saveBtn.style.display = "inline";
 
             // Label title.
-            title.innerHTML = "<div>Adding event for: <b>[" + mName[parseInt(sMth) - 1] + "]</b>" + " " + sDay + " " + sYear, "</div>";
+            title.innerHTML = "<div>ADD EVENT <br>" + mName[parseInt(sMth) - 1] + "</b>" + " " + sDay + " " + sYear, "</div>";
 
             // Save event.
             saveBtn.addEventListener("click", (event) => {

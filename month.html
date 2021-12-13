@@ -71,7 +71,7 @@
 
     <!-- Modal content -->
     <div id="event-modal" class="modal-content" style="--m-background: transparent;">
-      <div class="modal-header">
+      <div class="modal-header" id='modal-header'>
         <div id='event-title'></div>
         
         <button type="button" class="close" id="Close" onclick="location.reload()" data-dismiss="modal">&times;</button>
@@ -95,11 +95,11 @@
 
       </div>
       <div id='buttons' class="buttonclass">
-        <button id = 'militaryTime' class="modal_btn" >AM/PM</button>
+        <button id = 'militaryTime' class="modal_btn" style="display: none;"> AM/PM</button>
         <button id='DeleteAll' class="modal_btn" style="display: none;">Delete All</button>
         <button id='Delete' class="modal_btn" style="display: none;">Delete</button>
         <button type='submit' id='Save' style="display: none;" class="modal_btn">Save</button>
-        <button type='submit' id='edit' style="display: none;" class="modal_btn">Save Changes</button>
+        <button type='submit' id='edit' style="display: none;" class="modal_btn">Save</button>
       </div>
 
     </div>
