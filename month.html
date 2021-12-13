@@ -3,8 +3,7 @@
 
 <head>
   <title>Month View</title>
-  <link rel="stylesheet" href="./css/style.css">
-  </link>
+  <link rel="stylesheet" href="./css/style.css"></link>
   <link href="./css/month.css" rel="stylesheet">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
@@ -45,10 +44,6 @@
   <div id="cal-wrap">
     <div id="header-btns">
       <button id="notepadBtn" class="headerBtns">Notepad</button>
-<<<<<<< HEAD
-=======
-      <button id='militaryTimeHeader' class="headerBtns">AM/PM</button>
->>>>>>> 9009f769717d30b425c138e905cfa4175e963cff
       <div id="notepadModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content" id="notepad-content">
@@ -76,17 +71,10 @@
 
     <!-- Modal content -->
     <div id="event-modal" class="modal-content" style="--m-background: transparent;">
-<<<<<<< HEAD
       <div class="modal-header" id='modal-header'>
         <div id='event-title'></div>
         
         <button type="button" class="close" id="Close" onclick="location.reload()" data-dismiss="modal">&times;</button>
-=======
-      <div class="modal-header" id="header">
-        <div id='event-title'></div>
-
-        <button type="button" class="close" id="Close" data-dismiss="modal">&times;</button>
->>>>>>> 9009f769717d30b425c138e905cfa4175e963cff
       </div>
       <div id='evt-date'></div>
       <div id='evt-info'>
@@ -100,18 +88,14 @@
 
         <div id='event-time'>
           <img id='clockimg' src="images/clock.png" alt="clock">
-          <input type='time' id='sevt-time' name='start-time' value='00:00' required>
+          <input type='time' id='sevt-time' name='start-time' value = '00:00' required>
           <p>to</p>
-          <input type='time' id='devt-time' name='end-time' value='23:59' required>
-        </div>
+           <input type='time' id='devt-time' name='end-time' value = '23:59' required>
+           </div>
 
       </div>
       <div id='buttons' class="buttonclass">
-<<<<<<< HEAD
         <button id = 'militaryTime' class="modal_btn" style="display: none;"> AM/PM</button>
-=======
-        <button id='militaryTime' class="modal_btn">AM/PM</button>
->>>>>>> 9009f769717d30b425c138e905cfa4175e963cff
         <button id='DeleteAll' class="modal_btn" style="display: none;">Delete All</button>
         <button id='Delete' class="modal_btn" style="display: none;">Delete</button>
         <button type='submit' id='Save' style="display: none;" class="modal_btn">Save</button>
