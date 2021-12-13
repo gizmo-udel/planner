@@ -1,11 +1,15 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/bootstrap.min.css"> </link>
-  <link rel="stylesheet" href="./css/style.css"></link>
-  <link rel="stylesheet" href="./css/day.css"></link>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  </link>
+  <link rel="stylesheet" href="./css/style.css">
+  </link>
+  <link rel="stylesheet" href="./css/day.css">
+  </link>
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
@@ -14,33 +18,34 @@
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <title>Agenda</title>
 </head>
-<body class = "custom-body-color">
+
+<body class="custom-body-color">
   <header class="cd-main-header text-center flex flex-column flex-center">
     <p class="margin-top-md margin-bottom-xl"></p>
     <div class="nav-menu fixed-top">
-      <div class="container" id  = "custom-container">
-          <div class="row">
-              <div class="col-md-12">
-                  <nav class="navbar navbar-dark navbar-expand-lg">
-                      <div class="collapse navbar-collapse" id="navbar">
-                        <span class = "custom-logo"> Aurora Tracker </span>
-                          <ul class="navbar-nav ml-auto">
-                              <li class="nav-item"> <a class="nav-link" href="index.html">HOME</a> </li>
-                              <li class="nav-item"> <a class="nav-link" id="loginNav" href="login.html">LOG IN</a> </li>
-                              <li class="nav-item"> <a class="nav-link" id="logoutNav" href="#">LOG OUT</a> </li>
-                              <li class="nav-item"> <a class="nav-link active" href="day.html">DAY</a> </li>
-                              <li class="nav-item"> <a class="nav-link" href="month.html">MONTH</a> </li>
-                          </ul>
-                      </div>
-                  </nav>
+      <div class="container" id="custom-container">
+        <div class="row">
+          <div class="col-md-12">
+            <nav class="navbar navbar-dark navbar-expand-lg">
+              <div class="collapse navbar-collapse" id="navbar">
+                <span class="custom-logo"> Aurora Tracker </span>
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item"> <a class="nav-link" href="index.html">HOME</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="loginNav" href="login.html">LOG IN</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="logoutNav" href="#">LOG OUT</a> </li>
+                  <li class="nav-item"> <a class="nav-link active" href="day.html">DAY</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="month.html">MONTH</a> </li>
+                </ul>
               </div>
+            </nav>
           </div>
+        </div>
       </div>
     </div>
   </header>
-  
-  <div class = "changeView2" style = "text-align: right;">
-    <button class="buttonView"><a href = "month.html">Month </a></button>
+
+  <div class="changeView2" style="text-align: right;">
+    <button class="buttonView"><a href="month.html">Month </a></button>
   </div>
   <div id="cal-wrap">
     <!-- Month/Year/Day Selection -->
@@ -207,8 +212,8 @@
         <div class="dayview-now-marker"></div>
         <div class="dayview-grid-marker-start"></div>
 
-      <!-- Implementation complete following the pseudocode below! -->
-      <!--  Pulling from the database:
+        <!-- Implementation complete following the pseudocode below! -->
+        <!--  Pulling from the database:
         1. Use some code from month.html/month.js to make a day dropdown?
         2. If selected day has an event:
             a. Pull event information (eventName, eventDesc, sTime, eTime)
@@ -254,31 +259,36 @@
           .querySelector(".dayview-gridcell-container")
           .getBoundingClientRect().height /
           24) *
-          (d.getHours() + d.getMinutes() / 60) +
+        (d.getHours() + d.getMinutes() / 60) +
         "px";
     });
   </script>
 
-    <!-- Firebase Configuration -->
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
-        authDomain: "ud-planner.firebaseapp.com",
-        projectId: "ud-planner",
-        storageBucket: "ud-planner.appspot.com",
-        messagingSenderId: "396137599848",
-        appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
-        measurementId: "G-KMYYDKW7JM"
-      };
-  
-      // Initialize database.
-      const app = firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-      // const analytics = getAnalytics(app);
-    </script>
+  <!-- Firebase Configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
+      authDomain: "ud-planner.firebaseapp.com",
+      projectId: "ud-planner",
+      storageBucket: "ud-planner.appspot.com",
+      messagingSenderId: "396137599848",
+      appId: "1:396137599848:web:5bd42cadf90d1b0a7a3cdd",
+      measurementId: "G-KMYYDKW7JM"
+    };
+
+    // Initialize database.
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    // const analytics = getAnalytics(app);
+  </script>
 
 </body>
 
+<!-- Needs to be at the bottom to load AFTER the html is done parsing. -->
+<script src="JavaScript/jquery-3.2.1.min.js"></script>
+<script src="JavaScript/bootstrap.bundle.min.js"></script>
+<script src="JavaScript/month.js"></script>
 <script src="JavaScript/auth.js"></script>
 <script src="JavaScript/day.js"></script>
+
 </html>

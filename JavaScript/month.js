@@ -159,10 +159,6 @@ var cal = {
         cRow.classList.add("day");
       }
     }
-
-    // (B5) REMOVE ANY PREVIOUS ADD/EDIT EVENT DOCKET
-    //???
-    //cal.closeModal(false);
   },
 
   // Function for adding, deleting, and editing events.
