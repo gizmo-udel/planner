@@ -1,42 +1,59 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/bootstrap.min.css"> </link>
-  <link rel="stylesheet" href="./css/style.css"></link>
-  <link rel="stylesheet" href="./css/day.css"></link>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  </link>
+  <link rel="stylesheet" href="./css/style.css">
+  </link>
+  <link rel="stylesheet" href="./css/day.css">
+  </link>
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-functions.js"></script>
+  <!-- Temp Favicon Error Fix-->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <title>Agenda</title>
 </head>
-<body class = "custom-body-color">
+
+<body class="custom-body-color">
   <header class="cd-main-header text-center flex flex-column flex-center">
     <p class="margin-top-md margin-bottom-xl"></p>
     <div class="nav-menu fixed-top">
-      <div class="container" id  = "custom-container">
-          <div class="row">
-              <div class="col-md-12">
-                  <nav class="navbar navbar-dark navbar-expand-lg">
-                      <div class="collapse navbar-collapse" id="navbar">
-                        <span class = "custom-logo"> Aurora Tracker </span>
-                          <ul class="navbar-nav ml-auto">
-                              <li class="nav-item"> <a class="nav-link" href="#">HOME</a> </li>
-                              <li class="nav-item"> <a class="nav-link" href="#" id="logout">LOG OUT</a> </li>
-                              <li class="nav-item"> <a class="nav-link active" href="day.html">CALENDAR</a> </li>
-                          </ul>
-                      </div>
-                  </nav>
+      <div class="container" id="custom-container">
+        <div class="row">
+          <div class="col-md-12">
+            <nav class="navbar navbar-dark navbar-expand-lg">
+              <div class="collapse navbar-collapse" id="navbar">
+                <span class="custom-logo"> Aurora Tracker </span>
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item"> <a class="nav-link" href="index.html">HOME</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="loginNav" href="login.html">LOG IN</a> </li>
+                  <li class="nav-item"> <a class="nav-link" id="logoutNav" href="#">LOG OUT</a> </li>
+                  <li class="nav-item"> <a class="nav-link active" href="day.html">DAY</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="month.html">MONTH</a> </li>
+                </ul>
               </div>
+            </nav>
           </div>
+        </div>
       </div>
     </div>
   </header>
-  
-  <div class = "changeView2" style = "text-align: right;">
-    <button class="buttonView"><a href = "month.html">Month </a></button>
+
+  <div class="changeView2" style="text-align: right;">
+    <button class="buttonView"><a href="month.html">Month </a></button>
+  </div>
+  <div id="cal-wrap">
+    <!-- Month/Year/Day Selection -->
+    <div id="cal-date">
+      <select id="cal-mth"></select>
+      <select id="cal-yr"></select>
+      <select id="cal-day"></select>
+    </div>
   </div>
 
   <div class="dayview-container">
@@ -194,23 +211,39 @@
         </div>
         <div class="dayview-now-marker"></div>
         <div class="dayview-grid-marker-start"></div>
-        <div class="dayview-gridcell-container">
-          <div class="dayview-gridcell">
-            <div class="dayview-cell" style="grid-row: 35 / 44;">
+
+        <!-- Implementation complete following the pseudocode below! -->
+        <!--  Pulling from the database:
+        1. Use some code from month.html/month.js to make a day dropdown?
+        2. If selected day has an event:
+            a. Pull event information (eventName, eventDesc, sTime, eTime)
+            b. Create dayview-cell
+            c. Parse sTime and eTime so we can perform math on the hours/mins and create correct style
+               -> Split at ":" (?), sTime -> (hh * 4) + parseInt(mm/15) + 1 = left
+                                    eTime -> (hh * 4) + parseInt(mm/15) + 1 = right
+                                    dayview-cell.style("grid-row:"+ left + " / " + right);
+            d. dayview-cell-title.innerHTML = eventName;
+               dayview-cell-time.innerHTML = sTime + "-" + eTime;
+               dayview-cell-desc.innerHTML = eventDesc;-->
+
+        <div class="dayview-gridcell-container" id="gridContainer">
+          <div class="dayview-gridcell" id="eventContainer">
+            <!-- Example Formatting -->
+            <!--<div class="dayview-cell" style="grid-row: 1 / 5;">
               <div class="dayview-cell-title">CISC474 Web Appilcation</div>
-              <div class="dayview-cell-time">9:30-10:45</div>
+              <div class="dayview-cell-time">00:00-01:00</div>
               <div class="dayview-cell-desc">Taking class at Sharp Lab 123</div>
             </div>
-            <div class="dayview-cell" style="grid-row: 61 / 70;">
+            <div class="dayview-cell" style="grid-row: 52 / 60;">
               <div class="dayview-cell-title">Group Work</div>
-              <div class="dayview-cell-time">15:00-17:15</div>
+              <div class="dayview-cell-time">12:45-14:45</div>
               <div class="dayview-cell-desc">Reserve a group study room for group work</div>
             </div>
-            <div class="dayview-cell dayview-cell-extend" style="grid-row: 42/ 81;">
+            <div class="dayview-cell" style="grid-row: 51 / 74;">
               <div class="dayview-cell-title">Project Time!</div>
-              <div class="dayview-cell-time">10:15-20:00</div>
+              <div class="dayview-cell-time">12:30-18:15</div>
               <div class="dayview-cell-desc">Working for planner project</div>
-            </div>
+            </div>-->
           </div>
         </div>
         <div class="dayview-grid-marker-end"></div>
@@ -226,13 +259,13 @@
           .querySelector(".dayview-gridcell-container")
           .getBoundingClientRect().height /
           24) *
-          (d.getHours() + d.getMinutes() / 60) +
+        (d.getHours() + d.getMinutes() / 60) +
         "px";
     });
   </script>
 
-   <!-- Firebase Configuration -->
-   <script>
+  <!-- Firebase Configuration -->
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBz6kpEBb5CdmrMAuk8UfcRzAdmMm2pAUo",
       authDomain: "ud-planner.firebaseapp.com",
@@ -249,11 +282,13 @@
     // const analytics = getAnalytics(app);
   </script>
 
-  <!-- Needs to be at the bottom to load AFTER the html is done parsing. -->
-  <script src="JavaScript/jquery-3.2.1.min.js"></script>
-  <script src="JavaScript/bootstrap.bundle.min.js"></script>
-  <script src="JavaScript/month.js"></script>
-  <script src="JavaSCript/auth2.js"></script>
-
 </body>
+
+<!-- Needs to be at the bottom to load AFTER the html is done parsing. -->
+<script src="JavaScript/jquery-3.2.1.min.js"></script>
+<script src="JavaScript/bootstrap.bundle.min.js"></script>
+<script src="JavaScript/month.js"></script>
+<script src="JavaScript/auth.js"></script>
+<script src="JavaScript/day.js"></script>
+
 </html>
