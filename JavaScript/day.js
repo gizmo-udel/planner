@@ -148,7 +148,7 @@ var cal = {
 
     // Load the saved data for the currently logged in user, display it on the calendar.
     loadData: function (selMonth, selDay, selYear) {
-
+        // Make sure a user is logged in!
         firebase.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser) {
                 // Display/hide appropriate buttons.
@@ -255,7 +255,6 @@ var cal = {
                                                     newCell.appendChild(cellTime);
                                                     newCell.appendChild(cellDesc);
 
-
                                                     //document.getElementById(currentDay).innerHTML += NewCell.innerHTML;
                                                     console.log("%cEvent loaded", 'color: #00D833', "for '" + mName[parseInt(selMonth)], selDay + "'!");
 
@@ -353,6 +352,7 @@ window.addEventListener("load", function () {
 
     // Listener to load calendar data when a different year is selected.
     yrOpts.addEventListener('change', () => {
+        // Remove the events from the previously selected day from being displayed.
         var removeView = document.getElementsByClassName('dayview-cell');
         while (removeView[0]) {
             removeView[0].parentNode.removeChild(removeView[0]);
@@ -361,7 +361,7 @@ window.addEventListener("load", function () {
         selYear = document.getElementById("cal-yr").value;
         cal.loadData(selMonth, selDay, selYear);
     });
-    // Listener to load calendar data when a different month is selected.
+    // Remove the events from the previously selected day from being displayed.
     mthOpts.addEventListener('change', () => {
         var removeView = document.getElementsByClassName('dayview-cell');
         while (removeView[0]) {
@@ -371,7 +371,7 @@ window.addEventListener("load", function () {
         selMonth = document.getElementById("cal-mth").value;
         cal.loadData(selMonth, selDay, selYear);
     });
-    // Listener to load calendar data when a different month is selected.
+    // Remove the events from the previously selected day from being displayed.
     dayOpts.addEventListener('change', () => {
         var removeView = document.getElementsByClassName('dayview-cell');
         while (removeView[0]) {
@@ -381,5 +381,13 @@ window.addEventListener("load", function () {
         selDay = document.getElementById("cal-day").value;
         cal.loadData(selMonth, selDay, selYear);
     });
-    cal.loadData(selMonth, selDay, selYear);
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        if (firebaseUser) {
+            cal.loadData(selMonth, selDay, selYear);
+        }
+        else{
+            document.getElementById('loginNav').style.display = 'block';
+            document.getElementById('logoutNav').style.display = 'none';
+        }
+    })
 });

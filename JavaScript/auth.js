@@ -84,6 +84,7 @@ if (logoutNav) {
     firebase.auth().signOut();
     document.getElementById('loginNav').style.display = 'block';
     document.getElementById('logoutNav').style.display = 'none';
+    window.location = 'index.html';
     //console.log("LOGOUT BUTTON CLICKED");
   })
 }
@@ -96,4 +97,9 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
     var element = document.getElementById('loginNav');
     element.classList.remove("nav-item");
     element.style.display = 'none';
-  }});
+  } else {
+    var element = document.getElementById('logoutNav');
+    element.classList.remove("nav-item");
+    element.style.display = 'none';
+  }
+});
