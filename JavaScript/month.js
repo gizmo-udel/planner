@@ -35,8 +35,8 @@ var cal = {
         //your stuff
     };
     element.addEventListener('blur', listenToBlur);
-},
-*/
+  },
+  */
 
   // Or try searching "how to removeeventlistener from anonymous functions"
 
@@ -44,11 +44,7 @@ var cal = {
   See: loadData() fucntion for efficient (lol?) implementation structure.
   db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(currentDay.toString()).doc(docID).eventName.value;
     Users -> (UID) -> Events -> (mm-yyyy) -> dd -> (UID) -> #DETAILS#
-  													                              eventName
-  													                              sTime
-  													                              eTime
-  													                              eventDesc
-                                                          etc... */
+  */
 
   // (B) DRAW CALENDAR FOR SELECTED MONTH
   list: function () {
@@ -169,55 +165,10 @@ var cal = {
     //cal.closeModal(false);
   },
 
-
-  /*
-    helpingFunction: function (eventNum) {
-      var timebt = document.getElementById('militaryTime');
-      timebt.onclick = function () {
-        timebt.innerHTML = cal.militaryTime ? "AM/PM" : "Military";
-        //console.log(timebt);
-        cal.ChangeTime()
-      };
-
-      //close function on click
-      
-      var closebt = document.getElementById('Close');
-      closebt.onclick = cal.closeModal();
-
-      //delete all event function on click 
-      var delall = document.getElementById("DeleteAll");
-      delall.onclick = function () {
-        cal.del(cal.sDay, 0)
-      };
-
-      //save event function on click 
-      
-      var savebt = document.getElementById('Save');
-      savebt.onclick = function (evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        cal.save(eventNum)
-      };
-    
-
-    },*/
-
+  // Function for adding, deleting, and editing events.
   modifyEvent: function (currentDay) {
-    // Month Names
-    var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    //cal.sDay = currentDay;
-    //console.log(currentDay);
 
-    // Grab clicked date (Month Day Year)
-    var sMth = cal.sMth + 1;
-    var sDay = currentDay.firstChild.id;
-    var sYear = cal.sYear;
-
-    // Debugging
-    //console.log("Editing!: " + (parseInt(sMth) + 1).toString(), sDay.toString(), sYear);
-    //console.log("Month name: " + mName[parseInt(sMth) - 1]);
-
-    //display modal 
+    // Display modal for adding/editing event. 
     var modal = document.getElementById("myModal");
     modal.style.display = "flex";
 
@@ -225,7 +176,12 @@ var cal = {
       if (firebaseUser) {
         const userID = firebaseUser.uid;
         //console.log(userID, sMth + "-" + sYear + " " + sDay.toString());
+
+        // Grab the clicked day.
+        var sDay = currentDay.firstChild.id;
         var sDayString = sDay.toString();
+
+        // Event listener for the entire body so when a specific event is clicked, I can pull the UniqueID for the database.
         document.body.addEventListener('click', function (event) {
           //console.log("Clicked event ID: " + event.target.id);
           //console.log("Need to match: 'evt' or 'td' or " + sDayString);
@@ -233,7 +189,7 @@ var cal = {
           // Editing Event
           if (event.target.id == 'evt') {
             // Month Names
-            var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            //var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
             // Grab clicked date (Month Day Year)
             var sMth = cal.sMth + 1;
@@ -275,13 +231,8 @@ var cal = {
                   eTime: document.getElementById("devt-time").value
                 })
                 console.log("%cEvent successfully changed", 'color: #00D833', "to: ", '\n' + eventName, eventDesc, '\n' + sTime, eTime);
-                /*
-                editBtn.style.display = "none";
-                document.getElementById("evt-name").value = '';
-                document.getElementById("evt-details").value = '';
-                */
-                cal.closeModal();
 
+                cal.closeModal();
               }, {
                 once: true
               })
@@ -320,8 +271,6 @@ var cal = {
             // Label title.
             title.innerHTML = "<div>Adding event for: <b>[" + mName[parseInt(sMth) - 1] + "]</b>" + " " + sDay + " " + sYear, "</div>";
 
-            // Debugging
-            //console.log(sMth + "-" + sYear + " " + sDay.toString());
             // Save event.
             saveBtn.addEventListener("click", (event) => {
               var sTime = document.getElementById("sevt-time").value;
@@ -330,7 +279,7 @@ var cal = {
               var eventDesc = document.getElementById("evt-details").value;
 
               db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).add({
-                // name: input
+                // format is -> nameOfValue: input
                 // KEEP NAMING CONSISTENT, THESE VALUES ARE SPECIFICALLY CALLED
                 // CURRENT EVENT DETAILS: sTime, eTime, eventName, eventDesc
                 // Can easily add more later
@@ -341,15 +290,8 @@ var cal = {
               });
               console.log("%cDocument successfully written", "color: #00D833", "with the following: ", '\n', +sDay.toString(), mName[parseInt(sMth) - 1], sYear, '\n', sTime, eTime, '\n', eventName, eventDesc);
 
-              // Wipe fields
-              /*
-              document.getElementById("evt-name").value = '';
-              document.getElementById("evt-details").value = '';
-              */
               // Close modal on button press.
               cal.closeModal();
-
-
             }, {
               once: true
             })
@@ -361,71 +303,27 @@ var cal = {
         });
       }
     })
-
-    //get and assign evt-date element
-    /*
-    var event_date = document.getElementById("evt-date");
-    event_date = cal.mName[cal.sMth] + cal.sDay + cal.sYear;
-
-    //get and assign time 
-    var stime = document.getElementById('sevt-time');
-    var etime = document.getElementById('devt-time');
-    
-    stime = event.stime;
-    etime = event.dtime;
-    
-
-    //display delete all button
-    
-    var delall = document.getElementById("DeleteAll");
-    delall.style.display = "inline";
-    
-
-    //display delete button
-    var delbt = document.getElementById("Delete");
-    delbt.style.display = "inline";
-
-    //delete function on click
-    var delbt = document.getElementById('Delete');
-    delbt.onclick = function () {
-      cal.del(day)
-    };
-
-    //helping function to call other on click methods 
-    //this.helpingFunction(sDay);
-    */
-    //cal.closeModal();
   },
 
-  // (D) Close event input form
-
+  // (D) Close event input form and wipe any values left.
   closeModal: function () {
+    // Grab elements.
     const modal = document.getElementById('myModal');
     const saveBtn = document.getElementById('Save');
     const delBtn = document.getElementById("Delete");
     const editBtn = document.getElementById("edit");
 
-    // Bad place for all this if they can close the modal my other means (clicking outside, hitting esc, etc) then none of this will fire.
+    // Hide the modal and reset buttons.
     modal.style.display = "none";
-
-    //saveBtn.removeEventListener("click", cal.confirmSave());
-    //editBtn.removeEventListener("click", cal.confirmEdit());
-
     saveBtn.style.display = "none";
     delBtn.style.display = "none";
     editBtn.style.display = "none";
 
+    // Resent input values back to default.
     document.getElementById("evt-name").value = '';
     document.getElementById("evt-details").value = '';
     document.getElementById("sevt-time").value = '00:00';
     document.getElementById("devt-time").value = '23:59';
-
-    // We should implement a listener for firebase, this should never be needed.
-    /*
-    if (callList) {
-      //cal.list();
-    }
-    */
   },
 
   ChangeTime: function () {
@@ -567,5 +465,19 @@ window.addEventListener("load", function () {
   mthOpts.addEventListener('change', () => {
     cal.list();
   });
+
+  // Hide/Show login/logout buttons appropriately.
+firebase.auth().onAuthStateChanged(firebaseUser => {
+  if (firebaseUser) {
+    var element = document.getElementById('loginNav');
+    element.classList.remove("nav-item");
+    element.style.display = 'none';
+  } else {
+    var element = document.getElementById('logoutNav');
+    element.classList.remove("nav-item");
+    element.style.display = 'none';
+    //location.reload();
+  }
+});
   cal.list();
 });
