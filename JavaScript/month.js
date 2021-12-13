@@ -185,7 +185,7 @@ var cal = {
           // Editing Event
           if (event.target.id == 'evt') {
             // Month Names
-            //var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
             // Grab clicked date (Month Day Year)
             var sMth = cal.sMth + 1;
