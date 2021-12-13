@@ -188,9 +188,7 @@ var cal = {
                                         db.collection('users').doc(userID).collection('events').doc(selMonthFirebase + "-" + selYear).collection(selDay.toString()).get().then(snapshot => {
                                             if (snapshot.docs.length > 0) {
                                                 snapshot.docs.forEach(doc => {
-
-                                                    // When saving we will have to use the format (mm-yyyy) to match this query.
-                                                    Hasdata = true;
+                                                    // When saving we will have to use the format (mm-yyyy) to match the current query we're in.
                                                     //console.log("Matching Doc ID OK for day " + currentDay + "!");
 
                                                     // var dayGridContainer = document.getElementById('gridContainer');
@@ -206,30 +204,33 @@ var cal = {
                                                     var startTime = doc.data().sTime;
                                                     var endTime = doc.data().eTime;
 
-                                                    console.log(endTime);
-                                                    console.log(startTime);
+                                                    //console.log(endTime);
+                                                    //console.log(startTime);
 
                                                     // Parse start time hours and minutes.
                                                     startTimeArr = startTime.split(':');
-                                                    console.log(startTimeArr);
+                                                    //console.log(startTimeArr);
                                                     startTimeHour = parseInt(startTimeArr[0]);
                                                     startTimeMin = parseInt(startTimeArr[1]);
 
                                                     // Parse end time hours and minutes.
                                                     endTimeArr = endTime.split(':');
-                                                    console.log(endTimeArr);
+                                                    //console.log(endTimeArr);
                                                     endTimeHour = parseInt(endTimeArr[0]);
                                                     endTimeMin = parseInt(endTimeArr[1]);
 
+                                                    /*
                                                     console.log("startTimeHour (0): " + startTimeHour);
                                                     console.log("startTimeMin (0): " + startTimeMin);
                                                     console.log("endTimeHour (0): " + endTimeHour);
                                                     console.log("endTimeMin (0): " + endTimeMin);
-
+                                                    */
+                                                    
+                                                    // Calculate the appropiate start/stop for the events display box on the grid.
                                                     var gridUpper = (hour * startTimeHour) + parseInt(startTimeMin / minute) + 1;
                                                     var gridLower = (hour * endTimeHour) + parseInt(endTimeMin / minute) + 1;
 
-                                                    console.log("gridUpper (1): " + gridUpper + " | gridLower(12): " + gridLower);
+                                                    //console.log("gridUpper (1): " + gridUpper + " | gridLower(12): " + gridLower);
 
                                                     // Create temp cells.
                                                     const newCell = document.createElement("div");
@@ -246,18 +247,18 @@ var cal = {
                                                     cellTime.setAttribute('class', 'dayview-cell-time');
                                                     cellDesc.setAttribute('class', 'dayview-cell-desc');
 
+                                                    // Populate cells text information displayed on the calendar.
                                                     cellTitle.innerHTML = doc.data().eventName;
                                                     cellTime.innerHTML = startTime + "-" + endTime;
                                                     cellDesc.innerHTML = doc.data().eventDesc;
 
+                                                    // Append the event to the appropirate containers.
                                                     eventContainer.appendChild(newCell);
                                                     newCell.appendChild(cellTitle);
                                                     newCell.appendChild(cellTime);
                                                     newCell.appendChild(cellDesc);
 
-                                                    //document.getElementById(currentDay).innerHTML += NewCell.innerHTML;
                                                     console.log("%cEvent loaded", 'color: #00D833', "for '" + mName[parseInt(selMonth)], selDay + "'!");
-
                                                 })
                                             } else {
                                                 console.log("%cNo event found", 'color: #FF5733', "for '" + mName[parseInt(selMonth)], selDay + "'!");
@@ -295,7 +296,7 @@ window.addEventListener("load", function () {
         nowMth = now.getMonth(),
         nowYear = parseInt(now.getFullYear());
     var daysInMth = new Date(cal.sYear, cal.sMth + 1, 0).getDate(); // Number of days in selected month
-    //var nowDay = 
+
     // Pull current date
     console.log(nowDay);
 
@@ -345,6 +346,7 @@ window.addEventListener("load", function () {
     const mthOpts = document.getElementById('cal-mth');
     const dayOpts = document.getElementById('cal-day');
 
+    // Grab selected Month/Day/Year values (By defualt that will be the CURRENT date).
     var selMonth = document.getElementById("cal-mth").value;
     var selDay = document.getElementById("cal-day").value;
     var selYear = document.getElementById("cal-yr").value;
@@ -358,29 +360,38 @@ window.addEventListener("load", function () {
             removeView[0].parentNode.removeChild(removeView[0]);
         }
 
+        // Load the data for the selected year.
         selYear = document.getElementById("cal-yr").value;
         cal.loadData(selMonth, selDay, selYear);
     });
-    // Remove the events from the previously selected day from being displayed.
-    mthOpts.addEventListener('change', () => {
+
+    // Listener to load calendar data when a different month is selected.
+    mthOpts.addEventListener('change', () =>{
+        // Remove the events from the previously selected day from being displayed.
         var removeView = document.getElementsByClassName('dayview-cell');
         while (removeView[0]) {
             removeView[0].parentNode.removeChild(removeView[0]);
         }
 
+        // Load the data for the selected month.
         selMonth = document.getElementById("cal-mth").value;
         cal.loadData(selMonth, selDay, selYear);
     });
-    // Remove the events from the previously selected day from being displayed.
+
+    // Listener to load calendar data when a different day is selected.
     dayOpts.addEventListener('change', () => {
+        // Remove the events from the previously selected day from being displayed.
         var removeView = document.getElementsByClassName('dayview-cell');
         while (removeView[0]) {
             removeView[0].parentNode.removeChild(removeView[0]);
         }
 
+        // Load the data for the selected day.
         selDay = document.getElementById("cal-day").value;
         cal.loadData(selMonth, selDay, selYear);
     });
+
+    // If the user is logged in, load the calendar, otherwise show/hide the correct login/logout buttons.
     firebase.auth().onAuthStateChanged(firebaseUser => {
         if (firebaseUser) {
             cal.loadData(selMonth, selDay, selYear);
