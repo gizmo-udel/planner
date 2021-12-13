@@ -477,3 +477,24 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
 });
   cal.list();
 });
+
+
+//Notepad popup
+var notepadmodal=document.getElementById('notepadModal');
+var btn = document.getElementById("notepadBtn");
+var span = document.getElementById("notepadClose");
+btn.onclick = function() {
+  notepadModal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  notepadModal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == notepadModal) {
+    notepadModal.style.display = "none";
+  }
+}

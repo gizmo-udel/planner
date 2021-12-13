@@ -42,6 +42,20 @@
     </div>
   </header>
   <div id="cal-wrap">
+    <div id="header-btns">
+      <button id="notepadBtn" class="headerBtns">Notepad</button>
+      <div id="notepadModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" id="notepad-content">
+          <h1 id="notepadHeader">
+            <span id="notepadClose">&times;</span>
+            Notes
+          </h1>
+          <textarea id="notepadText"></textarea>
+        </div>
+
+      </div>
+    </div>
     <!-- Month/Year Selection -->
     <div id="cal-date">
       <select id="cal-mth"></select>
@@ -85,7 +99,7 @@
         <button id='DeleteAll' class="modal_btn" style="display: none;">Delete All</button>
         <button id='Delete' class="modal_btn" style="display: none;">Delete</button>
         <button type='submit' id='Save' style="display: none;" class="modal_btn">Save</button>
-        <button type='submit' id='edit' style="display: none;" class="modal_btn">Edit</button>
+        <button type='submit' id='edit' style="display: none;" class="modal_btn">Save Changes</button>
       </div>
 
     </div>
