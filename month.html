@@ -5,6 +5,7 @@
   <title>Month View</title>
   <link rel="stylesheet" href="./css/style.css"></link>
   <link href="./css/month.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/themify-icons.css">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
@@ -43,7 +44,7 @@
   </header>
   <div id="cal-wrap">
     <div id="header-btns">
-      <button id='dayBtn' class="headerBtns"><a href="day.html" style="color: #719caa;">Day View</a></button>
+      <button id='dayBtn' class="headerBtns" onclick="window.location.href='day.html'">Day View</button>
       <button id="notepadBtn" class="headerBtns">Notepad</button>
       <div id="notepadModal" class="modal">
         <!-- Modal content -->
@@ -83,12 +84,11 @@
         <textarea placeholder='Event Description' id='evt-details'></textarea>
 
         <div id='evt-location'>
-          <img id='locimg' src="images/location.png" alt="location">
           <textarea placeholder='Event Location' id='location'></textarea>
         </div>
 
         <div id='event-time'>
-          <img id='clockimg' src="images/clock.png" alt="clock">
+          <span class="ti-alarm-clock ti-2x mr-2"></span> 
           <input type='time' id='sevt-time' name='start-time' value = '00:00' required>
           <p>to</p>
            <input type='time' id='devt-time' name='end-time' value = '23:59' required>

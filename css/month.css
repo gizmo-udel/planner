@@ -30,15 +30,30 @@
   color:#53727c;
   font-size: 1.5em;
 }
+
 #header-btns{
   display:flex;
 }
+
 .headerBtns{
-  margin: 5px;
+  background: #faf8f5;
+  margin-left: 10px;
+  padding: 9px;
+  width: 14%;
+  box-shadow: -1px 0px 1px #719caa;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #719caa;
+}
+
+.headerBtns:hover{
+  color: #faf8f5;
+  background: #719caa;
 }
 
 #dayBtn{
   color: #719caa;
+  background: #faf8f5;
 }
 
 #notepadHeader{
@@ -299,13 +314,15 @@ margin-right: 10px;
 }
 
 #event-modal{
-  background-color: rgb(248, 246, 246);
+  background-color: rgb(174,199,207, 0.95);
   width: 40rem;
   height: 37rem;
+  font-weight: bold;
   border-radius: .8rem;
   box-shadow: var(--m-shadow, .4rem .4rem 10.2rem .2rem) var(--shadow-1);
   position: relative;
   overflow: hidden;
+  color: #fff;
 }
 
 #notepad-content{
@@ -388,11 +405,13 @@ margin-right: 10px;
   height: 3rem;
   border: 1px solid hsla(0, 0%, 100%, .4);
   border-radius: 10rem;
-
-  color: inherit;
+  background: #fff;
+  color: #719CAA;
   font-size: 1rem;
   cursor: pointer;
-
   transition: .2s;
 }
-
+.modal_btn:hover{
+  color: #fff;
+  background: #53727c;
+}
