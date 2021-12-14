@@ -80,7 +80,7 @@ if (loginForm) {
                 if (errorCode === 'auth/wrong-password') {
                     alert('Wrong email or password.');
                 } else {
-                    alert('Wrong email or password.');
+                    alert(errorMessage);
                 }
             });
     })
@@ -103,12 +103,26 @@ if (logoutNav) {
 // >> Bootstrap blocking class changes with !important?
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
-        var element = document.getElementById('loginNav');
-        element.classList.remove("nav-item");
-        element.style.display = 'none';
+        // Grab documents to hide/show.
+        var login = document.getElementById('loginNav');
+
+        // Hide login button when logged in.
+        login.classList.remove("nav-item");
+        login.style.display = 'none';
     } else {
-        var element = document.getElementById('logoutNav');
-        element.classList.remove("nav-item");
-        element.style.display = 'none';
+        // Grab documents to hide/show.
+        var logout = document.getElementById('logoutNav');
+        var monthView = document.getElementById('monthView');
+        var dayView = document.getElementById('dayView');
+
+        // Hide logout button when not logged in.
+        logout.classList.remove("nav-item");
+        logout.style.display = 'none';
+
+        // Hide month/day nav items when not logged in.
+        monthView.classList.remove("nav-item");
+        monthView.style.display = 'none';
+        dayView.classList.remove("nav-item");
+        dayView.style.display = 'none';
     }
 });
