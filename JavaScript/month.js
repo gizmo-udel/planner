@@ -293,12 +293,6 @@ var cal = {
               once: true
             })
 
-            db.collection("cities").onSnapshot(querySnapshot => { //onSnapshot on collection
-              querySnapshot.docChanges().forEach(change => {
-                //do whatever you want here...
-              });
-           });
-
             // Real Time Listener (Auto Refresh)
             db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).onSnapshot(querySnapshot => {
               // For clarity -- I realize this declaration is not needed
@@ -503,17 +497,49 @@ window.addEventListener("load", function () {
   cal.list();
 });
 
-
 //Notepad popup
 var notepadModal = document.getElementById('notepadModal');
 var btn = document.getElementById("notepadBtn");
 var span = document.getElementById("notepadClose");
+var notes = document.getElementById("notepadText");
+
 btn.onclick = function () {
+  // Load notes from DB if they exist.
+  firebase.auth().onAuthStateChanged(firebaseUser => {
+    if (firebaseUser) {
+      db.collection('users').doc(firebaseUser.uid).get().then((snapshot) => {
+        // Load saved notes
+        var userNotes = snapshot.get('notes');
+        //console.log(userNotes);
+
+        // Prevents "undefined" from being displayed if the user has no notes.
+        if(userNotes != null)
+        {
+          // Set the notes in the DOM
+          notes.innerHTML = userNotes;
+        }
+      })
+    }
+  })
+
+  // Display modal.
   notepadModal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
+// When the user clicks on <span> (x), save the data and close the modal
 span.onclick = function () {
+  var userNotes = notes.value;
+
+  // Save notes
+  firebase.auth().onAuthStateChanged(firebaseUser => {
+    if (firebaseUser) {
+      db.collection('users').doc(firebaseUser.uid).update({
+        notes: userNotes
+      })
+    }
+  });
+
+  // Close modal
   notepadModal.style.display = "none";
 }
 
