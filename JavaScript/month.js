@@ -28,6 +28,22 @@ var cal = {
 
   // Unwrap everything from the body event listener? Just get the data-id and store it in a variable that I can use? Possible scope issues.
 
+  /* Listener code in case I fix the above bug messing everything up...
+   // Real Time Listener (Auto Refresh)
+            db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).onSnapshot(querySnapshot => {
+              // For clarity -- I realize this declaration is not needed
+              let eventChanges = querySnapshot.docChanges();
+
+              // For each change in the database, display it.
+              eventChanges.forEach(change => {
+                if (change.type == 'added') {
+                  cal.loadData(sDay);
+                } else if (change.type == 'modified') {
+                  cal.loadData(sDay);
+                }
+              });
+            });
+  */
 
   //Try self destructing listener?
   /*
@@ -239,7 +255,8 @@ var cal = {
                 console.log("%cEvent successfully changed", 'color: #00D833', "to: ", '\n' + eventName, eventDesc, '\n' + sTime, eTime);
 
                 // Display updated values
-                event.target.innerHTML = eventName, sTime;
+                event.target.innerHTML = eventName + " " + eTime;
+                //console.log(eventName, sTime);
 
                 cal.closeModal();
               }, {
