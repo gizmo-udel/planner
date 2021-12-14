@@ -37,6 +37,10 @@
   margin: 5px;
 }
 
+#dayBtn{
+  color: #719caa;
+}
+
 #notepadHeader{
   font-family: 'Shadows Into Light', cursive;
   text-align: left;
@@ -279,23 +283,11 @@ margin-right: 10px;
 #notepadModal{
   padding: 0px;
 }
-#myModal, #notepadModal{
-  position: absolute;
-  height: 100%;
-  width: 70%;
-  margin-left: 425px;
-  margin-top: 250px;
-  margin-bottom: 0px;
-  margin-right: 0px;
-}
-
 #modal-header{
   text-align: center;
   display:block;
 }
-#notepadModal{
-  padding: 0px;
-}
+
 #myModal, #notepadModal{
   position: absolute;
   height: 100%;

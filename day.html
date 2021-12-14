@@ -44,17 +44,31 @@
     </div>
   </header>
 
-  <div class="changeView2" style="text-align: right;">
-    <button class="buttonView"><a href="month.html">Month </a></button>
-  </div>
+  
+
   <div id="cal-wrap">
+    <div id="header-btns">
+      <button id='dayBtn' class="headerBtns"><a href="month.html" style="color: #719caa;">Month View</a></button>
+      <button id="notepadBtn" class="headerBtns">Notepad</button>
+      <div id="notepadModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" id="notepad-content">
+          <h1 id="notepadHeader">
+            <span id="notepadClose">&times;</span>
+            Notes
+          </h1>
+          <textarea id="notepadText"></textarea>
+        </div>
+  
+      </div>
+    </div>
     <!-- Month/Year/Day Selection -->
     <div id="cal-date">
       <select id="cal-mth"></select>
-      <select id="cal-yr"></select>
       <select id="cal-day"></select>
+      <select id="cal-yr"></select>
     </div>
-  </div>
+  
 
   <div class="dayview-container">
     <div class="dayview-timestrings-container">
@@ -66,117 +80,117 @@
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            01:00
+            1 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            02:00
+            2 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            03:00
+            3 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            04:00
+            4 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            05:00
+            5 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            06:00
+            6 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            07:00
+            7 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            08:00
+            8 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            09:00
+            9 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            10:00
+            10 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            11:00
+            11 AM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            12:00
+            12 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            13:00
+            1 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            14:00
+            2 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            15:00
+            3 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            16:00
+            4 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            17:00
+            5 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            18:00
+            6 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            19:00
+            7 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            20:00
+            8 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            21:00
+            9 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            22:00
+            10 PM
           </div>
         </div>
         <div class="dayview-timestring-container">
           <div class="dayview-timestring">
-            23:00
+            11 PM
           </div>
         </div>
       </div>
@@ -250,6 +264,7 @@
       </div>
     </div>
   </div>
+</div>
   <script>
     // assumes post DomContentLoaded
     document.addEventListener("DOMContentLoaded", () => {
