@@ -238,6 +238,7 @@ var cal = {
             delBtn.addEventListener("click", (e) => {
               // Delete function call.
               db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).delete();
+              event.target.style.display = "none";
 
               console.log("Event %c(" + id + ")", 'color: #FF5733', "successfully deleted.");
               cal.closeModal();
@@ -291,6 +292,28 @@ var cal = {
             }, {
               once: true
             })
+
+            db.collection("cities").onSnapshot(querySnapshot => { //onSnapshot on collection
+              querySnapshot.docChanges().forEach(change => {
+                //do whatever you want here...
+              });
+           });
+
+            // Real Time Listener (Auto Refresh)
+            db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).onSnapshot(querySnapshot => {
+              // For clarity -- I realize this declaration is not needed
+              let eventChanges = querySnapshot.docChanges();
+
+              // For each change in the database, display it.
+              eventChanges.forEach(change => {
+                if (change.type == 'added') {
+                  cal.loadData(sDay);
+                } else if (change.type == 'modified') {
+                  cal.loadData(sDay);
+                }
+              });
+            });
+
           } else if (event.target.id == 'Close') {
             cal.closeModal;
           }
@@ -463,37 +486,39 @@ window.addEventListener("load", function () {
   });
 
   // Hide/Show login/logout buttons appropriately.
-firebase.auth().onAuthStateChanged(firebaseUser => {
-  if (firebaseUser) {
-    var element = document.getElementById('loginNav');
-    element.classList.remove("nav-item");
-    element.style.display = 'none';
-  } else {
-    var element = document.getElementById('logoutNav');
-    element.classList.remove("nav-item");
-    element.style.display = 'none';
-    //location.reload();
-  }
-});
+  firebase.auth().onAuthStateChanged(firebaseUser => {
+    if (firebaseUser) {
+      var element = document.getElementById('loginNav');
+      element.classList.remove("nav-item");
+      element.style.display = 'none';
+    } else {
+      var element = document.getElementById('logoutNav');
+      element.classList.remove("nav-item");
+      element.style.display = 'none';
+      //location.reload();
+    }
+  });
+
+  // Show the calendar.
   cal.list();
 });
 
 
 //Notepad popup
-var notepadmodal=document.getElementById('notepadModal');
+var notepadModal = document.getElementById('notepadModal');
 var btn = document.getElementById("notepadBtn");
 var span = document.getElementById("notepadClose");
-btn.onclick = function() {
+btn.onclick = function () {
   notepadModal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+span.onclick = function () {
   notepadModal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target == notepadModal) {
     notepadModal.style.display = "none";
   }
