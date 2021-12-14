@@ -26,6 +26,8 @@ var cal = {
   //      2. Limiting to single trigger {once: true} is not working.
   //      3. Remoing the listener inside the listener itself also is not working.
 
+  // Unwrap everything from the body event listener? Just get the data-id and store it in a variable that I can use? Possible scope issues.
+
 
   //Try self destructing listener?
   /*
@@ -177,7 +179,7 @@ var cal = {
         var sDay = currentDay.firstChild.id;
         var sDayString = sDay.toString();
 
-        // Event listener for the entire body so when a specific event is clicked, I can pull the UniqueID for the database.
+        // Event listener for the entire body so when a specific event is clicked, I can pull the UniqueID of the clicked element for the database.
         document.body.addEventListener('click', function (event) {
           //console.log("Clicked event ID: " + event.target.id);
           //console.log("Need to match: 'evt' or 'td' or " + sDayString);
@@ -191,6 +193,12 @@ var cal = {
             var sMth = cal.sMth + 1;
             var sDay = currentDay.firstChild.id;
             var sYear = cal.sYear;
+
+            // Grab documents to modify
+            var nameDoc = document.getElementById("evt-name");
+            var descDoc = document.getElementById("evt-details");
+            var sTimeDoc = document.getElementById("sevt-time");
+            var eTimeDoc = document.getElementById("devt-time");
 
             event.stopPropagation();
 
@@ -206,27 +214,32 @@ var cal = {
             db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).get().then((snapshot) => {
               var tempEvent = snapshot.get('eventName');
               //var tempDesc = snapshot.get('eventDesc');
-              document.getElementById("evt-name").value = snapshot.get('eventName');
-              document.getElementById("evt-details").value = snapshot.get('eventDesc');
+              nameDoc.value = snapshot.get('eventName');
+              descDoc.value = snapshot.get('eventDesc');
 
               //console.log("Event name: " + tempEvent);
               var title = document.getElementById("event-title");
               title.innerHTML = "<div> EDIT EVENT: " + tempEvent + "</br>" + mName[parseInt(sMth) - 1] + " " + sDay + " " + sYear, "</div>";
 
-              editBtn.addEventListener("click", (event) => {
-                var eventName = document.getElementById("evt-name").value;
-                var eventDesc = document.getElementById("evt-details").value;
-                var sTime = document.getElementById("sevt-time").value;
-                var eTime = document.getElementById("devt-time").value;
+              editBtn.addEventListener("click", (event2) => {
+
+                //event.target.style.display = "none";
+                var eventName = nameDoc.value;
+                var eventDesc = descDoc.value;
+                var sTime = sTimeDoc.value;
+                var eTime = eTimeDoc.value;
 
                 db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).doc(id).set({
-                  eventName: document.getElementById("evt-name").value,
-                  eventDesc: document.getElementById("evt-details").value,
+                  eventName: nameDoc.value,
+                  eventDesc: descDoc.value,
                   // Time causing issues if it's not re-set.
-                  sTime: document.getElementById("sevt-time").value,
-                  eTime: document.getElementById("devt-time").value
+                  sTime: sTimeDoc.value,
+                  eTime: eTimeDoc.value
                 })
                 console.log("%cEvent successfully changed", 'color: #00D833', "to: ", '\n' + eventName, eventDesc, '\n' + sTime, eTime);
+
+                // Display updated values
+                event.target.innerHTML = eventName, sTime;
 
                 cal.closeModal();
               }, {
@@ -250,6 +263,8 @@ var cal = {
           } else if (event.target.id == 'td' || event.target.id == sDayString) {
             // Grab current logged in userID to match to the database.
             const userID = firebaseUser.uid;
+
+            event.stopPropagation();
 
             // Month Names
             var mName = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -287,27 +302,23 @@ var cal = {
               });
               console.log("%cDocument successfully written", "color: #00D833", "with the following: ", '\n', +sDay.toString(), mName[parseInt(sMth) - 1], sYear, '\n', sTime, eTime, '\n', eventName, eventDesc);
 
+              //Poor implementation given that if the user clicks the newly made "event" there is no data-id associted so it cannot be editied.*
+              // Load the data into the created cell.
+              NewCell = document.createElement("div");
+
+              // Edit the text displayed in the event cell.
+              // FB doc-id included for pulling the correct doc on click, bad secruity?
+              NewCell.innerHTML = "<div class='evt' id='evt' data-id=''>" + eventName + " " + eTime + "</div>";
+
+              // Grab the current day to append to the correct cell.
+              document.getElementById(sDay).innerHTML += NewCell.innerHTML;
+
               // Close modal on button press.
               cal.closeModal();
             }, {
               once: true
             })
-
-            // Real Time Listener (Auto Refresh)
-            db.collection('users').doc(userID).collection('events').doc(sMth + "-" + sYear).collection(sDay.toString()).onSnapshot(querySnapshot => {
-              // For clarity -- I realize this declaration is not needed
-              let eventChanges = querySnapshot.docChanges();
-
-              // For each change in the database, display it.
-              eventChanges.forEach(change => {
-                if (change.type == 'added') {
-                  cal.loadData(sDay);
-                } else if (change.type == 'modified') {
-                  cal.loadData(sDay);
-                }
-              });
-            });
-
+            // Close the modal if it's clicked.
           } else if (event.target.id == 'Close') {
             cal.closeModal;
           }
@@ -513,8 +524,7 @@ btn.onclick = function () {
         //console.log(userNotes);
 
         // Prevents "undefined" from being displayed if the user has no notes.
-        if(userNotes != null)
-        {
+        if (userNotes != null) {
           // Set the notes in the DOM
           notes.innerHTML = userNotes;
         }
